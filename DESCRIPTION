@@ -1,0 +1,26 @@
+Package: cfdnakit
+Title: Analyse fragmentation of high-throughput sequencing of circulating cell-free DNA (cfDNA) 
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Pitithat",
+           family = "Puranachot",
+           role = c("aut", "cre"),
+           email = "pitithat@gmail.com",
+           comment = c(ORCID = "0000-0002-6786-9240"))
+Description: What the package does (one paragraph).
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dplyr,
+    GenomicRanges,
+    ggplot2,
+    IRanges,
+    PSCBS,
+    QDNAseq,
+    Rsamtools,
+    utils
+Depends: 
+    R (>= 2.10)

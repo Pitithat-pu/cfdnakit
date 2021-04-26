@@ -21,3 +21,6 @@ Read a bam file
 Read a bam file from give path. Alignment and sequencing read information
 will be binned into non-overlapping size
 }
+\examples{
+read_bamfile(bamfile_path, 1000)
+}

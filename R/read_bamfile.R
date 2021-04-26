@@ -5,7 +5,7 @@
 #' @param bamfile_path character
 #' @param binsize numeric
 #'
-#' @return
+#' @return list
 #' @export
 #'
 #' @examples

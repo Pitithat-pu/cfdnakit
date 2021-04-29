@@ -6,7 +6,7 @@
 Read a bam file from give path. Alignment and sequencing read information
 will be binned into non-overlapping size}
 \usage{
-read_bamfile(bamfile_path, binsize)
+read_bamfile(bamfile_path, binsize = 1000)
 }
 \arguments{
 \item{bamfile_path}{character}
@@ -14,13 +14,10 @@ read_bamfile(bamfile_path, binsize)
 \item{binsize}{numeric}
 }
 \value{
-
+list
 }
 \description{
 Read a bam file
 Read a bam file from give path. Alignment and sequencing read information
 will be binned into non-overlapping size
-}
-\examples{
-read_bamfile(bamfile_path, 1000)
 }

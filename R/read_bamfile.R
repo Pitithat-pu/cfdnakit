@@ -9,15 +9,13 @@
 #' @export
 #'
 #' @examples
-#' read_bamfile(bamfile_path, 1000)
-
-read_bamfile <- function(bamfile_path, binsize){
+read_bamfile <- function(bamfile_path, binsize=1000){
   if(!utils.file_exists(bamfile_path)){
-    paste0("Bamfile doesn't exist. Please check if the path to bamfile is valid.")
-    quit(status=1)
+
+    stop(paste0("Bamfile doesn't exist. Please check if the path to bamfile is valid."))
   }
 
-  which <- get_sliding_windows(binsize = binsize)
+  which <- util.get_sliding_windows(binsize = binsize)
   flag <- Rsamtools::scanBamFlag(isPaired = TRUE,
                                  isUnmappedQuery = FALSE,
                                  isDuplicate = FALSE,
@@ -33,19 +31,21 @@ read_bamfile <- function(bamfile_path, binsize){
                                    flag = flag,
                                    which = which,
                                    mapqFilter = 20)
+  if(!if_exist_baifile(bamfile = bamfile_path)){
+    print("BAM index is missing. Creating index file")
+    Rsamtools::indexBam(bamfile_path)
+  }
+  bam <- Rsamtools::scanBam(file = bamfile_path,
+                            index = bamfile_path,
+                            param=param)
+    # bam <- Rsamtools::scanBam(file = bamfile_path,
+    #                           param=param)
+  # bam_blacklist_lst = filter_read_on_blacklist(bam)
 
-  if(if_exist_baifile(bamfile = bamfile_path)){
-    bam <- Rsamtools::scanBam(file = bamfile_path,
-                              index = bamfile_path,
-                              param=param)
-  } else
-    bam <- Rsamtools::scanBam(file = bamfile_path,
-                              param=param)
-  bam_blacklist_lst = filter_read_on_blacklist(bam)
 }
 
 if_exist_baifile <- function(bamfile) {
-  baifile_name = paste(bamfile,".bai")
+  baifile_name = paste0(bamfile,".bai")
   utils.file_exists(baifile_name)
 }
 
@@ -94,7 +94,7 @@ create_blacklist_gr <- function(){
                         dac_blacklist_region,
                         duke_blacklist_region)
   if(!utils.file_exists(blacklist_regions))
-    q(save = 'no',status = 1)
+    stop("One of blacklist file doen't exist. Please check if the blacklist file exist in extdata directory.")
   blacklist_targets_gr = GenomicRanges::GRanges()
   for (blacklist_region in blacklist_regions) {
     blacklist_targets =
@@ -103,7 +103,7 @@ create_blacklist_gr <- function(){
                                stringsAsFactors = FALSE))[,1:3]
     colnames(blacklist_targets) = c("chromosome","start","end")
     blacklist_targets_gr_temp=
-      GRanges(seqnames = blacklist_targets$chromosome,
+      GenomicRanges::GRanges(seqnames = blacklist_targets$chromosome,
               ranges = IRanges(
                 start = as.numeric(blacklist_targets$start),
                 end=as.numeric(blacklist_targets$end)))
@@ -112,28 +112,4 @@ create_blacklist_gr <- function(){
   }
   return(blacklist_targets_gr)
 }
-
-get_sliding_windows <- function(binsize){
-  qdnaseq_sliding_windows_RDS =
-    system.file("extdata",
-                paste0("AnnotationDataFrame_from_QDNAseq_",binsize,"k.rds"),
-                package = "cfdnakit")
-  if (utils.file_exists(qdnaseq_sliding_windows_RDS)) {
-    bins = readRDS(qdnaseq_sliding_windows_RDS)
-  } else {
-    paste0("The selected binsize (",binsize,") is not available.")
-    paste0("Available binsize (kb) are 1000, 500, 100.")
-    quit("no",status=1)
-  }
-  sliding_windows <- as.data.frame(bins@data)
-  sliding_windows <- sliding_windows[which(sliding_windows$chromosome!="Y" &
-                                            sliding_windows$mappability>=1),]
-  sliding_windows_gr <- GRanges(seqnames = sliding_windows$chrom,
-                                ranges = IRanges(
-                                  start= sliding_windows$start,
-                                  end = sliding_windows$end))
-
-  return(sliding_windows_gr)
-}
-
 

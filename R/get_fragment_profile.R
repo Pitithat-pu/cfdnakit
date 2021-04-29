@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' @importFrom stats sd
 get_fragment_profile <- function(readbam_bin,
                                  short_range = c(100,150),
                                  long_range = c(151,250),
@@ -95,6 +95,14 @@ getmode <- function(v) {
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
+#' Make Fragment-length density table
+#'
+#' @param isize_vector numeric
+#'
+#' @return data.frame
+#'
+#' @examples
+#' @importFrom stats na.omit density
 make_density_table <- function(isize_vector){
   if(length(na.omit(isize_vector)) < 1e6){
     d = density(na.omit(isize_vector))

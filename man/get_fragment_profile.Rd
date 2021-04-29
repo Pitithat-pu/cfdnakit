@@ -31,6 +31,3 @@ list
 Getting fragment-length information
 Function extract insert-size (fragment-length)
 }
-\examples{
-
-}

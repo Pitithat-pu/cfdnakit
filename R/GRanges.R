@@ -1,4 +1,6 @@
-GRanges <- function(seqnames, ranges) {
+GRanges <- function(seqnames, ranges, gc, mappability) {
   GenomicRanges::GRanges(seqnames = seqnames,
-                         ranges = ranges)
+                         ranges = ranges,
+                         gc=gc,
+                         mappability=mappability)
 }

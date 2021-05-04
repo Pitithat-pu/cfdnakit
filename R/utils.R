@@ -48,6 +48,15 @@ util.get_sliding_windows <- function(binsize=1000){
   return(sliding_windows_gr)
 }
 
+#' Correct GC Bias readcount
+#'
+#' @param readcount numeric
+#' @param bias numeric
+#'
+#' @return numeric
+#'
+#' @examples
+#' @importFrom stats loess predict median
 util.bias_correct <- function(readcount, bias) {
   i <- seq(min(bias, na.rm=TRUE),
            max(bias, na.rm=TRUE), by = 0.001)

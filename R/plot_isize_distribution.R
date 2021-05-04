@@ -1,25 +1,35 @@
 #' Plot Fragment-length Distribution
 #'
 #' @param fragment_profile list
+#' @param sample_name charactor
 #' @param xlim numeric
 #'
-#' @return
+#' @return distribution plot
 #' @export
 #'
 #' @examples
+#' @importFrom ggplot2 ggplot aes geom_line geom_text geom_vline
 plot_isize_distribution <- function(fragment_profile,
+                                    sample_name = "Patient cfDNA",
                                     xlim = 500){
   if (is.null(fragment_profile[["distribution_table"]])){
     stop("Element distribution_table doen't exist in fragment_profile")
   }
   density_df = fragment_profile$distribution_table
-  density_df$Label = "Patient cfDNA"
+  density_df$Label = sample_name
   control_fragment_profile = load_control_density_table()
   control_density_df = control_fragment_profile$control_density_df
-  # isize_vec = control_fragment_profile$insert_size
+  temp_density_df = rbind(control_density_df,density_df)
+
+  #>>>>> Do KS test comparing sample and control fragment distribution
   ks_test = test_KolmogorovSmirnov(control_fragment_profile,
                                    fragment_profile)
-  temp_density_df = rbind(control_density_df,density_df)
+  ks_test_text = paste0("KS test: p-value ",
+                        ks_test$p.value,"; stats ",
+                        ks_test$statistic)
+  #<<<<<
+
+  #>>>> Find the peak fragment-length
   peak_length <-
     sapply(split(temp_density_df, temp_density_df$Label),
            function(density_df){
@@ -30,8 +40,9 @@ plot_isize_distribution <- function(fragment_profile,
                        "peak_length" = peak_length[
                          unique(temp_density_df$Label)],
                        "hadjust"=c(1.5,-.4))
+  #<<<<<
 
-  density_plot = ggplot(temp_density_df,
+  density_plot = ggplot2::ggplot(temp_density_df,
                         aes(x,y))
   density_plot = density_plot +
     geom_line(aes(color=Label))
@@ -46,36 +57,32 @@ plot_isize_distribution <- function(fragment_profile,
                   color=Label,hjust=hadjust),vjust=-0.25,
               size=5,show.legend = FALSE)
   density_plot = density_plot +
-    scale_x_continuous(limits = c(0,xlim),
+    geom_text(x=Inf,y=Inf,hjust=1.1,vjust=1.4,
+              label=ks_test_text,size=5, check_overlap = TRUE)
+  density_plot = density_plot +
+    ggplot2::scale_x_continuous(limits = c(0,xlim),
                        breaks = seq(0,xlim,50), expand = c(0, 0),
                        name = "Fragment Length (bases)")
   density_plot = density_plot +
-    scale_y_continuous(breaks = seq(0,max(temp_density_df$y),0.005),
+    ggplot2::scale_y_continuous(breaks = seq(0,max(temp_density_df$y),0.005),
                        expand = c(0, 0),
                        name = "Proportion")
   density_plot = density_plot +
-    theme_linedraw()
+    ggplot2::theme_linedraw()
   density_plot = density_plot +
-    theme(panel.grid.minor = element_blank(),
-          legend.title = element_blank(),
-          legend.text = element_text(size=14),
-          axis.title = element_text(size=14),
-          axis.text = element_text(size=12))
+    ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.title = ggplot2::element_blank(),
+                   legend.text = ggplot2::element_text(size=14),
+                   axis.title = ggplot2::element_text(size=14),
+                   axis.text = ggplot2::element_text(size=12))
   return(density_plot)
 }
 
 load_control_density_table <- function(){
-  # control_density_file =
-  #   system.file("extdata",
-  #               "BH01_rmdup_paired_mapped_Fragment-length_report_50_insert_size_density.csv",
-  #               package = "cfdnakit")
-  # control_density_df = read.table(control_density_file, header = TRUE)
-  # colnames(control_density_df)=c("x","y")
-  # control_density_df$Label = "Healthy Control"
-  # return(control_density_df)
   control_RDS_file =
     system.file("extdata",
-                "BH01_rmdup_paired_mapped_0.01.fragmentprofile.RDS",
+                "healthycontrol.fragmentprofile.RDS",
                 package = "cfdnakit")
   control_fragment_profile =
     readRDS(control_RDS_file)
@@ -87,13 +94,21 @@ load_control_density_table <- function(){
          control_fragment_profile$insert_size))
 }
 
+#' Test fragment Profile with Kolmogorov-Smirnov
+#'
+#' @param control_fragment_profile list
+#' @param sample_fragment_profile list
+#'
+#' @return list
+#' @export
+#'
+#' @examples
+#' @importFrom stats ks.test na.omit
 test_KolmogorovSmirnov <- function(
   control_fragment_profile, sample_fragment_profile){
-  ks_result = ks.test(control_fragment_profile$insert_size,
-          sample_fragment_profile$insert_size)
-  ks_result = signif(ks_result$p.value,3)
+  ks_result = ks.test(na.omit(control_fragment_profile$insert_size),
+                      na.omit(sample_fragment_profile$insert_size))
+  ks_result$p.value = signif(ks_result$p.value,3)
+  ks_result$statistic = round(ks_result$statistic,2)
   return(ks_result)
 }
-#
-# test_ecdf = ecdf(density_df$y)
-# plot(test_ecdf)

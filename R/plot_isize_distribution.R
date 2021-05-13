@@ -10,23 +10,28 @@
 #' @examples
 #' @importFrom ggplot2 ggplot aes geom_line geom_text geom_vline
 plot_isize_distribution <- function(fragment_profile,
-                                    sample_name = "Patient cfDNA",
+                                    sample_name = NULL,
                                     xlim = 500){
   if (is.null(fragment_profile[["distribution_table"]])){
     stop("Element distribution_table doen't exist in fragment_profile")
   }
   density_df = fragment_profile$distribution_table
-  density_df$Label = sample_name
-  control_fragment_profile = load_control_density_table()
+  if (!is.null(sample_name)) {
+    density_df$Label = sample_name
+  } else density_df$Label = fragment_profile$Sample.ID
+
+  control_fragment_profile = util.load_control_density_table()
   control_density_df = control_fragment_profile$control_density_df
   temp_density_df = rbind(control_density_df,density_df)
 
-  #>>>>> Do KS test comparing sample and control fragment distribution
-  ks_test = test_KolmogorovSmirnov(control_fragment_profile,
-                                   fragment_profile)
+  #>>>>> extract KS test result comparing sample and control fragment distribution
+  # ks_test = test_KolmogorovSmirnov(control_fragment_profile,
+  #                                  fragment_profile)
+  ks_test = dplyr::select(fragment_profile$sample_profile,
+                          "K.S.p.value","K.S.stats")
   ks_test_text = paste0("KS test: p-value ",
-                        ks_test$p.value,"; stats ",
-                        ks_test$statistic)
+                        ks_test$K.S.p.value,"; stats ",
+                        ks_test$K.S.stats)
   #<<<<<
 
   #>>>> Find the peak fragment-length
@@ -77,38 +82,4 @@ plot_isize_distribution <- function(fragment_profile,
                    axis.title = ggplot2::element_text(size=14),
                    axis.text = ggplot2::element_text(size=12))
   return(density_plot)
-}
-
-load_control_density_table <- function(){
-  control_RDS_file =
-    system.file("extdata",
-                "healthycontrol.fragmentprofile.RDS",
-                package = "cfdnakit")
-  control_fragment_profile =
-    readRDS(control_RDS_file)
-  colnames(control_fragment_profile$distribution_table)=c("x","y")
-  control_fragment_profile$distribution_table$Label = "Healthy Control"
-  return(list("control_density_df"=
-         control_fragment_profile$distribution_table,
-       "insert_size" =
-         control_fragment_profile$insert_size))
-}
-
-#' Test fragment Profile with Kolmogorov-Smirnov
-#'
-#' @param control_fragment_profile list
-#' @param sample_fragment_profile list
-#'
-#' @return list
-#' @export
-#'
-#' @examples
-#' @importFrom stats ks.test na.omit
-test_KolmogorovSmirnov <- function(
-  control_fragment_profile, sample_fragment_profile){
-  ks_result = ks.test(na.omit(control_fragment_profile$insert_size),
-                      na.omit(sample_fragment_profile$insert_size))
-  ks_result$p.value = signif(ks_result$p.value,3)
-  ks_result$statistic = round(ks_result$statistic,2)
-  return(ks_result)
 }

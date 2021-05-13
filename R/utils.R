@@ -65,3 +65,64 @@ util.bias_correct <- function(readcount, bias) {
   readcount.pred <- predict(readcount.model, bias)
   readcount.corrected <- readcount - readcount.pred + median(readcount)
 }
+
+
+#' Load control fragment profile
+#'
+#' @param control_rds Name of healthy fragment rds file in extdata directory
+#' @param label Label of the sample
+#'
+#' @return List containing fragment length distribution table and all insert size
+#' @export
+#'
+#' @examples
+util.load_control_density_table <- function(
+  control_rds = "healthycontrol.fragmentprofile.RDS",
+  label="Healthy Control"){
+  control_RDS_file =
+    system.file("extdata",
+                control_rds,
+                package = "cfdnakit")
+  # control_RDS_file = density_control_rds
+  control_fragment_profile =
+    readRDS(control_RDS_file)
+  colnames(control_fragment_profile$distribution_table)=c("x","y")
+  control_fragment_profile$distribution_table$Label = label
+  return(list("control_density_df"=
+                control_fragment_profile$distribution_table,
+              "insert_size" =
+                control_fragment_profile$insert_size))
+}
+
+
+util.rowname_to_columns <- function(per_bin_profile){
+  splited_list=lapply(strsplit(
+    rownames(per_bin_profile),
+    split = "[:-]"), function(x) {
+      data.frame("chrom"=x[1],
+                 "start"=as.numeric(x[2]),
+                 "end"=as.numeric(x[3]))
+    })
+  cbind(do.call(rbind,splited_list),per_bin_profile)
+}
+
+
+util.get_chrLength_info <- function(chrLength_df){
+  colnames(chrLength_df) = c("Chromosome", "Length")
+  chrLength_df = chrLength_df[which(chrLength_df$Chromosome!="Y"),]
+  chrNames = chrLength_df$Chromosome
+  chrLength = chrLength_df$Length
+  names(chrLength) = chrNames
+  chroffsets = cumsum(as.numeric(chrLength))
+  chroffsets <- c(0, chroffsets[0:(length(chroffsets)-1)])
+  names(chroffsets) <- names(chrLength)
+  chrMids <- cumsum(as.numeric(chrLength))
+  chrMids <- (chrMids + chroffsets)/2
+  names(chrMids) <- names(chrLength)
+
+  chrLength_info =
+    list("chrNames"=chrNames,
+         "chrLength"=chrLength,
+         "chroffsets"=chroffsets,
+         "chrMids"=chrMids)
+}

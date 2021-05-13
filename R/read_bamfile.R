@@ -2,8 +2,8 @@
 #' Read a bam file
 #' Read a bam file from give path. Alignment and sequencing read information
 #'  will be binned into non-overlapping size
-#' @param bamfile_path character
-#' @param binsize numeric
+#' @param bamfile_path Path to sample bamfile
+#' @param binsize Size of non-overlapping windows in KB. Max = 1000
 #'
 #' @return list
 #' @export

@@ -9,9 +9,9 @@ will be binned into non-overlapping size}
 read_bamfile(bamfile_path, binsize = 1000)
 }
 \arguments{
-\item{bamfile_path}{character}
+\item{bamfile_path}{Path to sample bamfile}
 
-\item{binsize}{numeric}
+\item{binsize}{Size of non-overlapping windows in KB. Max = 1000}
 }
 \value{
 list

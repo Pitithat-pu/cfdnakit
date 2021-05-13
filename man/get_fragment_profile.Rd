@@ -2,11 +2,11 @@
 % Please edit documentation in R/get_fragment_profile.R
 \name{get_fragment_profile}
 \alias{get_fragment_profile}
-\title{Getting fragment-length information
-Function extract insert-size (fragment-length)}
+\title{Getting fragment-length information}
 \usage{
 get_fragment_profile(
   readbam_bin,
+  sample_id,
   short_range = c(100, 150),
   long_range = c(151, 250),
   maximum_length = 600,
@@ -14,20 +14,21 @@ get_fragment_profile(
 )
 }
 \arguments{
-\item{readbam_bin}{list}
+\item{readbam_bin}{Binned alignment from function read_bamfile}
 
-\item{short_range}{numeric vector}
+\item{sample_id}{Character; Given sample ID}
 
-\item{long_range}{numeric vector}
+\item{short_range}{Vector of 2 Int; Range of fragment length to be defined as short fragment (default c(100,150))}
 
-\item{maximum_length}{numeric}
+\item{long_range}{Vector of 2 Int; Range of fragment length to be defined as long fragment (default c(151,250))}
 
-\item{minimum_length}{numeric}
+\item{maximum_length}{Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered.}
+
+\item{minimum_length}{Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered.}
 }
 \value{
-list
+fragment_profile; Fragment length information for quality check and downstream analysis
 }
 \description{
 Getting fragment-length information
-Function extract insert-size (fragment-length)
 }

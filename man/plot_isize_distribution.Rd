@@ -4,11 +4,7 @@
 \alias{plot_isize_distribution}
 \title{Plot Fragment-length Distribution}
 \usage{
-plot_isize_distribution(
-  fragment_profile,
-  sample_name = "Patient cfDNA",
-  xlim = 500
-)
+plot_isize_distribution(fragment_profile, sample_name = NULL, xlim = 500)
 }
 \arguments{
 \item{fragment_profile}{list}

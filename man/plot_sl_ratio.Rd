@@ -4,18 +4,12 @@
 \alias{plot_sl_ratio}
 \title{Plot Short/Long-fragment Ratio}
 \usage{
-plot_sl_ratio(
-  fragment_profile,
-  chrTotalLength_file = "hg19_chrTotalLength.tsv",
-  ylim = c(0, 0.4)
-)
+plot_sl_ratio(fragment_profile, ylim = c(0, 0.4))
 }
 \arguments{
 \item{fragment_profile}{list}
 
-\item{chrTotalLength_file}{character}
-
-\item{ylim}{numeric vector}
+\item{ylim}{plot y-axis limit}
 }
 \value{
 plot

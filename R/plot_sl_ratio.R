@@ -2,24 +2,22 @@
 #' Plot Short/Long-fragment Ratio
 #'
 #' @param fragment_profile list
-#' @param chrTotalLength_file character
-#' @param ylim numeric vector
+#' @param ylim plot y-axis limit
 #' @return plot
 #' @export
 #'
 #' @examples
 #' @importFrom utils read.table
 plot_sl_ratio <- function(fragment_profile,
-                          chrTotalLength_file=
-                            "hg19_chrTotalLength.tsv",
                           ylim=c(0,0.4)){
+  chrTotalLength_file= "hg19_chrTotalLength.tsv"
   chrLength_file =
     system.file("extdata",
                 chrTotalLength_file,
                 package = "cfdnakit")
   chrLength_df = read.table(file = chrLength_file,header=F, sep="\t")
-  chrLength_info = get_chrLength_info(chrLength_df)
-  per_bin_profile = rowname_to_columns(fragment_profile$per_bin_profile)
+  chrLength_info = util.get_chrLength_info(chrLength_df)
+  per_bin_profile = util.rowname_to_columns(fragment_profile$per_bin_profile)
   per_bin_profile =
     dplyr::mutate(per_bin_profile,
                   scaledPos = (start + end)/2 +
@@ -43,21 +41,21 @@ plot_sl_ratio <- function(fragment_profile,
                         linetype="dotted",size=0.5)
   sl_plot = sl_plot + ggplot2::xlab("Chromosome number") +
     ggplot2::ylab("Short/Long-Fragment Ratio")
-  y_upperbound = median(per_bin_profile$`S/L.Ratio.corrected`, na.rm = TRUE) +
-    mad(per_bin_profile$`S/L.Ratio.corrected`, na.rm = TRUE)
+  y_upperbound =
+    ifelse(ylim[2] <=
+             median(per_bin_profile$`S/L.Ratio.corrected`,na.rm = TRUE),
+           median(per_bin_profile$`S/L.Ratio.corrected`,na.rm = TRUE) + 1,
+           ylim[2])
   sl_plot =
     sl_plot + ggplot2::scale_y_continuous(
-      limits=c(ylim[1],
-                   ifelse(ylim[2] <= y_upperbound,
-                          max(per_bin_profile$`S/L.Ratio.corrected`,na.rm = TRUE),
-                          ylim[2])))
+      limits=c(ylim[1],y_upperbound))
 
   regionsOffTheChart <- per_bin_profile[
-    per_bin_profile$`S/L.Ratio.corrected` > ylim[2],]
+    per_bin_profile$`S/L.Ratio.corrected` > y_upperbound,]
   sl_plot = sl_plot +
     ggplot2::geom_point(data=regionsOffTheChart,
                         ggplot2::aes(scaledPos,
-                                     ylim[2]),
+                                     y_upperbound),
                         shape=2, size = 1)
   sl_plot <- sl_plot +
     ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
@@ -70,34 +68,3 @@ plot_sl_ratio <- function(fragment_profile,
   return(sl_plot)
 }
 
-rowname_to_columns <- function(per_bin_profile){
-  splited_list=lapply(strsplit(
-    rownames(per_bin_profile),
-    split = "[:-]"), function(x) {
-      data.frame("chrom"=x[1],
-                 "start"=as.numeric(x[2]),
-                 "end"=as.numeric(x[3]))
-    })
-  cbind(do.call(rbind,splited_list),per_bin_profile)
-}
-
-get_chrLength_info <- function(chrLength_df){
-  colnames(chrLength_df) = c("Chromosome", "Length")
-  chrLength_df = chrLength_df[which(chrLength_df$Chromosome!="Y"),]
-  chrNames = chrLength_df$Chromosome
-  chrLength = chrLength_df$Length
-  names(chrLength) = chrNames
-  chroffsets = cumsum(as.numeric(chrLength))
-  chroffsets <- c(0, chroffsets[0:(length(chroffsets)-1)])
-  names(chroffsets) <- names(chrLength)
-  chrMids <- cumsum(as.numeric(chrLength))
-  chrMids <- (chrMids + chroffsets)/2
-  names(chrMids) <- names(chrLength)
-
-  chrLength_info =
-    list("chrNames"=chrNames,
-         "chrLength"=chrLength,
-         "chroffsets"=chroffsets,
-         "chrMids"=chrMids)
-
-}

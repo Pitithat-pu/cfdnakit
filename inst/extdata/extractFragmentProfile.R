@@ -79,7 +79,7 @@ if(opt$plot_dist){
 }
 
 
-if(opt$plot_dist){
+if(opt$plot_SLRatio){
   print("Plotting genome-wide SLRatio")
   print(paste0(opt$outdir,"/",
                sample_profile$Sample.ID,".SLRatio.png"))

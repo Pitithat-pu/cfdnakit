@@ -12,7 +12,7 @@ get_zscore_profile <- function(fragment_profile,
   if(! file.exists(pon_profile_rds))
     stop(paste0("File ",basename(pon_profile_rds), " doesn't exist."))
 
-  cat("Reading PoN profile",pon_profile_rds)
+  cat("Reading PoN profile",pon_profile_rds,"\n")
   control_SLratio_transform = readRDS(pon_profile_rds)
   # main_functions.rbustz_transform(sample_SL_df,rownames(control_SL_ratio_df))
   sample_SLRatio_transform = zscore_transform(

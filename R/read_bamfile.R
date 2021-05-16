@@ -40,7 +40,7 @@ read_bamfile <- function(bamfile_path, binsize=1000){
                             param=param)
     # bam <- Rsamtools::scanBam(file = bamfile_path,
     #                           param=param)
-  # bam_blacklist_lst = filter_read_on_blacklist(bam)
+  bam_blacklist_lst = filter_read_on_blacklist(bam)
 
 }
 
@@ -49,13 +49,20 @@ if_exist_baifile <- function(bamfile) {
   utils.file_exists(baifile_name)
 }
 
-filter_read_on_blacklist <- function(bam_lst){
+#' Filter out reads on blacklist regions
+#'
+#' @param sample_bin Variable sample bin from read_bamfile function
+#'
+#' @return
+#'
+#' @examples
+filter_read_on_blacklist <- function(sample_bin){
   blacklist_targets_gr <- create_blacklist_gr()
-  filtered_bam_lst = lapply(bam_lst, function(region_lst){
+  filtered_bam_lst = lapply(sample_bin, function(region_lst){
     bin_gr =
       GenomicRanges::GRanges(seqnames =
                                as.character(region_lst$rname),
-                             ranges = IRanges(start = region_lst$pos,
+                             ranges = IRanges::IRanges(start = region_lst$pos,
                                               end = region_lst$pos +
                                                 region_lst$qwidth),
                              qname=region_lst$qname,
@@ -71,15 +78,20 @@ filter_read_on_blacklist <- function(bam_lst){
       filterd_bam_gr = bin_gr
     else
       filterd_bam_gr = bin_gr[-filtered_gr@from]
-    return_vec = list("qname" = filterd_bam_gr$qname,
+      return_vec = list("qname" = filterd_bam_gr$qname,
                       "rname" = filterd_bam_gr$rname,
-                      "pos" = filterd_bam_gr$post,
+                      "pos" = filterd_bam_gr$pos,
                       "qwidth" = filterd_bam_gr$qwidth,
                       "isize" = filterd_bam_gr$isize)
   })
   return(filtered_bam_lst)
 }
 
+#' Create Blacklist regions GRanges object
+#'
+#' @return
+#'
+#' @examples
 create_blacklist_gr <- function(){
   centromere_region = system.file("extdata",
               "hg19_centromere.tsv.gz",
@@ -104,7 +116,7 @@ create_blacklist_gr <- function(){
     colnames(blacklist_targets) = c("chromosome","start","end")
     blacklist_targets_gr_temp=
       GenomicRanges::GRanges(seqnames = blacklist_targets$chromosome,
-              ranges = IRanges(
+              ranges = IRanges::IRanges(
                 start = as.numeric(blacklist_targets$start),
                 end=as.numeric(blacklist_targets$end)))
 

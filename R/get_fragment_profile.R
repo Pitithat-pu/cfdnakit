@@ -46,11 +46,23 @@ get_fragment_profile <- function(readbam_bin,
                     util.bias_correct(long,sliding_windows_gr$gc/100))
   bin_profile_df =
     dplyr::mutate(bin_profile_df,
+                  total.corrected =
+                    util.bias_correct(total.corrected,
+                                      sliding_windows_gr$mappability/100),
+                  short.corrected =
+                    util.bias_correct(short.corrected,
+                                      sliding_windows_gr$mappability/100),
+                  long.corrected =
+                    util.bias_correct(long.corrected,
+                                      sliding_windows_gr$mappability/100))
+  bin_profile_df =
+    dplyr::mutate(bin_profile_df,
                   "S/L.Ratio.corrected" =
                     short.corrected/long.corrected,
                   GC = sliding_windows_gr$gc,
                   mappability = sliding_windows_gr$mappability)
-
+  bin_profile_df = dplyr::filter(bin_profile_df,
+                                 nfragment>0)
   isize_vector = extract_insert_size(readbam_bin,
                                      maximum_length,minimum_length)
 

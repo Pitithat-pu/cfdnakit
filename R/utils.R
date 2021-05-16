@@ -1,3 +1,11 @@
+#' Check if file/files given do exist
+#'
+#' @param files_vector Vector of filepath
+#'
+#' @return Boolean; if all files exist.
+#' @export
+#'
+#' @examples
 utils.file_exists <- function(files_vector){
   all_exist = TRUE
   for (file in files_vector) {
@@ -56,14 +64,19 @@ util.get_sliding_windows <- function(binsize=1000){
 #' @return numeric
 #'
 #' @examples
-#' @importFrom stats loess predict median
+#' @importFrom stats loess predict median loess.control
 util.bias_correct <- function(readcount, bias) {
+  invalid_idx = which(readcount <= 0)
+
+
   i <- seq(min(bias, na.rm=TRUE),
            max(bias, na.rm=TRUE), by = 0.001)
-  readcount.trend <- loess(readcount ~ bias)
+  readcount.trend <- loess(readcount[-invalid_idx] ~ bias[-invalid_idx],
+                           control=loess.control(surface="direct"))
   readcount.model <- loess(predict(readcount.trend, i) ~ i)
   readcount.pred <- predict(readcount.model, bias)
-  readcount.corrected <- readcount - readcount.pred + median(readcount)
+  readcount.corrected <-
+    readcount - readcount.pred + median(readcount,na.rm = TRUE)
 }
 
 

@@ -21,6 +21,10 @@ library(devtools)  ### use devtools
 install_github("Pitithat-pu/cfdnakit") ### install cfDNAKit 
 ```
 The installation should work fine without non-zero exit status.
+
+## Usage
+Please follow this [RMarkdown](https://github.com/Pitithat-pu/cfdnakit/blob/main/inst/rmd/demonstration_markdown.pdf) document on how to use this package.
+
 ## Contact
 If you have any questions or feedback, please contact us at:\
 Email: p.puranachot@dkfz-heidelberg.de; b.brors@dkfz-heidelberg.de

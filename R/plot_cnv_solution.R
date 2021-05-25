@@ -57,9 +57,7 @@ plot_cnv_solution <- function(cnvcall,
   cnv_plot = cnv_plot +
     ggplot2::scale_colour_manual(values = cnv_col)
   cnv_plot = cnv_plot +
-    ggplot2::geom_hline(yintercept =
-                          median(per_bin_profile$size_based_zscore,
-                                 na.rm = TRUE),
+    ggplot2::geom_hline(yintercept = 0 ,
                         size=0.5)
   cnv_plot = cnv_plot +
     ggplot2::geom_segment(data=sample_segment_df,

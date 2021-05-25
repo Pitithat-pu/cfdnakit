@@ -131,11 +131,45 @@ png(filename = paste0(opt$outdir,"/",
 print(plot_cnv_solution(sample_cnv,selected_solution = 1))
 dev.off()
 
+
+
+
+
 print("Writing solution table")
 solution_table = get_solution_table(sample_cnv)
 write.table(solution_table,
             file = paste0(opt$outdir,"/",
                           sample_profile$Sample.ID,".cnv.solution.tsv"),
+            row.names = FALSE,col.names = TRUE,
+            sep="\t",quote = FALSE)
+print("Done")
+
+
+print("Writing segmentation result")
+write.table(sample_cnv,
+            file = paste0(opt$outdir,"/",
+                          sample_profile$Sample.ID,".segment.tsv"),
+            row.names = FALSE,col.names = TRUE,
+            sep="\t",quote = FALSE)
+print("Done")
+
+
+print("Plotting ploidy 2 CNV solution")
+print(paste0(opt$outdir,"/",
+             sample_profile$Sample.ID,".cnv.2N.png"))
+png(filename = paste0(opt$outdir,"/",
+                      sample_profile$Sample.ID,".cnv.2N.png"),
+    width = 1000,height = 350)
+solution_2N = solution_table$rank[which(solution_table$rounded_ploidy==2)]
+print(plot_cnv_solution(sample_cnv,selected_solution = solution_2N))
+dev.off()
+
+
+
+print("Writing  result")
+write.table(sample_zscore_segment,
+            file = paste0(opt$outdir,"/",
+                          sample_profile$Sample.ID,".segment.tsv"),
             row.names = FALSE,col.names = TRUE,
             sep="\t",quote = FALSE)
 print("Done")

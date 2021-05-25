@@ -2,13 +2,17 @@
 #'
 #' @param sample_segmentation segmentation dataframe from segmentByPSCBS
 #' @param sample_zscore zscore dataframe
+#' @param callChr Chromosome to analysis : Default c(1:22)
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' @importFrom IRanges mergeByOverlaps
-call_cnv <- function(sample_segmentation, sample_zscore){
+call_cnv <- function(sample_segmentation, sample_zscore, callChr=c(1:22)){
+  sample_segmentation = dplyr::filter(sample_segmentation, chromosome %in% callChr)
+  sample_zscore = dplyr::filter(sample_zscore, chrom %in% callChr)
+
   segment_grange = GenomicRanges::GRanges(seqnames=sample_segmentation$chromosome,
                            IRanges(start = sample_segmentation$start,
                                    end = sample_segmentation$end),
@@ -31,8 +35,6 @@ call_cnv <- function(sample_segmentation, sample_zscore){
     dplyr::summarise(SLRatio_median=median(SLRatio,na.rm=TRUE))
 
   SLref = median(segmentation_SLRatio$SLRatio_median,na.rm=TRUE)
-
-
   ### CNV calling parameters
   tfs = seq(0.00,0.8,by = 0.01)
   ploidies = seq(1.5,4,by=0.05)
@@ -70,7 +72,8 @@ call_cnv <- function(sample_segmentation, sample_zscore){
           End = as.numeric(segment["segment_grange.end"]),
           Length=as.numeric(segment["segment_grange.width"]),
           predicted_CNV = predicted_CNV,
-          ploidy=ploidy,tf=pred_tf,
+          ploidy=ploidy,
+          tf=pred_tf,
           distance = min_distance,
           SLexp = SLexp[which(distances==min_distance)],stringsAsFactors = FALSE)
         # SLexp = SLexp[which(distances_corrected==min_distance)],stringsAsFactors = FALSE)

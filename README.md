@@ -22,5 +22,5 @@ install_github("Pitithat-pu/cfdnakit") ### install cfDNAKit
 ```
 The installation should work fine without non-zero exit status.
 ## Contact
-If you have any questions or feedback, please contact us at:
+If you have any questions or feedback, please contact us at:\
 Email: p.puranachot@dkfz-heidelberg.de; b.brors@dkfz-heidelberg.de

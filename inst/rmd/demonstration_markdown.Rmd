@@ -79,5 +79,7 @@ solution_table = get_solution_table(sample_cnv)
 
 ```
 
-
+```{r calculate PCA score}
+calculate_PCA_score(sample_zscore_segment)
+```
 

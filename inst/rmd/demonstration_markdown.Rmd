@@ -3,8 +3,8 @@ title: "Demonstration cfdnakit"
 author: "Pitithat"
 date: "5/13/2021"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -59,7 +59,7 @@ create_PoN(path_to_PoN_txt,output_dir = "/icgc/dkfzlsdf/analysis/OE0290_projects
 
 ```
 
-```{r }
+```{r Reading-in Panel-of-Normal samples and plot scaled value}
 PoN_rdsfile = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds"
 sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
 plot_transformed_sl(sample_zscore)

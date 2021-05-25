@@ -73,7 +73,7 @@ plot_transformed_sl(sample_zscore,sample_zscore_segment)
 
 
 Performing CNV Calling and plot distance matrix.
-```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=4, fig.height=3}
+```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=5, fig.height=3}
 
 sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
 

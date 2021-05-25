@@ -18,16 +18,16 @@ get_fragment_profile(
 
 \item{sample_id}{Character; Given sample ID}
 
-\item{short_range}{Vector of 2 Int; Range of fragment length to be defined as short fragment (default c(100,150))}
+\item{short_range}{Vector of 2 Int; Range of fragment length to be defined as short fragment; Default c(100,150)}
 
-\item{long_range}{Vector of 2 Int; Range of fragment length to be defined as long fragment (default c(151,250))}
+\item{long_range}{Vector of 2 Int; Range of fragment length to be defined as long fragment; Default c(151,250)}
 
-\item{maximum_length}{Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered.}
+\item{maximum_length}{Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered; Default 600}
 
-\item{minimum_length}{Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered.}
+\item{minimum_length}{Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20}
 }
 \value{
-fragment_profile; Fragment length information for quality check and downstream analysis
+Fragment length information for quality check and downstream analysis per bin and summary of sample
 }
 \description{
 Getting fragment-length information

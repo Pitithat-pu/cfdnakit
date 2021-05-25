@@ -7,7 +7,7 @@
 create_blacklist_gr()
 }
 \value{
-
+GRanges object of blacklist regions
 }
 \description{
 Create Blacklist regions GRanges object

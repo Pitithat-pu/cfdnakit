@@ -6,15 +6,17 @@
 Read a bam file from give path. Alignment and sequencing read information
 will be binned into non-overlapping size}
 \usage{
-read_bamfile(bamfile_path, binsize = 1000)
+read_bamfile(bamfile_path, binsize = 1000, target_bedfile = NULL)
 }
 \arguments{
 \item{bamfile_path}{Path to sample bamfile}
 
-\item{binsize}{Size of non-overlapping windows in KB. Max = 1000}
+\item{binsize}{Size of non-overlapping windows in KB. Max = 1000; Default 1000}
+
+\item{target_bedfile}{Path to exon/target bedfile; Default NULL}
 }
 \value{
-list
+List of fragment information per bin
 }
 \description{
 Read a bam file

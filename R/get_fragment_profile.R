@@ -2,12 +2,12 @@
 #'
 #' @param readbam_bin Binned alignment from function read_bamfile
 #' @param sample_id Character; Given sample ID
-#' @param short_range Vector of 2 Int; Range of fragment length to be defined as short fragment (default c(100,150))
-#' @param long_range Vector of 2 Int; Range of fragment length to be defined as long fragment (default c(151,250))
-#' @param maximum_length Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered.
-#' @param minimum_length Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered.
+#' @param short_range Vector of 2 Int; Range of fragment length to be defined as short fragment; Default c(100,150)
+#' @param long_range Vector of 2 Int; Range of fragment length to be defined as long fragment; Default c(151,250)
+#' @param maximum_length Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered; Default 600
+#' @param minimum_length Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20
 #'
-#' @return fragment_profile; Fragment length information for quality check and downstream analysis
+#' @return Fragment length information for quality check and downstream analysis per bin and summary of sample
 #' @export
 #'
 #' @examples
@@ -163,8 +163,8 @@ test_isize_KolmogorovSmirnov <- function(
 
 #' Test fragment Profile with Kolmogorov-Smirnov
 #'
-#' @param control_fragment_profile list
-#' @param sample_fragment_profile list
+#' @param control_fragment_profile Fragment profile of control sample
+#' @param sample_fragment_profile Fragment profile of testing sample
 #'
 #' @return list
 #' @export

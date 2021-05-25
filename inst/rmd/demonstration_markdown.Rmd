@@ -1,25 +1,23 @@
 ---
-title: "Demonstration cfdnakit"
+title: "cfDNAKit"
 author: "Pitithat"
 date: "5/13/2021"
-output: 
-  html_document:
-    self_contained: no
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dev = 'pdf')
 
 ```
 
-This rmarkdown to demonstrate how cfdnakit work.
-First, load cfdnakit package to environment
+This rmarkdown to demonstrate how cfdnakit work. First, load cfdnakit package to environment
 
 ```{r load cfdnakit package}
 library(cfdnakit)
 ```
 
-Let cfdnakit read sequence alignment file (.bam) with function read_bamfile. This function will split sequence reads into equal-size non-overlapping windows. Available size of bin are 100, 500, and 1000 KB. 
+Let cfdnakit read sequence alignment file (.bam) with function read_bamfile. This function will split sequence reads into equal-size non-overlapping windows. Available size of bin are 100, 500, and 1000 KB.
 
 ```{r read a bam file and splited into 1000 KB non-overlapping bins}
 
@@ -31,13 +29,18 @@ paste0("Number of bin : ",length(sample_bins))
 
 ```
 
-Extract cfDNA fragment length information. 
+Extract cfDNA fragment length information.
 
-```{r getting fragment length profile}
+```{r getting fragment length profile distribution,warning=FALSE, fig.width=6, fig.height=5}
 sample_profile = 
   get_fragment_profile(sample_bins,
                        sample_id = "plasma-01-01_OE0290-PED_5LB-017")
 plot_isize_distribution(sample_profile)
+```
+
+
+
+```{r plot genome-wide SLRatio, warning=FALSE, fig.width=7, fig.height=3}
 plot_sl_ratio(sample_profile)
 ```
 
@@ -49,7 +52,7 @@ save_fragment_profile(sample_profile,
 
 ```
 
-Making a Panel-of-Normal is necessary for downstream analysis as we want to compare fragment profile between a cfDNA from patient with pooled of healthy individuals. First, we create a text file where each line is a full path to rds file created by aforementioned function. 
+Making a Panel-of-Normal is necessary for downstream analysis as we want to compare fragment profile between a cfDNA from patient with pooled of healthy individuals. First, we create a text file where each line is a full path to rds file created by aforementioned function.
 
 ```{r Make a pon profile from a text file containing list of rds}
 path_to_PoN_txt = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.listfile"
@@ -59,7 +62,9 @@ create_PoN(path_to_PoN_txt,output_dir = "/icgc/dkfzlsdf/analysis/OE0290_projects
 
 ```
 
-```{r Reading-in Panel-of-Normal samples and plot scaled value}
+We rescale the SLRatio by the median of PoN samples. 
+
+```{r Reading-in Panel-of-Normal samples and plot scaled value,warning=FALSE}
 PoN_rdsfile = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds"
 sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
 sample_zscore_segment = segmentByPSCB(sample_zscore)
@@ -67,19 +72,25 @@ plot_transformed_sl(sample_zscore,sample_zscore_segment)
 ```
 
 
-```{r cnv calling}
+Performing CNV Calling and plot distance matrix.
+```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=7, fig.height=5}
 
 sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
 
 plot_distance_matrix(sample_cnv)
-plot_cnv_solution(sample_cnv,selected_solution = 1)
 
 solution_table = get_solution_table(sample_cnv)
 
+solution_table
+```
+
+We select a solution and plot the CNV Calling result.
+```{r plot cnv-calling first solution,warning=FALSE,fig.width=7, fig.height=3}
+plot_cnv_solution(sample_cnv,selected_solution = 1)
 
 ```
 
+Calculate PCA Score from the segmentation result
 ```{r calculate PCA score}
 calculate_PCA_score(sample_zscore_segment)
 ```
-

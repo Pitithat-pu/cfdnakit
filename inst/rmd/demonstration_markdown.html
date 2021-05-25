@@ -12,7 +12,7 @@
 <meta name="author" content="Pitithat" />
 
 
-<title>Demonstration cfdnakit</title>
+<title>cfDNAKit</title>
 
 <script src="demonstration_markdown_files/header-attrs-2.7/header-attrs.js"></script>
 <script src="demonstration_markdown_files/jquery-1.11.3/jquery.min.js"></script>
@@ -164,7 +164,7 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Demonstration cfdnakit</h1>
+<h1 class="title toc-ignore">cfDNAKit</h1>
 <h4 class="author">Pitithat</h4>
 <h4 class="date">5/13/2021</h4>
 
@@ -186,12 +186,9 @@ pre code {
   get_fragment_profile(sample_bins,
                        sample_id = &quot;plasma-01-01_OE0290-PED_5LB-017&quot;)
 plot_isize_distribution(sample_profile)</code></pre>
-<pre><code>## Warning: Removed 200 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="demonstration_markdown_files/figure-html/getting%20fragment%20length%20profile-1.png" width="672" /></p>
+<embed src="demonstration_markdown_files/figure-html/getting fragment length profile distribution-1.pdf" width="576" type="application/pdf" />
 <pre class="r"><code>plot_sl_ratio(sample_profile)</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="demonstration_markdown_files/figure-html/getting%20fragment%20length%20profile-2.png" width="672" /></p>
+<embed src="demonstration_markdown_files/figure-html/plot genome-wide SLRatio-1.pdf" width="672" type="application/pdf" />
 <p>Save fragment profile as RDS file for later use or for creating Panel-of-Normal</p>
 <pre class="r"><code>save_fragment_profile(sample_profile,
                       output_dir = &quot;/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/results_per_pid/OE0290-PED_5LB-017/cfdnakit/plasma-01-01_OE0290-PED_5LB-017/&quot;)</code></pre>
@@ -201,24 +198,29 @@ plot_isize_distribution(sample_profile)</code></pre>
 
 create_PoN(path_to_PoN_txt,output_dir = &quot;/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/&quot;)</code></pre>
 <pre><code>## [1] &quot;Done&quot;</code></pre>
+<p>We rescale the SLRatio by the median of PoN samples.</p>
 <pre class="r"><code>PoN_rdsfile = &quot;/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds&quot;
 sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)</code></pre>
 <pre><code>## Reading PoN profile /icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds</code></pre>
-<pre class="r"><code>sample_zscore_segment = segmentByPSCB(sample_zscore)</code></pre>
-<pre><code>## Warning in storage.mode(x) &lt;- asMode: NAs introduced by coercion</code></pre>
-<pre class="r"><code>plot_transformed_sl(sample_zscore,sample_zscore_segment)</code></pre>
-<pre><code>## Warning: Removed 13 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="demonstration_markdown_files/figure-html/Reading-in%20Panel-of-Normal%20samples%20and%20plot%20scaled%20value-1.png" width="672" /></p>
+<pre class="r"><code>sample_zscore_segment = segmentByPSCB(sample_zscore)
+plot_transformed_sl(sample_zscore,sample_zscore_segment)</code></pre>
+<embed src="demonstration_markdown_files/figure-html/Reading-in Panel-of-Normal samples and plot scaled value-1.pdf" width="672" type="application/pdf" />
+<p>Performing CNV Calling and plot distance matrix.</p>
 <pre class="r"><code>sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
 
 plot_distance_matrix(sample_cnv)</code></pre>
-<p><img src="demonstration_markdown_files/figure-html/cnv%20calling-1.png" width="672" /></p>
+<embed src="demonstration_markdown_files/figure-html/cnv calling and plot distance matrix-1.pdf" width="672" type="application/pdf" />
+<pre class="r"><code>solution_table = get_solution_table(sample_cnv)
+
+solution_table</code></pre>
+<pre><code>##      TF rounded_ploidy ploidy    distance rank
+## 1 0.205              2      2 0.007197220    1
+## 2 0.505              3      3 0.007216766    2
+## 3 0.675              4      4 0.007970503    3</code></pre>
+<p>We select a solution and plot the CNV Calling result.</p>
 <pre class="r"><code>plot_cnv_solution(sample_cnv,selected_solution = 1)</code></pre>
-<pre><code>## Warning: Removed 13 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="demonstration_markdown_files/figure-html/cnv%20calling-2.png" width="672" /></p>
-<pre class="r"><code>solution_table = get_solution_table(sample_cnv)</code></pre>
+<embed src="demonstration_markdown_files/figure-html/plot cnv-calling first solution-1.pdf" width="672" type="application/pdf" />
+<p>Calculate PCA Score from the segmentation result</p>
 <pre class="r"><code>calculate_PCA_score(sample_zscore_segment)</code></pre>
 <pre><code>## [1] 169.017</code></pre>
 

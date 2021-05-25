@@ -7,9 +7,9 @@
 test_KolmogorovSmirnov(control_fragment_profile, sample_fragment_profile)
 }
 \arguments{
-\item{control_fragment_profile}{list}
+\item{control_fragment_profile}{Fragment profile of control sample}
 
-\item{sample_fragment_profile}{list}
+\item{sample_fragment_profile}{Fragment profile of testing sample}
 }
 \value{
 list

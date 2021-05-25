@@ -10,7 +10,7 @@ filter_read_on_blacklist(sample_bin)
 \item{sample_bin}{Variable sample bin from read_bamfile function}
 }
 \value{
-
+Sample read per bin after filtering out read on balck list regions
 }
 \description{
 Filter out reads on blacklist regions

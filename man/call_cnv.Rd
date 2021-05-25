@@ -4,12 +4,14 @@
 \alias{call_cnv}
 \title{Call Copy-number Variation from SLRatio and segmentation}
 \usage{
-call_cnv(sample_segmentation, sample_zscore)
+call_cnv(sample_segmentation, sample_zscore, callChr = c(1:22))
 }
 \arguments{
 \item{sample_segmentation}{segmentation dataframe from segmentByPSCBS}
 
 \item{sample_zscore}{zscore dataframe}
+
+\item{callChr}{Chromosome to analysis : Default c(1:22)}
 }
 \value{
 

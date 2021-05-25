@@ -2,7 +2,9 @@
 title: "Demonstration cfdnakit"
 author: "Pitithat"
 date: "5/13/2021"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

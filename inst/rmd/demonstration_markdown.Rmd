@@ -31,7 +31,7 @@ paste0("Number of bin : ",length(sample_bins))
 
 Extract cfDNA fragment length information.
 
-```{r getting fragment length profile distribution,warning=FALSE, fig.width=6, fig.height=5}
+```{r getting fragment length profile distribution,warning=FALSE, fig.width=4, fig.height=3}
 sample_profile = 
   get_fragment_profile(sample_bins,
                        sample_id = "plasma-01-01_OE0290-PED_5LB-017")
@@ -40,7 +40,7 @@ plot_isize_distribution(sample_profile)
 
 
 
-```{r plot genome-wide SLRatio, warning=FALSE, fig.width=7, fig.height=3}
+```{r plot genome-wide SLRatio, warning=FALSE, fig.width=4, fig.height=2}
 plot_sl_ratio(sample_profile)
 ```
 
@@ -64,7 +64,7 @@ create_PoN(path_to_PoN_txt,output_dir = "/icgc/dkfzlsdf/analysis/OE0290_projects
 
 We rescale the SLRatio by the median of PoN samples. 
 
-```{r Reading-in Panel-of-Normal samples and plot scaled value,warning=FALSE}
+```{r Reading-in Panel-of-Normal samples and plot scaled value,warning=FALSE,fig.width=4, fig.height=2}
 PoN_rdsfile = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds"
 sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
 sample_zscore_segment = segmentByPSCB(sample_zscore)
@@ -73,7 +73,7 @@ plot_transformed_sl(sample_zscore,sample_zscore_segment)
 
 
 Performing CNV Calling and plot distance matrix.
-```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=7, fig.height=5}
+```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=4, fig.height=3}
 
 sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
 
@@ -85,7 +85,7 @@ solution_table
 ```
 
 We select a solution and plot the CNV Calling result.
-```{r plot cnv-calling first solution,warning=FALSE,fig.width=7, fig.height=3}
+```{r plot cnv-calling first solution,warning=FALSE,fig.width=4, fig.height=2}
 plot_cnv_solution(sample_cnv,selected_solution = 1)
 
 ```

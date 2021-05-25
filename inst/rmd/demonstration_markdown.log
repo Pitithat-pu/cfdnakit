@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2021.2.2)  25 MAY 2021 14:01
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2021.2.2)  25 MAY 2021 15:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -869,50 +869,50 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
 LaTeX Warning: File `demonstration_markdown_files/figure-latex/getting fragment
- length profile-1.pdf' not found on input line 165.
+ length profile distribution-1.pdf' not found on input line 161.
 
 
-<demonstration_markdown_files/figure-latex/getting fragment length profile-1.pd
-f, id=4, 469.755pt x 325.215pt>
+<demonstration_markdown_files/figure-latex/getting fragment length profile dist
+ribution-1.pdf, id=4, 433.62pt x 361.35pt>
 File: demonstration_markdown_files/figure-latex/getting fragment length profile
--1.pdf Graphic file (type pdf)
+ distribution-1.pdf Graphic file (type pdf)
 
-<use demonstration_markdown_files/figure-latex/getting fragment length profile-
-1.pdf>
+<use demonstration_markdown_files/figure-latex/getting fragment length profile 
+distribution-1.pdf>
 Package pdftex.def Info: demonstration_markdown_files/figure-latex/getting frag
-ment length profile-1.pdf used on input line 165.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+ment length profile distribution-1.pdf used on input line 161.
+(pdftex.def)             Requested size: 433.61894pt x 361.34912pt.
 
-Overfull \hbox (123.23048pt too wide) in paragraph at lines 165--166
-[]\T1/lmr/m/n/10 (-20) fragment length profile-1.pdf [] 
+Overfull \hbox (139.4883pt too wide) in paragraph at lines 161--162
+[]\T1/lmr/m/n/10 (-20) fragment length pro-file distribution-1.pdf [] 
  []
 
 [1
 
 {/usr/share/texlive/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
-LaTeX Warning: File `demonstration_markdown_files/figure-latex/getting fragment
- length profile-2.pdf' not found on input line 181.
+LaTeX Warning: File `demonstration_markdown_files/figure-latex/plot genome-wide
+ SLRatio-1.pdf' not found on input line 169.
 
 
-<demonstration_markdown_files/figure-latex/getting fragment length profile-2.pd
-f, id=14, 469.755pt x 325.215pt>
-File: demonstration_markdown_files/figure-latex/getting fragment length profile
--2.pdf Graphic file (type pdf)
+<demonstration_markdown_files/figure-latex/plot genome-wide SLRatio-1.pdf, id=1
+4, 505.89pt x 216.81pt>
+File: demonstration_markdown_files/figure-latex/plot genome-wide SLRatio-1.pdf 
+Graphic file (type pdf)
 
-<use demonstration_markdown_files/figure-latex/getting fragment length profile-
-2.pdf>
-Package pdftex.def Info: demonstration_markdown_files/figure-latex/getting frag
-ment length profile-2.pdf used on input line 181.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<use demonstration_markdown_files/figure-latex/plot genome-wide SLRatio-1.pdf>
+Package pdftex.def Info: demonstration_markdown_files/figure-latex/plot genome-
+wide SLRatio-1.pdf used on input line 169.
+(pdftex.def)             Requested size: 469.76265pt x 201.32684pt.
 
-Overfull \hbox (123.23048pt too wide) in paragraph at lines 181--182
-[]\T1/lmr/m/n/10 (-20) fragment length profile-2.pdf [] 
+Overfull \hbox (119.6068pt too wide) in paragraph at lines 169--170
+[]\T1/lmr/m/n/10 (-20) genome-wide SLRatio-1.pdf [] 
  []
 
 [2 <./demonstration_markdown_files/figure-latex/getting fragment length profile
--1.pdf>]
-Overfull \hbox (385.9925pt too wide) in paragraph at lines 223--223
+ distribution-1.pdf> <./demonstration_markdown_files/figure-latex/plot genome-w
+ide SLRatio-1.pdf>]
+Overfull \hbox (385.9925pt too wide) in paragraph at lines 213--213
 []\T1/lmtt/m/n/10 ## Reading PoN profile /icgc/dkfzlsdf/analysis/OE0290_project
 s/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/Po
 N_fragment_profiles.rds[] 
@@ -920,90 +920,94 @@ N_fragment_profiles.rds[]
 
 
 LaTeX Warning: File `demonstration_markdown_files/figure-latex/Reading-in Panel
--of-Normal samples and plot scaled value-1.pdf' not found on input line 249.
+-of-Normal samples and plot scaled value-1.pdf' not found on input line 222.
 
 
 <demonstration_markdown_files/figure-latex/Reading-in Panel-of-Normal samples a
-nd plot scaled value-1.pdf, id=24, 469.755pt x 325.215pt>
+nd plot scaled value-1.pdf, id=29, 469.755pt x 325.215pt>
 File: demonstration_markdown_files/figure-latex/Reading-in Panel-of-Normal samp
 les and plot scaled value-1.pdf Graphic file (type pdf)
 
 <use demonstration_markdown_files/figure-latex/Reading-in Panel-of-Normal sampl
 es and plot scaled value-1.pdf>
 Package pdftex.def Info: demonstration_markdown_files/figure-latex/Reading-in P
-anel-of-Normal samples and plot scaled value-1.pdf used on input line 249.
+anel-of-Normal samples and plot scaled value-1.pdf used on input line 222.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Overfull \hbox (222.16905pt too wide) in paragraph at lines 249--250
+Overfull \hbox (222.16905pt too wide) in paragraph at lines 222--223
 []\T1/lmr/m/n/10 (-20) Panel-of-Normal sam-ples and plot scaled value-1.pdf [] 
 
  []
 
-[3 <./demonstration_markdown_files/figure-latex/getting fragment length profile
--2.pdf>]
 
-LaTeX Warning: File `demonstration_markdown_files/figure-latex/cnv calling-1.pd
-f' not found on input line 259.
+LaTeX Warning: File `demonstration_markdown_files/figure-latex/cnv calling and 
+plot distance matrix-1.pdf' not found on input line 234.
 
 
-<demonstration_markdown_files/figure-latex/cnv calling-1.pdf, id=34, 469.755pt 
-x 325.215pt>
-File: demonstration_markdown_files/figure-latex/cnv calling-1.pdf Graphic file 
-(type pdf)
-<use demonstration_markdown_files/figure-latex/cnv calling-1.pdf>
-Package pdftex.def Info: demonstration_markdown_files/figure-latex/cnv calling-
-1.pdf used on input line 259.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<demonstration_markdown_files/figure-latex/cnv calling and plot distance matrix
+-1.pdf, id=30, 505.89pt x 361.35pt>
+File: demonstration_markdown_files/figure-latex/cnv calling and plot distance m
+atrix-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (55.03743pt too wide) in paragraph at lines 259--260
-[]\T1/lmr/m/n/10 (-20) calling-1.pdf [] 
+<use demonstration_markdown_files/figure-latex/cnv calling and plot distance ma
+trix-1.pdf>
+Package pdftex.def Info: demonstration_markdown_files/figure-latex/cnv calling 
+and plot distance matrix-1.pdf used on input line 234.
+(pdftex.def)             Requested size: 469.76265pt x 335.54477pt.
+
+Overfull \hbox (160.11119pt too wide) in paragraph at lines 234--235
+[]\T1/lmr/m/n/10 (-20) calling and plot dis-tance matrix-1.pdf [] 
  []
 
-[4 <./demonstration_markdown_files/figure-latex/Reading-in Panel-of-Normal samp
+[3 <./demonstration_markdown_files/figure-latex/Reading-in Panel-of-Normal samp
 les and plot scaled value-1.pdf>]
 
-LaTeX Warning: File `demonstration_markdown_files/figure-latex/cnv calling-2.pd
-f' not found on input line 275.
+LaTeX Warning: File `demonstration_markdown_files/figure-latex/plot cnv-calling
+ first solution-1.pdf' not found on input line 259.
 
 
-<demonstration_markdown_files/figure-latex/cnv calling-2.pdf, id=44, 469.755pt 
-x 325.215pt>
-File: demonstration_markdown_files/figure-latex/cnv calling-2.pdf Graphic file 
-(type pdf)
-<use demonstration_markdown_files/figure-latex/cnv calling-2.pdf>
-Package pdftex.def Info: demonstration_markdown_files/figure-latex/cnv calling-
-2.pdf used on input line 275.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<demonstration_markdown_files/figure-latex/plot cnv-calling first solution-1.pd
+f, id=40, 505.89pt x 216.81pt>
+File: demonstration_markdown_files/figure-latex/plot cnv-calling first solution
+-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (55.03743pt too wide) in paragraph at lines 275--276
-[]\T1/lmr/m/n/10 (-20) calling-2.pdf [] 
+<use demonstration_markdown_files/figure-latex/plot cnv-calling first solution-
+1.pdf>
+Package pdftex.def Info: demonstration_markdown_files/figure-latex/plot cnv-cal
+ling first solution-1.pdf used on input line 259.
+(pdftex.def)             Requested size: 469.76265pt x 201.32684pt.
+
+Overfull \hbox (128.22148pt too wide) in paragraph at lines 259--260
+[]\T1/lmr/m/n/10 (-20) cnv-calling first solution-1.pdf [] 
  []
 
-[5 <./demonstration_markdown_files/figure-latex/cnv calling-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 293.
-[6 <./demonstration_markdown_files/figure-latex/cnv calling-2.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 293.
+[4 <./demonstration_markdown_files/figure-latex/cnv calling and plot distance m
+atrix-1.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 273.
+[5 <./demonstration_markdown_files/figure-latex/plot cnv-calling first solution
+-1.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 273.
 (./demonstration_markdown.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 293.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 293.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 293.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 273.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 273.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 273.
  ) 
 Here is how much of TeX's memory you used:
  13127 strings out of 495063
- 190453 string characters out of 3182202
- 289734 words of memory out of 3000000
+ 190655 string characters out of 3182202
+ 288647 words of memory out of 3000000
  16112 multiletter control sequences out of 15000+200000
  26670 words of font info for 43 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 35i,6n,35p,384b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 35i,6n,35p,384b,453s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texli
 ve/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/public/lm/lmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
 /lm/lmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on demonstration_markdown.pdf (6 pages, 640755 bytes).
+Output written on demonstration_markdown.pdf (5 pages, 638994 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 59 compressed objects within 1 object stream
- 7 named destinations out of 1000 (max. 500000)
+ 77 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
+ 6 named destinations out of 1000 (max. 500000)
  8218 words of extra memory for PDF output out of 10000 (max. 10000000)
 

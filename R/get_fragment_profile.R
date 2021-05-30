@@ -125,9 +125,10 @@ getmode <- function(v) {
 #' @examples
 #' @importFrom stats na.omit density
 make_density_table <- function(isize_vector){
-  if(length(na.omit(isize_vector)) < 1e6){
+  if(length(na.omit(isize_vector)) < 20000){
     d = density(na.omit(isize_vector))
     density_df = d[c("x","y")]
+    density_df$x = round(density_df$x,digits = 0)
   } else {
     fraction_table = table(na.omit(isize_vector))
     fraction_vec = fraction_table / sum(fraction_table)

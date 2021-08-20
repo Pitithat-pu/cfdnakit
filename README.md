@@ -4,6 +4,8 @@
 
 This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. This first version will focus on analyzing shallow whole-genome sequence including fragment length analysis, genome-wide fragmentation, and copy-number alteration estimated by short cell-free DNA fragments.
 
+![cfdnakit_workflow](https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png)
+
 ## Package Prerequisites and Installation
 
 Package was tested on R environment 4.0.0. Now only possible way to install this package is via this github repository.

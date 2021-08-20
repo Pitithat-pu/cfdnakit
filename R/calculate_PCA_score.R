@@ -2,7 +2,7 @@
 #'
 #' @param sample_segmentation Segmentation Dataframe
 #'
-#' @return
+#' @return Numeric; PCA score
 #' @export
 #'
 #' @examples

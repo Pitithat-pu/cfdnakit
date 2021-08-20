@@ -2,7 +2,7 @@
 #'
 #' @param sample_transformed_sl dataframe of z-transformed SLRatio
 #'
-#' @return
+#' @return Dataframe of segmentation result
 #' @export
 #'
 #' @examples

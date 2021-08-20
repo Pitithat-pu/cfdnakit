@@ -10,7 +10,7 @@ segmentByPSCB(sample_transformed_sl)
 \item{sample_transformed_sl}{dataframe of z-transformed SLRatio}
 }
 \value{
-
+Dataframe of segmentation result
 }
 \description{
 Segmentation data with PSCBS

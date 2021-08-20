@@ -14,7 +14,7 @@ save_as_control_density(readbam_bin, fragment_profile, file)
 \item{file}{Filename}
 }
 \value{
-
+Null
 }
 \description{
 Save Fragment Profile for distribution comparison

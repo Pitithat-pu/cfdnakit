@@ -14,7 +14,7 @@ save_fragment_profile(fragment_profile, output_dir, overwrite = TRUE)
 \item{overwrite}{Boolean; TRUE to overwrite existing file}
 }
 \value{
-
+Null
 }
 \description{
 Save Fragment Profile as RDS

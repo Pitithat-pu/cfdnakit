@@ -10,7 +10,7 @@ calculate_PCA_score(sample_segmentation)
 \item{sample_segmentation}{Segmentation Dataframe}
 }
 \value{
-
+Numeric; PCA score
 }
 \description{
 Calculate PCA Score from Segmentation

@@ -14,7 +14,7 @@ plot_cnv_solution(cnvcall, selected_solution = 1, ylim = c(-20, 20))
 \item{ylim}{Vector of 2 Int; ylim of plot (default c(-20,20))}
 }
 \value{
-
+ggplot object plot Genomics CNV profile of selected solution
 }
 \description{
 Plot Fragment-length profile with CNV calling result

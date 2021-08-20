@@ -12,7 +12,7 @@ overlap_bin_with_segment(per_bin_profile, sample_segmentation)
 \item{sample_segmentation}{segmentation dataframe}
 }
 \value{
-
+dataframe of overlapping bin and segmentation
 }
 \description{
 Overlap and merge bin data frame with segmentation dataframe

@@ -6,17 +6,33 @@
 Read a bam file from give path. Alignment and sequencing read information
 will be binned into non-overlapping size}
 \usage{
-read_bamfile(bamfile_path, binsize = 1000, target_bedfile = NULL)
+read_bamfile(
+  bamfile_path,
+  binsize = 1000,
+  blacklist_files = NULL,
+  genome = "hg19",
+  target_bedfile = NULL,
+  min_mapq = 20,
+  apply_blacklist = TRUE
+)
 }
 \arguments{
-\item{bamfile_path}{Path to sample bamfile}
+\item{bamfile_path}{Character; Path to sample bamfile}
 
-\item{binsize}{Size of non-overlapping windows in KB. Max = 1000; Default 1000}
+\item{binsize}{Int; Size of non-overlapping windows in KB. Only 100,500 and 1000 is available; Default 1000}
 
-\item{target_bedfile}{Path to exon/target bedfile; Default NULL}
+\item{blacklist_files}{Character; Filepath to file containing blacklist regions}
+
+\item{genome}{Character; abbreviation of reference genome; available genome: hg19, mm10. default:hg19}
+
+\item{target_bedfile}{Character; Path to exon/target bedfile; Default NULL}
+
+\item{min_mapq}{Int; minimum read mapping quality; Default 20}
+
+\item{apply_blacklist}{Logical; To exclude read on the blacklist regions Default TRUE}
 }
 \value{
-List of fragment information per bin
+SampleBam Object; A list object containing read information from the BAM file.
 }
 \description{
 Read a bam file

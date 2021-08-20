@@ -10,7 +10,7 @@ plot_distance_matrix(cnvcall)
 \item{cnvcall}{cnvcalling result from function call_cnv.R}
 }
 \value{
-
+ggplot object ; distance matrix per cnvcalling solution
 }
 \description{
 Plot Distance Matrix from CNVCalling

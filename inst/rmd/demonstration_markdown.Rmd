@@ -2,53 +2,93 @@
 title: "cfDNAKit"
 author: "Pitithat"
 date: "5/13/2021"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
+
 # knitr::opts_chunk$set(dev = 'pdf')
 
 ```
 
-This rmarkdown to demonstrate how cfdnakit work. First, load cfdnakit package to environment
+
+This rmarkdown demonstrates how cfdnakit package works. First, load cfdnakit package to environment
 
 ```{r load cfdnakit package}
 library(cfdnakit)
 ```
 
-Let cfdnakit read sequence alignment file (.bam) with function read_bamfile. This function will split sequence reads into equal-size non-overlapping windows. Available size of bin are 100, 500, and 1000 KB.
+Let cfdnakit read sequence alignment file (.bam) with function read_bamfile. An BAM index file (.bai) is necessary for efficiently reading the file. If it doesn't exist in the same directory, this function will automatically create one. This function will split sequence reads into equal-size non-overlapping windows. Available size of bin are 100, 500, and 1000 KB. A path to a bam file is given to the function read_bamfile. sample_bins = read_bamfile(bamfile_path = "Patient1.bam", binsize = 1000) For demonstration, we load instance of an example sequence from file example_patientcfDNA.RDS.
 
-```{r read a bam file and splited into 1000 KB non-overlapping bins}
+```{r read a bam file and splited into 1000 KB non-overlapping bins, warning=FALSE}
 
-sample_bins = 
-  read_bamfile(bamfile_path = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/results_per_pid/OE0290-PED_5LB-017/alignment_umi/plasma-01-01_OE0290-PED_5LB-017_merged.mdup_groupbyUMI_callConsensus_realigned.bam",
-               binsize = 1000)
-
-paste0("Number of bin : ",length(sample_bins))
+example_RDS="example_patientcfDNA.RDS"
+example_RDS_file =
+    system.file("extdata",example_RDS,
+                package = "cfdnakit")
+sample_bins = readRDS(example_RDS_file)
 
 ```
 
-Extract cfDNA fragment length information.
+Fragment-length distribution of the sample can be visualized with function plot_fragment_dist. The most common fragment-length is shown at the top-right legend. The x-axis is the length of cfDNA; y-axis is the proportion of cfDNA fragment having a specific length.
 
-```{r getting fragment length profile distribution,warning=FALSE, fig.width=4, fig.height=3}
+```{r plot fragment length distribution, fig.width=5,fig.height=3.5}
+plot_fragment_dist(list("Patient.1"=sample_bins))
+```
+
+
+We want to compare the fragment length distribution of patient's cfDNA with that of a healthy individual. For demonstration purpose, we derived a cfDNA from Snyder et al. (2016) and create a RData file "BH01_chr15.RDS". This file can be loaded in R environment with readRDS function.
+
+```{r getting build-in healthy plasma cfDNA sample, warning=FALSE}
+control_rds="BH01_chr15.RDS"
+control_RDS_file =
+    system.file("extdata",control_rds,
+                package = "cfdnakit")
+control_bins =
+    readRDS(control_RDS_file)
+
+```
+
+
+Create a list of sample bam files and plot their distribution together with function plot_fragment_dist. The list must be given a distinct sample name (e.g. Healthy.cfDNA) for each sample. 
+
+```{r plot fragment length distribution comparing to a healthy cfDNA, fig.width=5.5, fig.height=4}
+comparing_list = list("Healthy.cfDNA"=control_bins,
+                      "Patient.1"=sample_bins)
+plot_fragment_dist(comparing_list)
+
+```
+Comparing multiple cfDNA samples is possible by creating list of sample_bins; each with unique sample name. 
+
+
+We can extract genome-wide fragment-profile. 
+
+```{r getting fragment length profile,warning=FALSE, fig.width=12, fig.height=5}
 sample_profile = 
   get_fragment_profile(sample_bins,
-                       sample_id = "plasma-01-01_OE0290-PED_5LB-017")
-plot_isize_distribution(sample_profile)
+                       sample_id = "Patient.1")
+sample_profile$sample_profile
+# plot_isize_distribution(sample_profile)
+```
+
+
+We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Given short-fragment profile, short-fragment ratio per bin infer contribution of tumor-derived fragment (ctDNA) into cfDNA. The enrichment of short-fragment cfDNA in a large genomic region could infer the copy-number aberration status. The higher short-fragment ratio indicate amplification event whereas deletion would have relatively lower short-fragment ratio. It is base-on a hypothesis that a tumor cell without CNV contributes its DNA equally throughout the genome into the circulation.
+
+```{r plot genome-wide short-fragment ratio, fig.width=12, fig.height=5, warning=FALSE}
+plot_sl_ratio(sample_profile,ylim = c(0,2.1))
 ```
 
 
 
-```{r plot genome-wide SLRatio, warning=FALSE, fig.width=4, fig.height=2}
-plot_sl_ratio(sample_profile)
-```
-
-Save fragment profile as RDS file for later use or for creating Panel-of-Normal
+Save fragment profile as RDS file for later use or for creation of Panel-of-Normal for further analysis
 
 ```{r saving profile as RDS}
-save_fragment_profile(sample_profile,
-                      output_dir = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/results_per_pid/OE0290-PED_5LB-017/cfdnakit/plasma-01-01_OE0290-PED_5LB-017/")
+saveRDS(sample_profile,
+        file = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/results_per_pid/OE0290-PED_5LB-017/cfdnakit/plasma-01-01_OE0290-PED_5LB-017/plasma-01-01_OE0290-PED_5LB-017.RDS")
 
 ```
 
@@ -56,15 +96,17 @@ Making a Panel-of-Normal is necessary for downstream analysis as we want to comp
 
 ```{r Make a pon profile from a text file containing list of rds}
 path_to_PoN_txt = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.listfile"
-
-create_PoN(path_to_PoN_txt,output_dir = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/")
+# 
+create_PoN(path_to_PoN_txt,
+           file = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.rds")
 
 
 ```
 
+
 We rescale the SLRatio by the median of PoN samples. 
 
-```{r Reading-in Panel-of-Normal samples and plot scaled value,warning=FALSE,fig.width=4, fig.height=2}
+```{r Reading PoN samples and plot scaled value,warning=FALSE,fig.width=8, fig.height=4}
 PoN_rdsfile = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds"
 sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
 sample_zscore_segment = segmentByPSCB(sample_zscore)
@@ -73,7 +115,7 @@ plot_transformed_sl(sample_zscore,sample_zscore_segment)
 
 
 Performing CNV Calling and plot distance matrix.
-```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=5, fig.height=3}
+```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=6, fig.height=4}
 
 sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
 
@@ -85,7 +127,7 @@ solution_table
 ```
 
 We select a solution and plot the CNV Calling result.
-```{r plot cnv-calling first solution,warning=FALSE,fig.width=4, fig.height=2}
+```{r plot cnv-calling first solution,warning=FALSE,fig.width=12, fig.height=5}
 plot_cnv_solution(sample_cnv,selected_solution = 1)
 
 ```

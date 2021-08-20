@@ -3,7 +3,7 @@
 #'
 #' @param control_rds Name of control rds file in ext directory
 #'
-#' @return
+#' @return Null
 #' @export
 #'
 #' @examples

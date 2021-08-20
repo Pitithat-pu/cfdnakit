@@ -15,6 +15,8 @@ plot_isize_distribution <- function(fragment_profile,
   if (is.null(fragment_profile[["distribution_table"]])){
     stop("Element distribution_table doen't exist in fragment_profile")
   }
+
+
   density_df = fragment_profile$distribution_table
   if (!is.null(sample_name)) {
     density_df$Label = sample_name
@@ -29,9 +31,11 @@ plot_isize_distribution <- function(fragment_profile,
   #                                  fragment_profile)
   ks_test = dplyr::select(fragment_profile$sample_profile,
                           "K.S.p.value","K.S.stats")
-  ks_test_text = paste0("KS test: p-value ",
-                        ks_test$K.S.p.value,"; stats ",
+  ks_test_text = paste0("KS test: stats ",
                         ks_test$K.S.stats)
+  # ks_test_text = paste0("KS test: p-value ",
+  #                       ks_test$K.S.p.value,"; stats ",
+  #                       ks_test$K.S.stats)
   #<<<<<
 
   #>>>> Find the peak fragment-length
@@ -40,7 +44,10 @@ plot_isize_distribution <- function(fragment_profile,
            function(density_df){
              peak_length = density_df$x[
                which(density_df$y == max(density_df$y))]
+             if(length(peak_length) > 1) #### if given more than 1 peak, return only one that close to 167
+               peak_length = max(peak_length)[which.min(abs(max(peak_length - 167)))]
              peak_length = floor(peak_length)})
+
   peak_df = data.frame("Label" = unique(temp_density_df$Label),
                        "peak_length" = peak_length[
                          unique(temp_density_df$Label)],

@@ -4,7 +4,7 @@
 #' @param selected_solution solution rank to plot
 #' @param ylim Vector of 2 Int; ylim of plot (default c(-20,20))
 #'
-#' @return
+#' @return ggplot object plot Genomics CNV profile of selected solution
 #' @export
 #'
 #' @examples
@@ -108,7 +108,7 @@ plot_cnv_solution <- function(cnvcall,
 #' @param per_bin_profile bin dataframe
 #' @param sample_segmentation segmentation dataframe
 #'
-#' @return
+#' @return dataframe of overlapping bin and segmentation
 #' @export
 #'
 #' @examples

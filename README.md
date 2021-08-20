@@ -6,7 +6,7 @@ This package provides mostly basic functions to analysis cell-free DNA (cfDNA) w
 
 ![cfdnakit_workflow](https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png)
 
-Features
+## Features
 
 ## Package Prerequisites and Installation
 

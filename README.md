@@ -2,11 +2,21 @@
 
 ## Introduction
 
-This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. This first version will focus on analyzing shallow whole-genome sequence including fragment length analysis, genome-wide fragmentation, and copy-number alteration estimated by short cell-free DNA fragments.
-
-![cfdnakit_workflow](https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png)
+This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. This first version will focus on analyzing shallow whole-genome sequence including fragment length analysis, genome-wide fragmentation, and copy-number alteration estimated by short cell-free DNA fragments.Features
 
 ## Features
+
+The scope of this R package is to analyse the length of cfDNA fragments. The package simplified the process of extracting length of fragments from a BAM file and provide basic functions to explore this characteristic of cfDNA with low-coverage whole-genome sequencing data. Moreover, this package utilize quantity of short-fragmented cfDNA to infer copy-number alteration and estimate percentage of tumor-derived cfDNA.
+
+### Fragment length distribution and comparison
+
+Package provides a single function to extract fragment length of cfDNA. Making a fragment-length distribution plot of multiple samples is easy.
+
+<img src="https://github.com/Pitithat-pu/cfdnakit/wiki/images/wiki/fragment_xenograft_cfdnakit.png" title="cfdnakit fragment length distribution" alt="fragment_length_distribution_cfdnakit" width="550"/>
+
+### Copy-number calling and tumor fraction estimation from short-fragmented cfDNA
+
+<img src="https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png" title="cfdnakit cnv calling workflow" alt="cfdnakit_workflow" width="600"/>
 
 ## Package Prerequisites and Installation
 

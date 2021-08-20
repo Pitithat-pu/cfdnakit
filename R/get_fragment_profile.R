@@ -1,19 +1,21 @@
 #' Getting fragment-length information
 #'
-#' @param readbam_bin Binned alignment from function read_bamfile
+#' @param readbam_bin SampleBam Object
 #' @param sample_id Character; Given sample ID
+#' @param genome abbreviation of reference genome; namely hg19, mm10. default:hg19
 #' @param short_range Vector of 2 Int; Range of fragment length to be defined as short fragment; Default c(100,150)
 #' @param long_range Vector of 2 Int; Range of fragment length to be defined as long fragment; Default c(151,250)
 #' @param maximum_length Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered; Default 600
 #' @param minimum_length Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20
 #'
-#' @return Fragment length information for quality check and downstream analysis per bin and summary of sample
+#' @return SampleFragment Object; Fragment length information for quality check and downstream analysis per bin and summary of sample
 #' @export
 #'
 #' @examples
 #' @importFrom stats sd
 get_fragment_profile <- function(readbam_bin,
                                  sample_id,
+                                 genome="hg19",
                                  short_range = c(100,150),
                                  long_range = c(151,250),
                                  maximum_length = 600,
@@ -22,7 +24,7 @@ get_fragment_profile <- function(readbam_bin,
     stop("Please specify sample id param (sample_id).")
   }
   binsize = imply_binsize(readbam_bin)/1000
-  sliding_windows_gr = util.get_sliding_windows(binsize)
+  sliding_windows_gr = util.get_sliding_windows(binsize = binsize, genome=genome)
   bin_profile_df = as.data.frame(t(sapply(readbam_bin, function(bin){
     isize = bin$isize
     nfragment =
@@ -35,6 +37,7 @@ get_fragment_profile <- function(readbam_bin,
       "short" = short,
       "long" = long)
   })))
+  # View(bin_profile_df)
   bin_profile_df =
     dplyr::mutate(bin_profile_df,
                   "S/L.Ratio" = short/long ,
@@ -67,13 +70,14 @@ get_fragment_profile <- function(readbam_bin,
                                      maximum_length,minimum_length)
 
   #>>>>> Do KS test comparing sample and control fragment distribution
-  control_fragment_profile = util.load_control_density_table()
-  ks_test = test_isize_KolmogorovSmirnov(
-    control_fragment_profile$insert_size, isize_vector)
+  # control_fragment_profile = util.load_control_density_table()
+  # ks_test = test_isize_KolmogorovSmirnov(
+  #   control_fragment_profile$insert_size, isize_vector)
   #<<<<<
 
   insert_info_df =
-    data.frame("Total Fragments" = length(isize_vector),
+    data.frame("Sample.ID"=sample_id,
+               "Total Fragments" = length(isize_vector),
                "Read Pairs in range" = sum(bin_profile_df$nfragment),
                "Read Pairs in range_corrected" = sum(bin_profile_df$total.corrected,na.rm=T),
                "Mode" = getmode(isize_vector),
@@ -82,24 +86,27 @@ get_fragment_profile <- function(readbam_bin,
                "Mad" = round(mad(isize_vector, na.rm = TRUE),2),
                "short" = sum(bin_profile_df$short,na.rm=T),
                "long" = sum(bin_profile_df$long,na.rm=T),
-               "short_corrected" = sum(bin_profile_df$short.corrected,na.rm=T),
-               "long_corrected" = sum(bin_profile_df$long.corrected,na.rm=T),
                "S/L Ratio" = round(sum(bin_profile_df$short, na.rm=T) /
                                      sum(bin_profile_df$long, na.rm=T),2),
+               "short_corrected" = sum(bin_profile_df$short.corrected,na.rm=T),
+               "long_corrected" = sum(bin_profile_df$long.corrected,na.rm=T),
                "S/L Ratio_corrected" = round(sum(bin_profile_df$short.corrected, na.rm=T) /
                  sum(bin_profile_df$long.corrected, na.rm=T),2),
-               "K.S.p.value" = ks_test$p.value,
-               "K.S.stats" = ks_test$statistic,
+               # "K.S.p.value" = ks_test$p.value,
+               # "K.S.stats" = ks_test$statistic,
                "Bin Size(KB)"=binsize)
 
-  density_table = make_density_table(isize_vector)
+  # density_table = make_density_table(isize_vector)
 
   fragment_profile = list("Sample.ID"=sample_id,
                           "per_bin_profile" = bin_profile_df,
                           "sample_profile" = insert_info_df,
-                          "distribution_table" = density_table,
+                          # "distribution_table" = density_table,
                           "minimum_length"=minimum_length,
                           "maximum_length"=maximum_length)
+  class(fragment_profile) = "SampleFragment"
+
+  return(fragment_profile)
 }
 
 imply_binsize <- function(readbam_bin){
@@ -125,7 +132,7 @@ getmode <- function(v) {
 #' @examples
 #' @importFrom stats na.omit density
 make_density_table <- function(isize_vector){
-  if(length(na.omit(isize_vector)) < 20000){
+  if(length(na.omit(isize_vector)) < 100){
     d = density(na.omit(isize_vector))
     density_df = data.frame(d[c("x","y")])
     density_df$x = round(density_df$x,digits = 0)
@@ -135,7 +142,9 @@ make_density_table <- function(isize_vector){
     density_df = data.frame("x"=as.numeric(names(fraction_vec)),
                             "y"=as.numeric(unname(fraction_vec)))
   }
+  return(density_df)
 }
+
 
 extract_insert_size <- function(readbam_bin,
                                 maximum_length = 600,
@@ -151,32 +160,40 @@ extract_insert_size <- function(readbam_bin,
 
 
 
+#' KolmogorovSmirnov test for insert size
+#'
+#' @param control_insert_size Vector of insert size of a control sample
+#' @param sample_insert_size Vector of insert size of a testing sample
+#'
+#' @return KS.Test result
+#' @export
+#'
+#' @examples
 test_isize_KolmogorovSmirnov <- function(
   control_insert_size, sample_insert_size){
   ks_result = suppressWarnings(ks.test(na.omit(control_insert_size),
                       na.omit(sample_insert_size)))
-  ks_result$p.value = ks_result$p.value
-  ks_result$statistic = round(ks_result$statistic,2)
-  return(ks_result)
-}
-
-
-
-#' Test fragment Profile with Kolmogorov-Smirnov
-#'
-#' @param control_fragment_profile Fragment profile of control sample
-#' @param sample_fragment_profile Fragment profile of testing sample
-#'
-#' @return list
-#' @export
-#'
-#' @examples
-#' @importFrom stats ks.test na.omit
-test_KolmogorovSmirnov <- function(
-  control_fragment_profile, sample_fragment_profile){
-  ks_result = ks.test(na.omit(control_fragment_profile$insert_size),
-                      na.omit(sample_fragment_profile$insert_size))
   ks_result$p.value = signif(ks_result$p.value,4)
   ks_result$statistic = round(ks_result$statistic,2)
   return(ks_result)
 }
+
+
+#' Get insert-size distribution table
+#'
+#' @param readbam_bin SampleBam Object from function read_bamfile
+#' @param maximum_length Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered; Default 600
+#' @param minimum_length Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20
+#'
+#' @return Distribution table of fragment length
+#' @export
+#'
+#' @examples
+get_isize_density <- function(readbam_bin,
+                              maximum_length = 600,
+                              minimum_length = 20){
+  isize_vector = extract_insert_size(readbam_bin,
+                                     maximum_length,minimum_length)
+  density_table = make_density_table(isize_vector)
+}
+

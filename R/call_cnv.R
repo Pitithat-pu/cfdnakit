@@ -4,7 +4,7 @@
 #' @param sample_zscore zscore dataframe
 #' @param callChr Chromosome to analysis : Default c(1:22)
 #'
-#' @return
+#' @return List of cnvcalling solutions
 #' @export
 #'
 #' @examples

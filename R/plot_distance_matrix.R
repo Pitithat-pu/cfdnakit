@@ -2,7 +2,7 @@
 #'
 #' @param cnvcall cnvcalling result from function call_cnv.R
 #'
-#' @return
+#' @return ggplot object ; distance matrix per cnvcalling solution
 #' @export
 #'
 #' @examples

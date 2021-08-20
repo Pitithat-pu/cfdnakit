@@ -7,6 +7,7 @@
 get_fragment_profile(
   readbam_bin,
   sample_id,
+  genome = "hg19",
   short_range = c(100, 150),
   long_range = c(151, 250),
   maximum_length = 600,
@@ -14,9 +15,11 @@ get_fragment_profile(
 )
 }
 \arguments{
-\item{readbam_bin}{Binned alignment from function read_bamfile}
+\item{readbam_bin}{SampleBam Object}
 
 \item{sample_id}{Character; Given sample ID}
+
+\item{genome}{abbreviation of reference genome; namely hg19, mm10. default:hg19}
 
 \item{short_range}{Vector of 2 Int; Range of fragment length to be defined as short fragment; Default c(100,150)}
 
@@ -27,7 +30,7 @@ get_fragment_profile(
 \item{minimum_length}{Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20}
 }
 \value{
-Fragment length information for quality check and downstream analysis per bin and summary of sample
+SampleFragment Object; Fragment length information for quality check and downstream analysis per bin and summary of sample
 }
 \description{
 Getting fragment-length information

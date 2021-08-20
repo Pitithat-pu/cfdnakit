@@ -4,13 +4,17 @@
 \alias{filter_read_on_blacklist}
 \title{Filter out reads on blacklist regions}
 \usage{
-filter_read_on_blacklist(sample_bin)
+filter_read_on_blacklist(sample_bin, blacklist_files = NULL, genome = "hg19")
 }
 \arguments{
-\item{sample_bin}{Variable sample bin from read_bamfile function}
+\item{sample_bin}{SampleBam; Object from function read_bamfile}
+
+\item{blacklist_files}{Character; Filepath to file containing blacklist regions}
+
+\item{genome}{Character; Abbreviation of reference genome; Either hg19 or mm10. default:hg19}
 }
 \value{
-Sample read per bin after filtering out read on balck list regions
+SampleBam after filtering out read on balck list regions
 }
 \description{
 Filter out reads on blacklist regions

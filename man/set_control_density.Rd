@@ -10,7 +10,7 @@ set_control_density(control_rds)
 \item{control_rds}{Name of control rds file in ext directory}
 }
 \value{
-
+Null
 }
 \description{
 Setting control distribution profile

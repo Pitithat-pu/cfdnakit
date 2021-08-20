@@ -4,7 +4,10 @@
 \alias{create_blacklist_gr}
 \title{Create Blacklist regions GRanges object}
 \usage{
-create_blacklist_gr()
+create_blacklist_gr(blacklist_files)
+}
+\arguments{
+\item{blacklist_files}{Character; Filepath to file containing blacklist regions}
 }
 \value{
 GRanges object of blacklist regions

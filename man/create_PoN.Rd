@@ -4,24 +4,17 @@
 \alias{create_PoN}
 \title{Create Panel-of-Normal (PoN) Rdata}
 \usage{
-create_PoN(
-  list_rdsfiles,
-  output_dir,
-  filename = "PoN_fragment_profiles",
-  overwrite = TRUE
-)
+create_PoN(list_rdsfiles, file, overwrite = TRUE)
 }
 \arguments{
-\item{list_rdsfiles}{a file contains paths to Profile.Rdata per line}
+\item{list_rdsfiles}{Character; a file contains paths to Profile.Rdata per line}
 
-\item{output_dir}{Output directory}
-
-\item{filename}{Output filename}
+\item{file}{Character; Output file (.rds)}
 
 \item{overwrite}{Logical: Overwrite existing if result already existed}
 }
 \value{
-
+Null
 }
 \description{
 Create Panel-of-Normal (PoN) Rdata

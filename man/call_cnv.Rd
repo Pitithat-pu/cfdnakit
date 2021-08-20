@@ -14,7 +14,7 @@ call_cnv(sample_segmentation, sample_zscore, callChr = c(1:22))
 \item{callChr}{Chromosome to analysis : Default c(1:22)}
 }
 \value{
-
+List of cnvcalling solutions
 }
 \description{
 Call Copy-number Variation from SLRatio and segmentation

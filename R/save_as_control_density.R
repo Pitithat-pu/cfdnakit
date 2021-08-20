@@ -4,7 +4,7 @@
 #' @param fragment_profile Fragment profile
 #' @param file Filename
 #'
-#' @return
+#' @return Null
 #' @export
 #'
 #' @examples

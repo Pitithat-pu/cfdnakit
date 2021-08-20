@@ -1,17 +1,15 @@
 #' Create Panel-of-Normal (PoN) Rdata
 #'
-#' @param list_rdsfiles a file contains paths to Profile.Rdata per line
-#' @param output_dir Output directory
-#' @param filename Output filename
+#' @param list_rdsfiles Character; a file contains paths to Profile.Rdata per line
+#' @param file Character; Output file (.rds)
 #' @param overwrite Logical: Overwrite existing if result already existed
 #'
-#' @return
+#' @return Null
 #' @export
 #'
 #' @examples
 create_PoN <- function(list_rdsfiles,
-                       output_dir,
-                       filename = "PoN_fragment_profiles",
+                       file,
                        overwrite = TRUE){
   pon_profile_list = read_PoN_files(list_rdsfiles)
   control_SL_ratio_lst = lapply(pon_profile_list, function(pon_profile){
@@ -26,24 +24,19 @@ create_PoN <- function(list_rdsfiles,
     zscore_transform(sample_SL_df)
   })
 
-  if(!dir.exists(output_dir)){
-    stop("Output directory doesn't exist.")
-  }
 
-  output_file = paste0(output_dir,"/",filename,".rds")
-
-  if(file.exists(output_file) ){
+  if(file.exists(file) ){
     if (is.logical(overwrite)) {
       if (overwrite) {
-        file.remove(output_file)
+        file.remove(file)
       } else {
-        stop(paste0("Output file already exist ",output_file,". Set overwrite=TRUE to overwrite."))
+        stop(paste0("Output file already exist ",file,". Set overwrite=TRUE to overwrite."))
       }
     } else stop("Please provide param overwrite a logical value (TRUE or FALSE)")
   }
-  paste0("Saving to ",output_file)
+  paste0("Saving to ",file)
   saveRDS(control_SLratio_transform,
-          file = output_file)
+          file = file)
   paste0("Done")
 }
 

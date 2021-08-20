@@ -5,7 +5,7 @@
 #' @param output_dir Path to output directory
 #' @param overwrite Boolean; TRUE to overwrite existing file
 #'
-#' @return
+#' @return Null
 #' @export
 #'
 #' @examples

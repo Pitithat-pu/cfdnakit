@@ -32,17 +32,30 @@ utils.unlist <- function (x){
 
 
 
-util.get_sliding_windows <- function(binsize=1000){
-  qdnaseq_sliding_windows_RDS =
-    system.file("extdata",
-                paste0("AnnotationDataFrame_from_QDNAseq_",binsize,"k.rds"),
-                package = "cfdnakit")
-  if (utils.file_exists(qdnaseq_sliding_windows_RDS)) {
-    bins = readRDS(qdnaseq_sliding_windows_RDS)
-  } else {
-    stop(paste0("The selected binsize (",binsize,") is not available.\nAvailable binsize (kb) are 1000, 500, 100."))
+util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
+  ### stop if given reference name is neither hg19 nor mm10
+  if(! genome %in% c("hg19","mm10")) stop("Only hg19 and mm10 genome is possible")
 
+  if(genome=="hg19"){
+    #### Reading in bin info from extdata if hg19 genome
+    qdnaseq_sliding_windows_RDS =
+      system.file("extdata",
+                  paste0("AnnotationDataFrame_from_QDNAseq_",binsize,"k.rds"),
+                  package = "cfdnakit")
+    if (utils.file_exists(qdnaseq_sliding_windows_RDS)) {
+      bins = readRDS(qdnaseq_sliding_windows_RDS)
+    } else {
+      stop(paste0("The selected binsize (",binsize,
+                  ") is not available.\nAvailable binsize (kb) are 1000, 500, 100."))
+    }
+  } else if (genome=="mm10") {
+    ### Loading bin information through QDNAseq package
+    message("Loading ",genome, "(",binsize,")")
+    bins = QDNAseq::getBinAnnotations(binSize=binsize, genome="mm10")
   }
+
+
+
   sliding_windows <- as.data.frame(bins@data)
   sliding_windows <- sliding_windows[which(sliding_windows$chromosome!="Y" &
                                              sliding_windows$mappability>=1),]
@@ -71,8 +84,15 @@ util.bias_correct <- function(readcount, bias) {
 
   i <- seq(min(bias, na.rm=TRUE),
            max(bias, na.rm=TRUE), by = 0.001)
-  readcount.trend <- loess(readcount[-invalid_idx] ~ bias[-invalid_idx],
-                           control=loess.control(surface="direct"))
+
+
+  if(length(invalid_idx) == 0 ){
+    readcount.trend <- loess(readcount ~ bias,
+                             control=loess.control(surface="direct"))
+  } else
+    readcount.trend <- loess(readcount[-invalid_idx] ~ bias[-invalid_idx],
+                             control=loess.control(surface="direct"))
+
   readcount.model <- loess(predict(readcount.trend, i) ~ i)
   readcount.pred <- predict(readcount.model, bias)
   readcount.corrected <-

@@ -1,10 +1,12 @@
-# cfdnakit : an R package for next-generation sequencing analysis focusing on fragment characteristic of cfDNA
+# cfdnakit : an R package for analysing fragmentation of cfDNA and copy-number alteration calling
 
 ## Introduction
 
 This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. This first version will focus on analyzing shallow whole-genome sequence including fragment length analysis, genome-wide fragmentation, and copy-number alteration estimated by short cell-free DNA fragments.
 
 ![cfdnakit_workflow](https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png)
+
+Features
 
 ## Package Prerequisites and Installation
 

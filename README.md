@@ -1,4 +1,4 @@
-# cfdnakit : an R package for analysing fragmentation of cfDNA and copy-number alteration calling
+# cfdnakit : an R package for fragmentation analysis of cfDNA and copy-number alteration calling
 
 ## Introduction
 

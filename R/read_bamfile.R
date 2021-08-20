@@ -2,54 +2,61 @@
 #' Read a bam file
 #' Read a bam file from give path. Alignment and sequencing read information
 #'  will be binned into non-overlapping size
-#' @param bamfile_path Path to sample bamfile
-#' @param binsize Size of non-overlapping windows in KB. Max = 1000; Default 1000
-#' @param target_bedfile Path to exon/target bedfile; Default NULL
+#' @param bamfile_path Character; Path to sample bamfile
+#' @param binsize Int; Size of non-overlapping windows in KB. Only 100,500 and 1000 is available; Default 1000
+#' @param blacklist_files Character; Filepath to file containing blacklist regions
+#' @param genome Character; abbreviation of reference genome; available genome: hg19, mm10. default:hg19
+#' @param target_bedfile Character; Path to exon/target bedfile; Default NULL
+#' @param min_mapq Int; minimum read mapping quality; Default 20
+#' @param apply_blacklist Logical; To exclude read on the blacklist regions Default TRUE
 #'
-#' @return List of fragment information per bin
+#' @return SampleBam Object; A list object containing read information from the BAM file.
 #' @export
 #'
 #' @examples
-read_bamfile <- function(bamfile_path, binsize=1000, target_bedfile=NULL){
+read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
+                         genome="hg19" ,target_bedfile=NULL,
+                         min_mapq=20, apply_blacklist= TRUE){
   if(!utils.file_exists(bamfile_path)){
-    stop("Bamfile doesn't exist. Please check if the path to bamfile is valid.")
+    stop("The bamfile doesn't exist. Please check if the path to bamfile is valid.")
   }
   if(!is.null(target_bedfile) & !utils.file_exists(target_bedfile)) {
-    stop("Given target bedfile doesn't exist.")
+    stop("The given target bedfile doesn't exist.")
   }
-  which <- util.get_sliding_windows(binsize = binsize)
+
+  which <- util.get_sliding_windows(binsize = binsize, genome=genome)
   flag <- Rsamtools::scanBamFlag(isPaired = TRUE,
                                  isUnmappedQuery = FALSE,
                                  isDuplicate = FALSE,
                                  isMinusStrand = FALSE,
                                  hasUnmappedMate = FALSE,
                                  isSecondaryAlignment = FALSE,
-                                 isMateMinusStrand = TRUE,
-                                 isNotPassingQualityControls = FALSE,
-                                 isSupplementaryAlignment = FALSE)
+                                 isMateMinusStrand = TRUE)
 
   param <- Rsamtools::ScanBamParam(what = c("qname", "rname", "pos",
                                             "isize", "qwidth"),
                                    flag = flag,
                                    which = which,
-                                   mapqFilter = 20)
+                                   mapqFilter = min_mapq)
   if(!if_exist_baifile(bamfile = bamfile_path)){
-    print("BAM index is missing. Creating an index file")
+    print("The BAM index file (.bai) is missing. Creating an index file")
     Rsamtools::indexBam(bamfile_path)
   }
   print("Reading bamfile")
   bam <- Rsamtools::scanBam(file = bamfile_path,
                             index = bamfile_path,
                             param=param)
-    # bam <- Rsamtools::scanBam(file = bamfile_path,
-    #                           param=param)
-  print("Filtering-out read on blacklist")
-  bam_blacklist_lst = filter_read_on_blacklist(bam)
+
+  if (apply_blacklist) {
+    print("Filtering-out read on the blacklist regions")
+    bam = filter_read_on_blacklist(bam, blacklist_files , genome=genome)
+  }
   if(!is.null(target_bedfile)){
     print("Extracting on-target fragments")
-    bam_blacklist_lst = extract_read_ontarget(bam_blacklist_lst,target_bedfile)
+    bam = extract_read_ontarget(bam,target_bedfile)
   }
-  return(bam_blacklist_lst)
+  class(bam)="SampleBam"
+  return(bam)
 }
 
 #' Check if bai file exist from given bam
@@ -124,13 +131,28 @@ if_gzfile <- function(bedfile){
 
 #' Filter out reads on blacklist regions
 #'
-#' @param sample_bin Variable sample bin from read_bamfile function
+#' @param sample_bin SampleBam; Object from function read_bamfile
+#' @param blacklist_files Character; Filepath to file containing blacklist regions
+#' @param genome Character; Abbreviation of reference genome; Either hg19 or mm10. default:hg19
 #'
-#' @return Sample read per bin after filtering out read on balck list regions
+#' @return SampleBam after filtering out read on balck list regions
 #'
 #' @examples
-filter_read_on_blacklist <- function(sample_bin){
-  blacklist_targets_gr <- create_blacklist_gr()
+filter_read_on_blacklist <- function(sample_bin, blacklist_files=NULL , genome="hg19"){
+    ### Blacklist of hg19 is available as default without giving files
+    if(is.null(blacklist_files) & genome=="hg19"){
+      blacklist_files =
+        c(system.file("extdata","hg19_centromere.tsv.gz",
+                      package = "cfdnakit"),
+          system.file("extdata", "wgEncodeDacMapabilityConsensusExcludable.bed_GRCh37.gz",
+                      package = "cfdnakit"))
+    } else if(is.null(blacklist_files) & genome!="hg19") {
+      ### When no blacklist files is not provided, return the whole input.
+      message("Blacklist files were not given.")
+      return(sample_bin)
+    }
+
+  blacklist_targets_gr <- create_blacklist_gr(blacklist_files)
   filtered_bam_lst = lapply(sample_bin, function(region_lst){
     bin_gr =
       GenomicRanges::GRanges(seqnames =
@@ -145,8 +167,8 @@ filter_read_on_blacklist <- function(sample_bin){
                              isize = region_lst$isize)
 
 
-    filtered_gr <- GenomicRanges::findOverlaps(bin_gr,
-                                               blacklist_targets_gr)
+    filtered_gr <- suppressWarnings(GenomicRanges::findOverlaps(bin_gr,
+                                               blacklist_targets_gr))
     if(length(filtered_gr@from) == 0 )
       filterd_bam_gr = bin_gr
     else{
@@ -163,30 +185,29 @@ filter_read_on_blacklist <- function(sample_bin){
 
 #' Create Blacklist regions GRanges object
 #'
+#' @param blacklist_files Character; Filepath to file containing blacklist regions
 #' @return GRanges object of blacklist regions
 #'
 #' @examples
-create_blacklist_gr <- function(){
-  centromere_region = system.file("extdata",
-              "hg19_centromere.tsv.gz",
-              package = "cfdnakit")
-  dac_blacklist_region = system.file("extdata",
-              "wgEncodeDacMapabilityConsensusExcludable.bed_GRCh37.gz",
-              package = "cfdnakit")
-  duke_blacklist_region = system.file("extdata",
-              "wgEncodeDukeMapabilityRegionsExcludable.bed_GRCh37.gz",
-              package = "cfdnakit")
-  blacklist_regions = c(centromere_region,
-                        dac_blacklist_region,
-                        duke_blacklist_region)
-  if(!utils.file_exists(blacklist_regions))
+create_blacklist_gr <- function(blacklist_files){
+  if(!utils.file_exists(blacklist_files))
     stop("One of blacklist file doen't exist. Please check if the blacklist file exist in extdata directory.")
   blacklist_targets_gr = GenomicRanges::GRanges()
-  for (blacklist_region in blacklist_regions) {
-    blacklist_targets =
-      as.data.frame(utils::read.table(gzfile(blacklist_region),
-                               header = FALSE,sep = "\t",
-                               stringsAsFactors = FALSE))[,1:3]
+  for (blacklist_region in blacklist_files) {
+    if(if_gzfile(blacklist_region)){
+      con = gzfile(blacklist_region)
+      blacklist_targets =
+        as.data.frame(utils::read.table(con,
+                                        header = FALSE,sep = "\t",
+                                        stringsAsFactors = FALSE))[,1:3]
+      # close(con)
+    } else {
+      blacklist_targets =
+        as.data.frame(utils::read.table(blacklist_region),
+                      header = FALSE,sep = "\t",
+                      stringsAsFactors = FALSE)[,1:3]
+    }
+
     colnames(blacklist_targets) = c("chromosome","start","end")
     blacklist_targets_gr_temp=
       GenomicRanges::GRanges(seqnames = blacklist_targets$chromosome,

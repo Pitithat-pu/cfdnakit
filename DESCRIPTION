@@ -23,6 +23,7 @@ Imports:
     magrittr,
     PSCBS,
     QDNAseq,
+    QDNAseq.mm10,
     rlang (>= 0.1.2),
     Rsamtools,
     utils,

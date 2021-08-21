@@ -10,7 +10,7 @@ The scope of this R package is to analyse the length of cfDNA fragments. The pac
 
 ### Fragment length distribution and comparison
 
-Package provides a single function to extract fragment length of cfDNA. Making a fragment-length distribution plot of multiple samples is easy. cfdnakit also extracted the short-fragment ratio representing the amount of short-fragmented cfdNA in the sample. Comparison between groups of sample (e.g. healthy vs patient, stable vs advance stage)
+Package extracts fragment length of cfDNA using a single function. Making a fragment-length distribution plot of multiple samples is easy. cfdnakit also extracted the short-fragment ratio representing the amount of short-fragmented cfdNA in the sample. It can be used for comparison between groups of sample (e.g. healthy vs patient, stable vs advance stage) or for quality control inspection. 
 
 This plot shows the fragment-length ditribution of cfDNA from a PDX sample. One line represent tumor-derived (human) cfDNA , another represents non-tumor (mouse) cfDNA.
 

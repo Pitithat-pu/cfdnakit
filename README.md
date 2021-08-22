@@ -18,7 +18,7 @@ This plot shows the fragment-length ditribution of cfDNA from a PDX sample. One 
 
 ### Copy-number calling and tumor fraction estimation from short-fragmented cfDNA
 
-The figure below shows the overview of the CNV-calling procedure. The amount of short-fragmented cfDNA per windows are normalised and compared to a Panel-of-Normal (control). Segmentation is performed using PSCBS package. The CPA score (Raman, Lennart, et al. 2020) were calculated to estimate the copy number tumor burden.
+The figure below shows the overview of the CNV-calling procedure. The amount of short-fragmented cfDNA per windows are normalised and compared to a Panel-of-Normal (control). Segmentation is performed using the PSCBS package. A CPA score (Raman, Lennart, et al. 2020) were calculated to estimate the copy number tumor burden.
 
 <img src="https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png" title="cfdnakit cnv calling workflow" alt="cfdnakit_workflow" width="600"/>
 

@@ -6,7 +6,7 @@ This package provides mostly basic functions to analysis cell-free DNA (cfDNA) w
 
 ## Features
 
-The scope of this R package is to analyse the length of cfDNA fragments. The package simplified the process of extracting length of fragments from a BAM file and provide basic functions to explore this characteristic of cfDNA with low-coverage whole-genome sequencing data. Moreover, this package utilize quantity of short-fragmented cfDNA to infer copy-number alteration and estimate percentage of tumor-derived cfDNA.
+The scope of this R package is to analyse the length of cfDNA fragments. The package simplifies the process of extracting length of fragments from a BAM file and provide basic functions to explore this characteristic of cfDNA with low-coverage whole-genome sequencing data. Moreover, this package utilize quantity of short-fragmented cfDNA to infer copy-number alteration and estimate percentage of tumor-derived cfDNA.
 
 ### Fragment length distribution and comparison
 

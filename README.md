@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. This first version will focus on analyzing shallow whole-genome sequence including fragment length analysis, genome-wide fragmentation, and copy-number alteration estimated by short cell-free DNA fragments.
+This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. This version will focus on analyzing shallow whole-genome sequence including fragment length analysis, genome-wide fragmentation, and copy-number alteration estimated by short cell-free DNA fragments.
 
 ## Features
 

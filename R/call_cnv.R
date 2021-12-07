@@ -2,14 +2,25 @@
 #'
 #' @param sample_segmentation segmentation dataframe from segmentByPSCBS
 #' @param sample_zscore zscore dataframe
-#' @param callChr Chromosome to analysis : Default c(1:22)
+#' @param callChr chromosome to analysis : Default c(1:22)
+#' @param tfs range of fitting tumor fraction : Default c(0,0.8)
+#' @param ploidies range of fitting chromosomal ploidy : Default c(1.5,4)
+#' @param MaxCN maximum copy-number : Default 4
 #'
 #' @return List of cnvcalling solutions
 #' @export
 #'
 #' @examples
 #' @importFrom IRanges mergeByOverlaps
-call_cnv <- function(sample_segmentation, sample_zscore, callChr=c(1:22)){
+call_cnv <- function(sample_segmentation, sample_zscore, callChr=c(1:22),
+                     tfs = c(0,0.8),
+                     ploidies = c(1.5,4),
+                     MaxCN=4){
+
+  tfs = seq(tfs[1],tfs[2],by = 0.01)
+  ploidies = seq(ploidies[1],ploidies[2],by=0.05)
+  CVs=seq(0,MaxCN)
+
   sample_segmentation = dplyr::filter(sample_segmentation, chromosome %in% callChr)
   sample_zscore = dplyr::filter(sample_zscore, chrom %in% callChr)
 
@@ -35,11 +46,7 @@ call_cnv <- function(sample_segmentation, sample_zscore, callChr=c(1:22)){
     dplyr::summarise(SLRatio_median=median(SLRatio,na.rm=TRUE))
 
   SLref = median(segmentation_SLRatio$SLRatio_median,na.rm=TRUE)
-  ### CNV calling parameters
-  tfs = seq(0.00,0.8,by = 0.01)
-  ploidies = seq(1.5,4,by=0.05)
-  CVs=seq(1,4)
-  ####
+
 
 
   SL_distance = list()

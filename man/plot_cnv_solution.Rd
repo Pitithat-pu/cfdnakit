@@ -4,7 +4,7 @@
 \alias{plot_cnv_solution}
 \title{Plot Fragment-length profile with CNV calling result}
 \usage{
-plot_cnv_solution(cnvcall, selected_solution = 1, ylim = c(-20, 20))
+plot_cnv_solution(cnvcall, selected_solution = 1, ylim = c(-30, 30))
 }
 \arguments{
 \item{cnvcall}{solution results from call_cnv function}

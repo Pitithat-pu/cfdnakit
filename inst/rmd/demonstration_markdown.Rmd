@@ -79,7 +79,7 @@ sample_profile$sample_profile
 We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Given short-fragment profile, short-fragment ratio per bin infer contribution of tumor-derived fragment (ctDNA) into cfDNA. The enrichment of short-fragment cfDNA in a large genomic region could infer the copy-number aberration status. The higher short-fragment ratio indicate amplification event whereas deletion would have relatively lower short-fragment ratio. It is base-on a hypothesis that a tumor cell without CNV contributes its DNA equally throughout the genome into the circulation.
 
 ```{r plot genome-wide short-fragment ratio, fig.width=12, fig.height=5, warning=FALSE}
-plot_sl_ratio(sample_profile,ylim = c(0,2.1))
+plot_sl_ratio(sample_profile,ylim = c(0.25,1.75))
 ```
 
 
@@ -132,7 +132,7 @@ plot_cnv_solution(sample_cnv,selected_solution = 1)
 
 ```
 
-Calculate PCA Score from the segmentation result
-```{r calculate PCA score}
-calculate_PCA_score(sample_zscore_segment)
+Calculate CPA Score from the segmentation result
+```{r calculate CPA score}
+calculate_CPA_score(sample_zscore_segment)
 ```

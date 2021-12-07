@@ -10,7 +10,7 @@
 #' @examples
 plot_cnv_solution <- function(cnvcall,
                               selected_solution = 1,
-                              ylim=c(-20,20)){
+                              ylim=c(-30,30)){
   cnv_col = c("AMP"="#00FF00","GAIN"="#008200",
               "NEUT"="grey30","HETD"="#820000",
               "HOMD"="#FF0000","Not available"="grey")

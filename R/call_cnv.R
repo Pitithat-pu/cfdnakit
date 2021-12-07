@@ -38,7 +38,7 @@ call_cnv <- function(sample_segmentation, sample_zscore, callChr=c(1:22)){
   ### CNV calling parameters
   tfs = seq(0.00,0.8,by = 0.01)
   ploidies = seq(1.5,4,by=0.05)
-  CVs=seq(0,5)
+  CVs=seq(1,4)
   ####
 
 

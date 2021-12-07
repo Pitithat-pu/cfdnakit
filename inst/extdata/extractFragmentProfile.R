@@ -44,8 +44,31 @@ if(! opt$binsize %in% c(100,500,1000)){
               opt$binsize ," is not possible."))
 }
 # <<<<<<<
+
+# >>>>>> Reading input bamfile
 print(paste0("Reading Bamfile and split into ",opt$binsize, "KB"))
 sample_bambin = read_bamfile(opt$bamfile,binsize = opt$binsize)
+# <<<<<
+
+
+#  >>>>> Reading package's healthy control plasma profile
+control_rds="BH01_chr15.RDS"
+control_RDS_file =
+  system.file("extdata",
+              control_rds,
+              package = "cfdnakit")
+control_fragment_profile =
+  readRDS(control_RDS_file)
+# <<<<<<
+
+
+# >>>>>> Making comparison list for ploting length distribution
+readbam_list = list(sample_bambin,
+                    control_fragment_profile)
+names(readbam_list) = c(opt$sampleid,
+                        "Healthy.control")
+# <<<<<<<<<
+
 print("Extracting fragment length profile")
 sample_profile = get_fragment_profile(sample_bambin,
                                       sample_id = opt$sampleid)
@@ -73,8 +96,7 @@ if(opt$plot_dist){
   png(filename = paste0(opt$outdir,"/",
                     sample_profile$Sample.ID,".fragmentdist.png"),
       width = 700,height = 500)
-  print(plot_isize_distribution(sample_profile,
-                          sample_name = sample_profile$Sample.ID))
+  print(plot_fragment_dist(readbam_list))
   dev.off()
 }
 

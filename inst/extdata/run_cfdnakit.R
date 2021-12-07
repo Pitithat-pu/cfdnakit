@@ -56,6 +56,27 @@ if(! opt$binsize %in% c(100,500,1000)){
 # <<<<<<<
 print(paste0("Reading Bamfile and split into ",opt$binsize, "KB"))
 sample_bambin = read_bamfile(opt$bamfile,binsize = opt$binsize)
+
+
+#  >>>>> Reading package's healthy control plasma profile
+control_rds="BH01_chr15.RDS"
+control_RDS_file =
+  system.file("extdata",
+              control_rds,
+              package = "cfdnakit")
+control_fragment_profile =
+  readRDS(control_RDS_file)
+# <<<<<<
+
+
+# >>>>>> Making comparison list for ploting length distribution
+readbam_list = list(sample_bambin,
+                    control_fragment_profile)
+names(readbam_list) = c(opt$sampleid,
+                        "Healthy.control")
+# <<<<<<<<<
+
+
 print("Extracting fragment length profile")
 sample_profile = get_fragment_profile(sample_bambin,
                                       sample_id = opt$sampleid)
@@ -83,9 +104,7 @@ if(opt$plot_dist){
   png(filename = paste0(opt$outdir,"/",
                         sample_profile$Sample.ID,".fragmentdist.png"),
       width = 700,height = 500)
-  print(plot_isize_distribution(
-    sample_profile,
-    sample_name = sample_profile$Sample.ID))
+  print(plot_fragment_dist(readbam_list))
   dev.off()
 }
 
@@ -111,6 +130,18 @@ sample_zscore_segment = segmentByPSCB(sample_zscore)
 
 print("Calling CNV")
 sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
+
+# >>>> Calculating CPA score from the segmentation
+print("Calculating CPA score")
+CPA_score = calculate_CPA_score(sample_cnv[[1]]$solution_segmentation)
+
+CPA_score_SLRatio =
+  CPA_score * sample_profile$sample_profile$S.L.Ratio_corrected
+CPA_score_df = data.frame("Sample.ID"=opt$sampleid,
+                          "CPA.Score"=CPA_score,
+                          "CPA.Score.SLRatio"=CPA_score_SLRatio)
+# <<<<
+
 
 print("Plotting distance matrix")
 print(paste0(opt$outdir,"/",
@@ -145,13 +176,6 @@ write.table(solution_table,
 print("Done")
 
 
-print("Writing segmentation result")
-write.table(sample_cnv,
-            file = paste0(opt$outdir,"/",
-                          sample_profile$Sample.ID,".segment.tsv"),
-            row.names = FALSE,col.names = TRUE,
-            sep="\t",quote = FALSE)
-print("Done")
 
 
 print("Plotting ploidy 2 CNV solution")
@@ -166,10 +190,18 @@ dev.off()
 
 
 
-print("Writing  result")
+print("Writing segment file")
 write.table(sample_zscore_segment,
             file = paste0(opt$outdir,"/",
                           sample_profile$Sample.ID,".segment.tsv"),
             row.names = FALSE,col.names = TRUE,
             sep="\t",quote = FALSE)
+
+print("Writing CPA score table")
+write.table(CPA_score_df,
+            file = paste0(opt$outdir,"/",
+                          sample_profile$Sample.ID,".CPAScore.tsv"),
+            row.names = FALSE,col.names = TRUE,
+            sep="\t",quote = FALSE)
+
 print("Done")

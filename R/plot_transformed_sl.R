@@ -10,7 +10,7 @@
 #' @examples
 plot_transformed_sl <- function(sample_transformed_sl,
                                 sample_segment_df = NULL,
-                                ylim=c(-20,20)){
+                                ylim=c(-30,30)){
   chrTotalLength_file= "hg19_chrTotalLength.tsv"
   chrLength_file =
     system.file("extdata",

@@ -7,7 +7,7 @@
 plot_transformed_sl(
   sample_transformed_sl,
   sample_segment_df = NULL,
-  ylim = c(-20, 20)
+  ylim = c(-30, 30)
 )
 }
 \arguments{

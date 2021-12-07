@@ -4,14 +4,27 @@
 \alias{call_cnv}
 \title{Call Copy-number Variation from SLRatio and segmentation}
 \usage{
-call_cnv(sample_segmentation, sample_zscore, callChr = c(1:22))
+call_cnv(
+  sample_segmentation,
+  sample_zscore,
+  callChr = c(1:22),
+  tfs = c(0, 0.8),
+  ploidies = c(1.5, 4),
+  MaxCN = 4
+)
 }
 \arguments{
 \item{sample_segmentation}{segmentation dataframe from segmentByPSCBS}
 
 \item{sample_zscore}{zscore dataframe}
 
-\item{callChr}{Chromosome to analysis : Default c(1:22)}
+\item{callChr}{chromosome to analysis : Default c(1:22)}
+
+\item{tfs}{range of fitting tumor fraction : Default c(0,0.8)}
+
+\item{ploidies}{range of fitting chromosomal ploidy : Default c(1.5,4)}
+
+\item{MaxCN}{maximum copy-number : Default 4}
 }
 \value{
 List of cnvcalling solutions

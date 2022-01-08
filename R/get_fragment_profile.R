@@ -126,25 +126,32 @@ getmode <- function(v) {
 #' Make Fragment-length density table
 #'
 #' @param isize_vector numeric
+#' @param minimum_length numeric
+#' @param maximum_length numeric
 #'
 #' @return data.frame
 #'
 #' @examples
 #' @importFrom stats na.omit density
-make_density_table <- function(isize_vector){
+make_density_table = function(isize_vector,
+                              minimum_length,
+                              maximum_length){
   if(length(na.omit(isize_vector)) < 100){
     d = density(na.omit(isize_vector))
     density_df = data.frame(d[c("x","y")])
     density_df$x = round(density_df$x,digits = 0)
   } else {
     fraction_table = table(na.omit(isize_vector))
-    fraction_vec = fraction_table / sum(fraction_table)
+    temp_fraction_vec = fraction_table / sum(fraction_table)
+
+    fraction_vec = rep(0,maximum_length-minimum_length+1)
+    names(fraction_vec) = seq(minimum_length,maximum_length)
+    fraction_vec[names(fraction_table)] = temp_fraction_vec
     density_df = data.frame("x"=as.numeric(names(fraction_vec)),
                             "y"=as.numeric(unname(fraction_vec)))
   }
   return(density_df)
 }
-
 
 extract_insert_size <- function(readbam_bin,
                                 maximum_length = 600,

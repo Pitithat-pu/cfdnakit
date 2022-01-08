@@ -4,10 +4,14 @@
 \alias{make_density_table}
 \title{Make Fragment-length density table}
 \usage{
-make_density_table(isize_vector)
+make_density_table(isize_vector, minimum_length, maximum_length)
 }
 \arguments{
 \item{isize_vector}{numeric}
+
+\item{minimum_length}{numeric}
+
+\item{maximum_length}{numeric}
 }
 \value{
 data.frame

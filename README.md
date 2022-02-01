@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. The package focuses on extracting length of cfDNA,  and genome-wide copy-number alteration estimated by the short-fragmented cfDNA using shallow whole-genome sequencing data (~0.3X or more).
+This package provides mostly basic functions to analysis cell-free DNA (cfDNA) with next-generation sequencing. The package focuses on extracting length of cfDNA, and genome-wide copy-number alteration estimated by the short-fragmented cfDNA using shallow whole-genome sequencing data (\~0.3X or more).
 
 ## Features
 
@@ -10,11 +10,11 @@ The scope of this R package is to analyse the length of cfDNA fragments. The pac
 
 ### Fragment length distribution and comparison
 
-Package provides a single function to extract fragment length of cfDNA in the sample. Making a fragment-length distribution plot of multiple samples is easy. cfdnakit also extracted the short-fragment ratio representing the amount of short-fragmented cfdNA in the sample. It can be used for comparison between groups of sample (e.g. healthy vs patient, stable vs advance stage) or for quality control inspection. 
+Package provides a single function to extract fragment length of cfDNA in the sample. Making a fragment-length distribution plot of multiple samples is easy. cfdnakit also extracted the short-fragment ratio representing the amount of short-fragmented cfdNA in the sample. It can be used for comparison between groups of sample (e.g. healthy vs patient, stable vs advance stage) or for quality control inspection.
 
 This plot shows the fragment-length ditribution of cfDNA from a PDX sample. One line represent tumor-derived (human) cfDNA , another represents non-tumor (mouse) cfDNA.
 
-<img src="https://github.com/Pitithat-pu/cfdnakit/wiki/images/wiki/fragment_xenograft_cfdnakit.png" title="cfdnakit fragment length distribution" alt="fragment_length_distribution_cfdnakit" width="550"/>
+![fragment_length_distribution_cfdnakit](https://github.com/Pitithat-pu/cfdnakit/wiki/images/wiki/fragment_length_dis.png "cfdnakit fragment length distribution")
 
 ### Copy-number calling and tumor fraction estimation from short-fragmented cfDNA
 

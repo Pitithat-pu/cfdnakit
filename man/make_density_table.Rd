@@ -4,12 +4,12 @@
 \alias{make_density_table}
 \title{Make Fragment-length density table}
 \usage{
-make_density_table(isize_vector, minimum_length, maximum_length)
+make_density_table(readbam_bin, minimum_length, maximum_length)
 }
 \arguments{
-\item{isize_vector}{numeric}
+\item{readbam_bin}{List; A list containing SampleBam object/objects from the read_bamfile function}
 
-\item{minimum_length}{numeric}
+\item{minimum_length}{numeric;}
 
 \item{maximum_length}{numeric}
 }

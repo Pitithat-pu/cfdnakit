@@ -17,9 +17,7 @@ plot_fragment_dist <- function(readbam_list,
   density_lst = lapply(seq_along(readbam_list), function(i) {
     sample.name = names(readbam_list)[[i]]
     readbam_bin=readbam_list[[i]]
-    isize_vector = extract_insert_size(readbam_bin,
-                                       maximum_length,minimum_length)
-    density_df = make_density_table(isize_vector,
+    density_df = make_density_table(readbam_bin,
                                     minimum_length,maximum_length)
     density_df$Label = sample.name
     return(density_df)

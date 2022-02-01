@@ -125,17 +125,21 @@ getmode <- function(v) {
 
 #' Make Fragment-length density table
 #'
-#' @param isize_vector numeric
-#' @param minimum_length numeric
+#' @param readbam_bin List; A list containing SampleBam object/objects from the read_bamfile function
+#' @param minimum_length numeric;
 #' @param maximum_length numeric
 #'
 #' @return data.frame
 #'
+#' @export
 #' @examples
 #' @importFrom stats na.omit density
-make_density_table = function(isize_vector,
+make_density_table = function(readbam_bin,
                               minimum_length,
                               maximum_length){
+  isize_vector = extract_insert_size(readbam_bin,
+                                     maximum_length,minimum_length)
+
   if(length(na.omit(isize_vector)) < 100){
     d = density(na.omit(isize_vector))
     density_df = data.frame(d[c("x","y")])
@@ -196,11 +200,10 @@ test_isize_KolmogorovSmirnov <- function(
 #' @export
 #'
 #' @examples
-get_isize_density <- function(readbam_bin,
-                              maximum_length = 600,
-                              minimum_length = 20){
-  isize_vector = extract_insert_size(readbam_bin,
-                                     maximum_length,minimum_length)
-  density_table = make_density_table(isize_vector)
+fragment_dist <- function(readbam_bin,
+                          maximum_length = 600,
+                          minimum_length = 20){
+  density_df = make_density_table(readbam_bin,
+                                  minimum_length,maximum_length)
 }
 

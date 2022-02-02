@@ -46,7 +46,7 @@ The proportion of short-fragmented cfDNA is positively correlated with copy-numb
 
 Cfdnakit package separates input reads into non-overlapping bins with equal size (1 MB by default) and calculated S.L.Ratio. The S.L.Ratio per bin is ploted in genomic order as followed.
 
-<img src="https://github.com/Pitithat-pu/cfdnakit/wiki/images/wiki/plasma-01-01_OE0290-PED_2LB-055.SLRatio.png" alt="genomewide short-fragment ratio 2LB055" width="1289" height="325"/>
+<img src="https://github.com/Pitithat-pu/cfdnakit/wiki/images/wiki/plasma-01-01_OE0290-PED_2LB-055.SLRatio.png" alt="genomewide short-fragment ratio 2LB055" width="1289" height="200"/>
 
 ### Normalized with a Panel-of-normal and segmentation
 

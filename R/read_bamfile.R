@@ -24,7 +24,12 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
     stop("The given target bedfile doesn't exist.")
   }
 
+
   which <- util.get_sliding_windows(binsize = binsize, genome=genome)
+  if(if_ucsc_chrformat(bamfile_path)){
+    which <- GRCh2UCSCGRanges(which)
+  }
+
   flag <- Rsamtools::scanBamFlag(isPaired = TRUE,
                                  isUnmappedQuery = FALSE,
                                  isDuplicate = FALSE,
@@ -47,6 +52,7 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                             index = bamfile_path,
                             param=param)
 
+
   if (apply_blacklist) {
     print("Filtering-out read on the blacklist regions")
     bam = filter_read_on_blacklist(bam, blacklist_files , genome=genome)
@@ -61,7 +67,7 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
 
 #' Check if bai file exist from given bam
 #'
-#' @param bamfile Path to bamfile
+#' @param bamfile Character; Path to sample bamfile
 #'
 #' @return Boolean if the bai file exist
 #'
@@ -126,6 +132,33 @@ if_gzfile <- function(bedfile){
   if(summary( file(bedfile) )$class == "gzfile")
     TRUE
   else FALSE
+}
+
+#' Check UCSC chromosomes format for input bam file
+#'
+#' @param bamfile_path Character; Path to sample bamfile
+#'
+#' @return Boolean; if the input bam file is UCSC format, chr prefix
+#'
+#' @examples
+if_ucsc_chrformat <- function(bamfile_path){
+  all_chrs = Rsamtools::idxstatsBam(bamfile_path)$seqnames
+  return(any(all_chrs %in% c("chr1")))
+}
+
+
+#' Convert GRCh chromosome format to UCSC style
+#'
+#' @param which GRanges;
+#'
+#' @return GRanges; GRanges after chromosome format conversion
+#'
+#' @examples
+GRCh2UCSCGRanges<- function (which) {
+  seqlevels(which)<- sub('chrM',
+                         'M',seqlevels(which))
+  seqlevels(which)<- gsub('^(.*)$','chr\\1',seqlevels(which))
+  return(which)
 }
 
 

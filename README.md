@@ -58,7 +58,7 @@ Cfdnakit transforms S.L.Ratio per bin into zscore by subtracting the median and 
 
 ### Modified copy number profile abnormality score
 
-Cfdnakit implemented a modified version of copy number profile abnormality (CPA) score by using the result of segmentation and sample S.L.Ratio.
+Cfdnakit implemented a modified version of copy number profile abnormality (CPA) score by using the result of segmentation and sample S.L.Ratio. robust to coverage bias and noisy fragmented signals. The full formula and its advantages were emphasized in the original publication. The score quantify the overall genomic aberration of short-fragmented cfDNA. The higher score infering to enrichment of short-fragmented cfDNA in the sample and copy-number aberrations.
 
 ## Package Prerequisites and Installation
 

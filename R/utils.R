@@ -34,13 +34,15 @@ utils.unlist <- function (x){
 
 util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
   ### stop if given reference name is neither hg19 nor mm10
-  if(! genome %in% c("hg19","mm10")) stop("Only hg19 and mm10 genome is possible")
+  if(! genome %in% c("hg19","hg38","mm10")) stop("Only hg19, hg38 or mm10 genome are possible")
 
-  if(genome=="hg19"){
+  if(genome %in% c("hg19","hg38")){
     #### Reading in bin info from extdata if hg19 genome
     qdnaseq_sliding_windows_RDS =
       system.file("extdata",
-                  paste0("AnnotationDataFrame_from_QDNAseq_",binsize,"k.rds"),
+                  paste0("AnnotationDataFrame_from_QDNAseq_",
+                         genome,"_",
+                         binsize,"k.rds"),
                   package = "cfdnakit")
     if (utils.file_exists(qdnaseq_sliding_windows_RDS)) {
       bins = readRDS(qdnaseq_sliding_windows_RDS)

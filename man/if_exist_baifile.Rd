@@ -7,7 +7,7 @@
 if_exist_baifile(bamfile)
 }
 \arguments{
-\item{bamfile}{Path to bamfile}
+\item{bamfile}{Character; Path to sample bamfile}
 }
 \value{
 Boolean if the bai file exist

@@ -23,7 +23,7 @@ read_bamfile(
 
 \item{blacklist_files}{Character; Filepath to file containing blacklist regions}
 
-\item{genome}{Character; abbreviation of reference genome; available genome: hg19, mm10. default:hg19}
+\item{genome}{Character; abbreviation of reference genome; available genome: hg19,hg38, mm10. default:hg19}
 
 \item{target_bedfile}{Character; Path to exon/target bedfile; Default NULL}
 

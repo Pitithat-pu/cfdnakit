@@ -5,7 +5,7 @@
 #' @param bamfile_path Character; Path to sample bamfile
 #' @param binsize Int; Size of non-overlapping windows in KB. Only 100,500 and 1000 is available; Default 1000
 #' @param blacklist_files Character; Filepath to file containing blacklist regions
-#' @param genome Character; abbreviation of reference genome; available genome: hg19, mm10. default:hg19
+#' @param genome Character; abbreviation of reference genome; available genome: hg19,hg38, mm10. default:hg19
 #' @param target_bedfile Character; Path to exon/target bedfile; Default NULL
 #' @param min_mapq Int; minimum read mapping quality; Default 20
 #' @param apply_blacklist Logical; To exclude read on the blacklist regions Default TRUE

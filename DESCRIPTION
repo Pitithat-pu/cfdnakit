@@ -18,6 +18,7 @@ Imports:
     Biobase,
     dplyr,
     GenomicRanges,
+    GenomeInfoDb,
     ggplot2,
     IRanges,
     magrittr,

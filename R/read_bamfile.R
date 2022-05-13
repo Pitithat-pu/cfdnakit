@@ -155,9 +155,11 @@ if_ucsc_chrformat <- function(bamfile_path){
 #'
 #' @examples
 GRCh2UCSCGRanges<- function (which) {
-  seqlevels(which)<- sub('chrM',
-                         'M',seqlevels(which))
-  seqlevels(which)<- gsub('^(.*)$','chr\\1',seqlevels(which))
+  GenomeInfoDb::seqlevels(which)<-
+    sub('chrM',
+        'M',GenomeInfoDb::seqlevels(which))
+  GenomeInfoDb::seqlevels(which)<-
+    gsub('^(.*)$','chr\\1',GenomeInfoDb::seqlevels(which))
   return(which)
 }
 

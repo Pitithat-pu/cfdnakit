@@ -46,6 +46,7 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
   if(!if_exist_baifile(bamfile = bamfile_path)){
     print("The BAM index file (.bai) is missing. Creating an index file")
     Rsamtools::indexBam(bamfile_path)
+    print("Bam index file created.")
   }
   print("Reading bamfile")
   bam <- Rsamtools::scanBam(file = bamfile_path,
@@ -62,6 +63,10 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
     bam = extract_read_ontarget(bam,target_bedfile)
   }
   class(bam)="SampleBam"
+
+  if(if_ucsc_chrformat(bamfile_path)){
+    bam <- UCSC2GRChSampleBam(bam)
+  }
   return(bam)
 }
 
@@ -149,7 +154,7 @@ if_ucsc_chrformat <- function(bamfile_path){
 
 #' Convert GRCh chromosome format to UCSC style
 #'
-#' @param which GRanges;
+#' @param which GRanges object;
 #'
 #' @return GRanges; GRanges after chromosome format conversion
 #'
@@ -163,7 +168,20 @@ GRCh2UCSCGRanges<- function (which) {
   return(which)
 }
 
+#' Convert UCSC chromosome format to GRCh style from a list of alignment information
+#'
+#' @param sample.bam list of alignment information from function read_bamfile
+#'
+#' @return List; list of alignment information after conversion
+#'
+#' @examples
+UCSC2GRChSampleBam <- function (sample.bam) {
+  names(sample.bam) = gsub(
+    "^chr","", names(sample.bam)
+  )
 
+  return(sample.bam)
+}
 #' Filter out reads on blacklist regions
 #'
 #' @param sample_bin SampleBam; Object from function read_bamfile

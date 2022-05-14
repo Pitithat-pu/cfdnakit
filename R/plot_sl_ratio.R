@@ -3,6 +3,7 @@
 #'
 #' @param fragment_profile list
 #' @param ylim plot y-axis limit
+#' @param genome Character; version of reference genome (default hg19)
 #' @return plot
 #' @export
 #'

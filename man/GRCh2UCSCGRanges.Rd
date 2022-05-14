@@ -7,7 +7,7 @@
 GRCh2UCSCGRanges(which)
 }
 \arguments{
-\item{which}{GRanges;}
+\item{which}{GRanges object;}
 }
 \value{
 GRanges; GRanges after chromosome format conversion

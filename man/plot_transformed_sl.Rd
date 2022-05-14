@@ -7,7 +7,8 @@
 plot_transformed_sl(
   sample_transformed_sl,
   sample_segment_df = NULL,
-  ylim = c(-30, 30)
+  ylim = c(-30, 30),
+  genome = "hg19"
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ plot_transformed_sl(
 \item{sample_segment_df}{Dataframe segmenation from segmentByPSCB}
 
 \item{ylim}{plot y-axis limit}
+
+\item{genome}{Character; version of reference genome (default hg19)}
 }
 \value{
 Genome-wide plot of z-transformed SLRatio

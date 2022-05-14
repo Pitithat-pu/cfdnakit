@@ -3,6 +3,7 @@
 #' @param sample_transformed_sl Dataframe z-transformed SLRatio from get_zscore_profile
 #' @param sample_segment_df Dataframe segmenation from segmentByPSCB
 #' @param ylim plot y-axis limit
+#' @param genome Character; version of reference genome (default hg19)
 #'
 #' @return Genome-wide plot of z-transformed SLRatio
 #' @export

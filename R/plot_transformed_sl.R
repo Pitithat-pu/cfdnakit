@@ -10,8 +10,11 @@
 #' @examples
 plot_transformed_sl <- function(sample_transformed_sl,
                                 sample_segment_df = NULL,
-                                ylim=c(-30,30)){
-  chrTotalLength_file= "hg19_chrTotalLength.tsv"
+                                ylim=c(-30,30), genome="hg19"){
+  if(! genome %in% c("hg19","hg38"))
+    stop("Only hg19 or hg38 genome are possible")
+
+  chrTotalLength_file= paste0(genome,"_chrTotalLength.tsv")
   chrLength_file =
     system.file("extdata",
                 chrTotalLength_file,

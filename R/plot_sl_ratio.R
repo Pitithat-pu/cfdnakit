@@ -9,8 +9,11 @@
 #' @examples
 #' @importFrom utils read.table
 plot_sl_ratio <- function(fragment_profile,
-                          ylim=c(0,0.4)){
-  chrTotalLength_file= "hg19_chrTotalLength.tsv"
+                          ylim=c(0,0.4), genome="hg19"){
+  if(! genome %in% c("hg19","hg38"))
+    stop("Only hg19 or hg38 genome are possible")
+
+  chrTotalLength_file= paste0(genome,"_chrTotalLength.tsv")
   chrLength_file =
     system.file("extdata",
                 chrTotalLength_file,

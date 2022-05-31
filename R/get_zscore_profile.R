@@ -74,13 +74,12 @@ calculate_SLRatio_zscore <- function(sample_SLRatio_transform,
       "PoN_SLRatio_mad" = control_SLRatio_mad,
       "size_based_zscore" = SL_zscore
     )
-  })))
+  })),stringsAsFactors = FALSE)
 
   SLRatio_zscore_df =
     dplyr::mutate_at(SLRatio_zscore_df,
                      c("start", "end","PoN_SLRatio_median",
                        "PoN_SLRatio_mad",
-                       "size_based_zscore"),as.numeric)
-
+                       "size_based_zscore"), as.numeric)
 
 }

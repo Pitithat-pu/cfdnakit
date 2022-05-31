@@ -3,14 +3,18 @@
 #'
 #' @param fragment_profile list
 #' @param ylim plot y-axis limit
+#' @param genome Character; version of reference genome (default hg19)
 #' @return plot
 #' @export
 #'
 #' @examples
 #' @importFrom utils read.table
 plot_sl_ratio <- function(fragment_profile,
-                          ylim=c(0,0.4)){
-  chrTotalLength_file= "hg19_chrTotalLength.tsv"
+                          ylim=c(0,0.4), genome="hg19"){
+  if(! genome %in% c("hg19","hg38"))
+    stop("Only hg19 or hg38 genome are possible")
+
+  chrTotalLength_file= paste0(genome,"_chrTotalLength.tsv")
   chrLength_file =
     system.file("extdata",
                 chrTotalLength_file,

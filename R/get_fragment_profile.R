@@ -221,3 +221,27 @@ test_isize_KolmogorovSmirnov <- function(
   return(ks_result)
 }
 
+
+#' Get insert-size distribution table
+#'
+#' @param readbam_bin SampleBam Object from function read_bamfile
+#' @param maximum_length Int; Maximum length of fragment. cfDNA fragment longer than this value will not be considered; Default 600
+#' @param minimum_length Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20
+#'
+#' @return Distribution table of fragment length
+#' @export
+#'
+#' @examples
+#' ### Loading example SampleBam file
+#' fl <- system.file("extdata","ex.plasma.bam",package = "cfdnakit")
+#' ### read bam file with default params (hg19, 1000K binsize)
+#' sample.bam = read_bamfile(fl)
+#'
+#' fragment.length.dist.df = fragment_dist(sample.bam)
+fragment_dist <- function(readbam_bin,
+                          maximum_length = 600,
+                          minimum_length = 20){
+  density_df = make_density_table(readbam_bin,
+                                  minimum_length,maximum_length)
+}
+

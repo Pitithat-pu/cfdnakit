@@ -79,11 +79,7 @@ sample_profile$sample_profile
 We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Given short-fragment profile, short-fragment ratio per bin infer contribution of tumor-derived fragment (ctDNA) into cfDNA. The enrichment of short-fragment cfDNA in a large genomic region could infer the copy-number aberration status. The higher short-fragment ratio indicate amplification event whereas deletion would have relatively lower short-fragment ratio. It is base-on a hypothesis that a tumor cell without CNV contributes its DNA equally throughout the genome into the circulation.
 
 ```{r plot genome-wide short-fragment ratio, fig.width=12, fig.height=5, warning=FALSE}
-<<<<<<< HEAD
-plot_sl_ratio(sample_profile,ylim = c(0.0,1))
-=======
 plot_sl_ratio(sample_profile,ylim = c(0.25,1.75))
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877
 ```
 
 
@@ -92,11 +88,7 @@ Save fragment profile as RDS file for later use or for creation of Panel-of-Norm
 
 ```{r saving profile as RDS}
 saveRDS(sample_profile,
-<<<<<<< HEAD
         file = "~/plasma.exmple.RDS")
-=======
-        file = "/icgc/dkfzlsdf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/results_per_pid/OE0290-PED_5LB-017/cfdnakit/plasma-01-01_OE0290-PED_5LB-017/plasma-01-01_OE0290-PED_5LB-017.RDS")
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877
 
 ```
 
@@ -125,7 +117,6 @@ plot_transformed_sl(sample_zscore,sample_zscore_segment)
 Performing CNV Calling and plot distance matrix.
 ```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=6, fig.height=4}
 
-<<<<<<< HEAD
 sample_cnv = call_cnv(sample_zscore_segment,
                       sample_zscore,
                       callChr=seq_len(22),
@@ -133,9 +124,6 @@ sample_cnv = call_cnv(sample_zscore_segment,
                       ploidies = c(2,3),
                       MaxCN=3)
 
-=======
-sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877
 
 plot_distance_matrix(sample_cnv)
 

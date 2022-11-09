@@ -1,31 +1,19 @@
 Package: cfdnakit
 Title: Analyse fragmentation of high-throughput sequencing of circulating cell-free DNA (cfDNA) 
-<<<<<<< HEAD
 Version: 0.99.0
-=======
-Version: 0.0.1
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877
 Authors@R: 
     person(given = "Pitithat",
            family = "Puranachot",
            role = c("aut", "cre"),
            email = "pitithat@gmail.com",
            comment = c(ORCID = "0000-0002-6786-9240"))
-<<<<<<< HEAD
 Description: This package provides basic functions for analyzing next-generation sequencing of circulating cell-free DNA (cfDNA). The package focuses on extracting length of cfDNA, and genome-wide copy-number alteration estimated by the short-fragmented cfDNA using shallow whole-genome sequencing data (~0.3X or more). The modified copy number profile abnormality (CPA) score comprehensively estimate the overall chromosomal instability. The amount of short-fragmented cfDNA per non-overlapping genomics windows are normalized and compared to a Panel-of-Normal (control). Segmentation is performed using the PSCBS package. A modified CPA score (adapted from Raman, Lennart, et al. 2020) were calculated to estimate the copy number tumor burden.
-=======
-Description: What the package does (one paragraph).
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-<<<<<<< HEAD
 biocViews: CopyNumberVariation, Sequencing, WholeGenome
-=======
-biocViews:
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877
 Imports: 
     Biobase,
     dplyr,
@@ -36,7 +24,6 @@ Imports:
     magrittr,
     PSCBS,
     QDNAseq,
-<<<<<<< HEAD
     Rsamtools,
     utils,
     S4Vectors,
@@ -49,14 +36,3 @@ Suggests:
     knitr,
     roxygen2
 VignetteBuilder: knitr
-=======
-    QDNAseq.mm10,
-    rlang (>= 0.1.2),
-    Rsamtools,
-    utils,
-    S4Vectors
-Depends: 
-    R (>= 2.10)
-Suggests: 
-    roxygen2
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877

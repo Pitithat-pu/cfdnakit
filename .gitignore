@@ -2,10 +2,7 @@
 cfdnakit.Rproj
 .Rbuildignore
 .Rhistory
-<<<<<<< HEAD
 reference_healthy.listfile
 temp.ex.PoN.rds
 .git
 inst/doc
-=======
->>>>>>> 83f469c896c8e41592c67c6fcfb44e68f261a877

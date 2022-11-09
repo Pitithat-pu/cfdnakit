@@ -10,6 +10,8 @@
 #' @examples
 #' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
 #' sample_bambin <- readRDS(example_file)
+#' readbam_list = list(plasma1 = sample_bambin)
+#' plot_fragment_dist(readbam_list)
 #'
 #' ### adding more samples to the plot
 #' example_file2 =  system.file("extdata","BH01_chr15.RDS",package = "cfdnakit")

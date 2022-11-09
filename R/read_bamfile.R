@@ -30,6 +30,11 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
   if(!is.null(target_bedfile) & !utils.file_exists(target_bedfile)) {
     stop("The given target bedfile doesn't exist.")
   }
+  if(!if_exist_baifile(bamfile = bamfile_path)){
+    print("The BAM index file (.bai) is missing. Creating an index file")
+    Rsamtools::indexBam(bamfile_path)
+    print("Bam index file created.")
+  }
 
 
   which <- util.get_sliding_windows(binsize = binsize, genome=genome)
@@ -45,16 +50,12 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                                  isSecondaryAlignment = FALSE,
                                  isMateMinusStrand = TRUE)
 
-  param <- Rsamtools::ScanBamParam(what = c("qname", "rname", "pos",
+  param <- Rsamtools::ScanBamParam(what = c("rname", "pos",
                                             "isize", "qwidth"),
                                    flag = flag,
                                    which = which,
                                    mapqFilter = min_mapq)
-  if(!if_exist_baifile(bamfile = bamfile_path)){
-    print("The BAM index file (.bai) is missing. Creating an index file")
-    Rsamtools::indexBam(bamfile_path)
-    print("Bam index file created.")
-  }
+
   print("Reading bamfile")
   bam <- Rsamtools::scanBam(file = bamfile_path,
                             index = bamfile_path,
@@ -115,7 +116,7 @@ extract_read_ontarget <- function(sample_bin, target_bedfile){
                              ranges = IRanges::IRanges(start = region_lst$pos,
                                                        end = region_lst$pos +
                                                          region_lst$qwidth),
-                             qname=region_lst$qname,
+
                              rname=region_lst$rname,
                              pos=region_lst$pos,
                              qwidth=region_lst$qwidth,
@@ -129,8 +130,7 @@ extract_read_ontarget <- function(sample_bin, target_bedfile){
     else{
       ontarget_bam_gr = bin_gr[ontarget_gr@from]
     }
-    return_vec = list("qname" = ontarget_bam_gr$qname,
-                      "rname" = ontarget_bam_gr$rname,
+    return_vec = list("rname" = ontarget_bam_gr$rname,
                       "pos" = ontarget_bam_gr$pos,
                       "qwidth" = ontarget_bam_gr$qwidth,
                       "isize" = ontarget_bam_gr$isize)
@@ -215,7 +215,6 @@ filter_read_on_blacklist <- function(sample_bin, blacklist_files=NULL , genome="
                              ranges = IRanges::IRanges(start = region_lst$pos,
                                               end = region_lst$pos +
                                                 region_lst$qwidth),
-                             qname=region_lst$qname,
                              rname=region_lst$rname,
                              pos=region_lst$pos,
                              qwidth=region_lst$qwidth,
@@ -229,8 +228,7 @@ filter_read_on_blacklist <- function(sample_bin, blacklist_files=NULL , genome="
     else{
       filterd_bam_gr = bin_gr[-filtered_gr@from]
     }
-      return_vec = list("qname" = filterd_bam_gr$qname,
-                      "rname" = filterd_bam_gr$rname,
+      return_vec = list("rname" = filterd_bam_gr$rname,
                       "pos" = filterd_bam_gr$pos,
                       "qwidth" = filterd_bam_gr$qwidth,
                       "isize" = filterd_bam_gr$isize)

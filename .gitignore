@@ -1,0 +1,8 @@
+.Rproj.user
+cfdnakit.Rproj
+.Rbuildignore
+.Rhistory
+reference_healthy.listfile
+temp.ex.PoN.rds
+.git
+inst/doc

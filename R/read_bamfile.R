@@ -17,10 +17,6 @@
 #' fl <- system.file("extdata","ex.plasma.bam",package = "cfdnakit")
 #' ### read bam file with default params (hg19, 1000K binsize)
 #' sample.bam = read_bamfile(fl)
-#' ### Select other reference (available hg19, hg38, mm10)
-#' sample.bam = read_bamfile(fl,genome = "hg38")
-#' ### Specify binsize (available 100, 500 and 1000 KB)
-#' sample.bam = read_bamfile(fl,binsize = 500)
 read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                          genome="hg19" ,target_bedfile=NULL,
                          min_mapq=20, apply_blacklist= TRUE){

@@ -1,7 +1,7 @@
 #' Transform SLRatio with PoN Fragment profile
 #'
 #' @param fragment_profile Sample Profile
-#' @param pon_profile_rds Path to PoN rds file
+#' @param pon_profile PoN Profiles
 #'
 #' @return Dataframe of robust transformed SLratio
 #' @export
@@ -10,21 +10,18 @@
 #' ### Loading example SampleBam file
 #' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
 #' sample_bambin <- readRDS(example_file)
+#'
 #' ### Example PoN
 #' PoN_rdsfile = system.file("extdata","ex.PoN.rds",package = "cfdnakit")
+#' pon_profiles = readRDS(PoN_rdsfile)
 #' sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 #'
-#' sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
+#' sample_zscore = get_zscore_profile(sample_profile,pon_profiles)
 #'
 #' sample_zscore_segment = segmentByPSCB(sample_zscore)
 
 get_zscore_profile <- function(fragment_profile,
-                               pon_profile_rds){
-  if(! file.exists(pon_profile_rds))
-    stop(paste0("File ",basename(pon_profile_rds), " doesn't exist."))
-
-  cat("Reading PoN profile",pon_profile_rds,"\n")
-  control_SLratio_transform = readRDS(pon_profile_rds)
+                               pon_profile){
   # main_functions.rbustz_transform(sample_SL_df,rownames(control_SL_ratio_df))
   sample_SLRatio_transform = zscore_transform(
     dplyr::select(fragment_profile$per_bin_profile,
@@ -32,7 +29,7 @@ get_zscore_profile <- function(fragment_profile,
 
   SLRatio_zscore_df =
     calculate_SLRatio_zscore(sample_SLRatio_transform,
-                             control_SLratio_transform)
+                             pon_profile)
   SLRatio_zscore_df =
     dplyr::mutate(SLRatio_zscore_df,
                   "SLRatio.corrected" =

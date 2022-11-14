@@ -90,28 +90,44 @@ plot_sl_ratio(sample_profile,ylim = c(0.25,1.75))
 Save fragment profile as RDS file for later use or for creation of Panel-of-Normal for further analysis
 
 ```{r saving profile as RDS}
+package_dir = system.file("extdata", package = "cfdnakit")
 saveRDS(sample_profile,
-        file = "~/plasma.exmple.RDS")
+        file = paste0(package_dir,"/plasma.example.RDS"))
 
 ```
 
 Making a Panel-of-Normal is necessary for downstream analysis as we want to compare fragment profile between a cfDNA from patient with pooled of healthy individuals. First, we create a text file where each line is a full path to rds file created by aforementioned function.
 
-```{r Make a pon profile from a text file containing list of rds}
-path_to_PoN_txt = "/omics/odcf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.listfile"
+```{r Make a file containing path to fragment profile}
+path_to_PoN_txt = 
+  system.file("extdata", "reference_healthy.listfile",
+              package = "cfdnakit")
+pon_files = readLines(path_to_PoN_txt)
+head(pon_files, n=5)
 # 
-create_PoN(path_to_PoN_txt,
-           file = "/omics/odcf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.rds")
-
-
 ```
 
+create_PoN function will read through all fragment profile files and create a set of PoN profile.
+```
+PoN.profiles = create_PoN(path_to_PoN_txt)
+saveRDS(PoN.profiles, "PoN.rds")
+```
+
+
+```{r Make a pon profile}
+PoN_rdsfile = system.file("extdata",
+                          "ex.PoN.rds",
+                          package = "cfdnakit")
+PoN.profiles = readRDS(PoN_rdsfile)
+
+```
 
 We rescale the SLRatio by the median of PoN samples. 
 
 ```{r Reading PoN samples and plot scaled value,warning=FALSE,fig.width=8, fig.height=4}
-PoN_rdsfile = "/omics/odcf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds"
-sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
+sample_zscore = 
+  get_zscore_profile(sample_profile,
+                     PoN.profiles)
 sample_zscore_segment = segmentByPSCB(sample_zscore)
 plot_transformed_sl(sample_zscore,sample_zscore_segment)
 ```

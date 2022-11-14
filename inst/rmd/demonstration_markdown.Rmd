@@ -97,8 +97,7 @@ Making a Panel-of-Normal is necessary for downstream analysis as we want to comp
 ```{r Make a pon profile from a text file containing list of rds}
 path_to_PoN_txt = "/omics/odcf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.listfile"
 # 
-create_PoN(path_to_PoN_txt,
-           file = "/omics/odcf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/reference_healthy.rds")
+PoN_profiles = create_PoN(path_to_PoN_txt)
 
 
 ```
@@ -107,8 +106,8 @@ create_PoN(path_to_PoN_txt,
 We rescale the SLRatio by the median of PoN samples. 
 
 ```{r Reading PoN samples and plot scaled value,warning=FALSE,fig.width=8, fig.height=4}
-PoN_rdsfile = "/omics/odcf/analysis/OE0290_projects/pediatric_tumor/whole_genome_sequencing/processing_scripts/cfdnakit_script/PoN_fragment_profiles.rds"
-sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
+
+sample_zscore = get_zscore_profile(sample_profile,PoN_profiles)
 sample_zscore_segment = segmentByPSCB(sample_zscore)
 plot_transformed_sl(sample_zscore,sample_zscore_segment)
 ```

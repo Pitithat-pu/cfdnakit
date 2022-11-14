@@ -17,16 +17,32 @@ knitr::opts_chunk$set(
 )
 ```
 
-This rmarkdown demonstrates how cfdnakit package works. First, load cfdnakit package to environment
+This vignette demonstrates how cfdnakit package works. First, load cfdnakit package to environment
 
 ```{r setup}
 library(cfdnakit)
 ```
 
 
-Let cfdnakit read sequence alignment file (.bam) with function read_bamfile. An BAM index file (.bai) is necessary for efficiently reading the file. If it doesn't exist in the same directory, this function will automatically create one. This function will split sequence reads into equal-size non-overlapping windows. Available size of bin are 100, 500, and 1000 KB. A path to a bam file is given to the function read_bamfile. sample_bins = read_bamfile(bamfile_path = "Patient1.bam", binsize = 1000) For demonstration, we load instance of an example sequence from file example_patientcfDNA.RDS.
+Let cfdnakit read sequence alignment file (.bam) with function read_bamfile. An BAM index file (.bai) is necessary for efficiently reading the file. If it doesn't exist in the same directory, this function will automatically create one. This function will split sequence reads into equal-size non-overlapping windows. Available size of bin are 100, 500, and 1000 KB. A path to a bam file is given to the function read_bamfile. sample_bins = read_bamfile(bamfile_path = "Patient1.bam", binsize = 1000) For demonstration, we load instance of an example sequence from file example_patientcfDNA.RDS. We do not filtering out reads in "Blacklist Regions" in this example.
 
 ```{r read a bam file and splited into 1000 KB non-overlapping bins, warning=FALSE}
+
+sample_bamfile = system.file("extdata","ex.plasma.bam",
+                package = "cfdnakit")
+plasma_SampleBam = read_bamfile(sample_bamfile,
+                                apply_blacklist = FALSE)
+```
+
+This will take a period of time depending on the size of your BAM file. We recommend to save the result as RDS file using saveRDS function.
+
+```
+saveRDS(plasma_SampleBam, file = patientcfDNA_SampleBam.RDS)
+```
+
+This vignette will use the example data (example_patientcfDNA.RDS). Now we load this file into R session.
+
+```{r load example patient cfDNA sample BAM, warning=FALSE}
 
 example_RDS="example_patientcfDNA.RDS"
 example_RDS_file =
@@ -35,7 +51,6 @@ example_RDS_file =
 sample_bins = readRDS(example_RDS_file)
 
 ```
-
 
 Fragment-length distribution of the sample can be visualized with function plot_fragment_dist. The most common fragment-length is shown at the top-right legend. The x-axis is the length of cfDNA; y-axis is the proportion of cfDNA fragment having a specific length.
 
@@ -68,7 +83,7 @@ plot_fragment_dist(comparing_list)
 Comparing multiple cfDNA samples is possible by creating list of sample_bins; each with unique sample name. 
 
 
-We can extract genome-wide fragment-profile. 
+We can extract genome-wide fragment-length profile. 
 
 ```{r getting fragment length profile,warning=FALSE, fig.width=12, fig.height=5}
 sample_profile = 
@@ -107,13 +122,13 @@ head(pon_files, n=5)
 # 
 ```
 
-create_PoN function will read through all fragment profile files and create a set of PoN profile.
+create_PoN function will read through all fragment profile files and create a set of PoN profile. We save this PoN profile and load into analysis later.
 ```
 PoN.profiles = create_PoN(path_to_PoN_txt)
 saveRDS(PoN.profiles, "PoN.rds")
 ```
 
-
+For this vignette, we load ready-to-use PoN profile (ex.PoN.rds). 
 ```{r Make a pon profile}
 PoN_rdsfile = system.file("extdata",
                           "ex.PoN.rds",
@@ -121,6 +136,7 @@ PoN_rdsfile = system.file("extdata",
 PoN.profiles = readRDS(PoN_rdsfile)
 
 ```
+
 
 We rescale the SLRatio by the median of PoN samples. 
 

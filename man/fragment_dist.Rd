@@ -19,11 +19,3 @@ Distribution table of fragment length
 \description{
 Get insert-size distribution table
 }
-\examples{
-### Loading example SampleBam file
-fl <- system.file("extdata","ex.plasma.bam",package = "cfdnakit")
-### read bam file with default params (hg19, 1000K binsize)
-sample.bam = read_bamfile(fl)
-
-fragment.length.dist.df = fragment_dist(sample.bam)
-}

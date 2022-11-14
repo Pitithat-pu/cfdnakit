@@ -183,10 +183,11 @@ extract_insert_size <- function(readbam_bin,
                                 minimum_length = 20) {
   isize_vector = Biobase::subListExtract(readbam_bin, "isize")
   isize_vector = unlist(isize_vector)
-  isize_vector = abs(isize_vector)[which(dplyr::between(abs(isize_vector),
-                                                 left = minimum_length,
-                                                 right = maximum_length))]
   isize_vector = unname(isize_vector)
+  isize_vector = isize_vector[
+    isize_vector >= minimum_length &
+      isize_vector <= maximum_length
+  ]
 }
 
 
@@ -229,15 +230,8 @@ test_isize_KolmogorovSmirnov <- function(
 #' @param minimum_length Int; Minimum length of fragment. cfDNA fragment shorter than this value will not be considered;  Default 20
 #'
 #' @return Distribution table of fragment length
-#' @export
 #'
-#' @examples
-#' ### Loading example SampleBam file
-#' fl <- system.file("extdata","ex.plasma.bam",package = "cfdnakit")
-#' ### read bam file with default params (hg19, 1000K binsize)
-#' sample.bam = read_bamfile(fl)
 #'
-#' fragment.length.dist.df = fragment_dist(sample.bam)
 fragment_dist <- function(readbam_bin,
                           maximum_length = 600,
                           minimum_length = 20){

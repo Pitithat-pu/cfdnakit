@@ -4,12 +4,12 @@
 \alias{get_zscore_profile}
 \title{Transform SLRatio with PoN Fragment profile}
 \usage{
-get_zscore_profile(fragment_profile, pon_profile_rds)
+get_zscore_profile(fragment_profile, pon_profile)
 }
 \arguments{
 \item{fragment_profile}{Sample Profile}
 
-\item{pon_profile_rds}{Path to PoN rds file}
+\item{pon_profile}{PoN Profiles}
 }
 \value{
 Dataframe of robust transformed SLratio
@@ -21,11 +21,13 @@ Transform SLRatio with PoN Fragment profile
 ### Loading example SampleBam file
 example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
 sample_bambin <- readRDS(example_file)
+
 ### Example PoN
 PoN_rdsfile = system.file("extdata","ex.PoN.rds",package = "cfdnakit")
+pon_profiles = readRDS(PoN_rdsfile)
 sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 
-sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
+sample_zscore = get_zscore_profile(sample_profile,pon_profiles)
 
 sample_zscore_segment = segmentByPSCB(sample_zscore)
 }

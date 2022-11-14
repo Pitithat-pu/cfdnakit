@@ -15,10 +15,10 @@
 #' sample_bambin <- readRDS(example_file)
 #' ### Example PoN
 #' PoN_rdsfile = system.file("extdata","ex.PoN.rds",package = "cfdnakit")
+#' pon_profiles = readRDS(PoN_rdsfile)
 #' sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 #'
-#' sample_zscore = get_zscore_profile(sample_profile,PoN_rdsfile)
-#'
+#' sample_zscore = get_zscore_profile(sample_profile,pon_profiles)
 #' sample_zscore_segment = segmentByPSCB(sample_zscore)
 #' plot_transformed_sl(sample_zscore, sample_zscore_segment)
 #' ## Change reference genome

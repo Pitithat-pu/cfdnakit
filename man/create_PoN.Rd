@@ -2,32 +2,29 @@
 % Please edit documentation in R/create_PoN.R
 \name{create_PoN}
 \alias{create_PoN}
-\title{Create Panel-of-Normal (PoN) Rdata}
+\title{Create Panel-of-Normal (PoN) object}
 \usage{
-create_PoN(list_rdsfiles, file, overwrite = TRUE)
+create_PoN(list_rdsfiles)
 }
 \arguments{
 \item{list_rdsfiles}{Character; a file contains paths to Profile.Rdata per line}
-
-\item{file}{Character; Output file (.rds)}
-
-\item{overwrite}{Logical: Overwrite existing if result already existed}
 }
 \value{
 Null
 }
 \description{
-Create Panel-of-Normal (PoN) Rdata
+Create Panel-of-Normal (PoN) object
 }
 \examples{
 healthy.1 = system.file("extdata","ex.healthy1.rds",package = "cfdnakit")
 healthy.2 = system.file("extdata","ex.healthy2.rds",package = "cfdnakit")
 
-list_rdsfile = "reference_healthy.listfile"
-fileConn<-file(list_rdsfile)
+path_to_PoN_txt = paste0(system.file("extdata",package = "cfdnakit"),"/temp.reference_healthy.listfile")
+fileConn<-file(path_to_PoN_txt)
 writeLines(c(healthy.1,healthy.2), fileConn)
 close(fileConn)
-create_PoN(list_rdsfile,"temp.ex.PoN.rds")
 
-file.remove("temp.ex.PoN.rds")
+
+PoN.profiles = create_PoN(path_to_PoN_txt)
+file.remove(path_to_PoN_txt)
 }

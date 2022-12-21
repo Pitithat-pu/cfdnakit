@@ -27,6 +27,11 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
     stop("The given target bedfile doesn't exist.")
   }
 
+  if(!if_exist_baifile(bamfile = bamfile_path)){
+    print("The BAM index file (.bai) is missing. Creating an index file")
+    Rsamtools::indexBam(bamfile_path)
+    print("Bam index file created.")
+  }
 
   which <- util.get_sliding_windows(binsize = binsize, genome=genome)
   if(if_ucsc_chrformat(bamfile_path)){
@@ -46,11 +51,7 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                                    flag = flag,
                                    which = which,
                                    mapqFilter = min_mapq)
-  if(!if_exist_baifile(bamfile = bamfile_path)){
-    print("The BAM index file (.bai) is missing. Creating an index file")
-    Rsamtools::indexBam(bamfile_path)
-    print("Bam index file created.")
-  }
+
   print("Reading bamfile")
   bam <- Rsamtools::scanBam(file = bamfile_path,
                             index = bamfile_path,

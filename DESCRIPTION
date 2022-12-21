@@ -33,5 +33,6 @@ Depends:
 Suggests: 
     rmarkdown,
     knitr,
-    roxygen2
+    roxygen2,
+    BiocStyle
 VignetteBuilder: knitr

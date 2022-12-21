@@ -83,32 +83,34 @@ get_fragment_profile <- function(readbam_bin,
   #<<<<<
 
   insert_info_df =
-    data.frame("Sample.ID"=sample_id,
-               "Total Fragments" = length(isize_vector),
-               "Read Pairs in range" = sum(bin_profile_df$nfragment),
-               "Read Pairs in range_corrected" = sum(bin_profile_df$total.corrected,na.rm=TRUE),
-               "Mode" = getmode(isize_vector),
-               "Median" = median(isize_vector, na.rm = TRUE),
-               "Mean" = round(mean(isize_vector, na.rm = TRUE), 2),
-               "Mad" = round(mad(isize_vector, na.rm = TRUE),2),
-               "short" = sum(bin_profile_df$short,na.rm=TRUE),
-               "long" = sum(bin_profile_df$long,na.rm=TRUE),
-               "S/L Ratio" = round(sum(bin_profile_df$short, na.rm=TRUE) /
-                                     sum(bin_profile_df$long, na.rm=TRUE),2),
-               "short_corrected" = sum(bin_profile_df$short.corrected,na.rm=TRUE),
-               "long_corrected" = sum(bin_profile_df$long.corrected,na.rm=TRUE),
-               "S/L Ratio_corrected" = round(sum(bin_profile_df$short.corrected, na.rm=TRUE) /
-                 sum(bin_profile_df$long.corrected, na.rm=TRUE),2),
-               # "K.S.p.value" = ks_test$p.value,
-               # "K.S.stats" = ks_test$statistic,
-               "Bin Size(KB)"=binsize)
+    data.frame(
+      "Sample.ID"=sample_id,
+      "Total Fragments" = length(isize_vector),
+      "Read Pairs in range" = sum(bin_profile_df$nfragment),
+      "Read Pairs in range (corrected)" =
+        sum(bin_profile_df$total.corrected,na.rm=TRUE),
+      "N.Short" = sum(bin_profile_df$short,na.rm=TRUE),
+      "N.Long" = sum(bin_profile_df$long,na.rm=TRUE),
+      "Mode" = getmode(isize_vector),
+      "Median" = median(isize_vector, na.rm = TRUE),
+      "Mean" = round(mean(isize_vector, na.rm = TRUE), 2),
+      "Mad" = round(mad(isize_vector, na.rm = TRUE),2),
+      "S/L Ratio" =
+        round(sum(bin_profile_df$short, na.rm=TRUE) /
+                sum(bin_profile_df$long, na.rm=TRUE),2),
+      # "short_corrected" = sum(bin_profile_df$short.corrected,na.rm=TRUE),
+      # "long_corrected" = sum(bin_profile_df$long.corrected,na.rm=TRUE),
+      "S/L Ratio_corrected" =
+        round(sum(bin_profile_df$short.corrected, na.rm=TRUE) /
+                sum(bin_profile_df$long.corrected, na.rm=TRUE),2),
+      # "K.S.p.value" = ks_test$p.value,
+      # "K.S.stats" = ks_test$statistic,
+      "Bin Size(KB)"=binsize)
 
-  # density_table = make_density_table(isize_vector)
 
   fragment_profile = list("Sample.ID"=sample_id,
                           "per_bin_profile" = bin_profile_df,
                           "sample_profile" = insert_info_df,
-                          # "distribution_table" = density_table,
                           "minimum_length"=minimum_length,
                           "maximum_length"=maximum_length)
   class(fragment_profile) = "SampleFragment"

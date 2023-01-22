@@ -86,4 +86,4 @@ Please follow the instructions on [GitHub Wiki page](https://github.com/Pitithat
 
 ## Contact
 
-If you have any questions or feedback, please contact us at: Email: [pitithat.pur\@cra.ac.th](mailto:p.puranachot@dkfz-heidelberg.de); [b.brors\@dkfz-heidelberg.de](mailto:b.brors@dkfz-heidelberg.de)
+If you have any questions or feedback, please contact us at: Email: [pitithat.pur\@cra.ac.th](mailto:pitithat.pur@cra.ac.th); [b.brors\@dkfz-heidelberg.de](mailto:b.brors@dkfz-heidelberg.de)

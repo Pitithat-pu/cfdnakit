@@ -7,7 +7,7 @@
 #'
 #' @examples#'
 #' ### Loading example SampleBam file
-#' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 #' sample_bambin <- readRDS(example_file)
 #' ### Example PoN
 #' PoN_rdsfile = system.file("extdata","ex.PoN.rds",package = "cfdnakit")

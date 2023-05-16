@@ -8,7 +8,7 @@
 #'
 #' @examples
 #' ### Loading example SampleBam file
-#' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 #' sample_bambin <- readRDS(example_file)
 #'
 #' ### Example PoN
@@ -22,7 +22,11 @@
 
 get_zscore_profile <- function(fragment_profile,
                                pon_profile){
-  # main_functions.rbustz_transform(sample_SL_df,rownames(control_SL_ratio_df))
+
+  fragment_profile$per_bin_profile =
+    fragment_profile$per_bin_profile[
+      which(rownames(fragment_profile$per_bin_profile) %in%
+              rownames(pon_profile)),]
   sample_SLRatio_transform = zscore_transform(
     dplyr::select(fragment_profile$per_bin_profile,
                   .data$`S/L.Ratio.corrected`))

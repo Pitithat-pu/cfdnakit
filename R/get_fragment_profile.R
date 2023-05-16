@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 #' sample_bambin <- readRDS(example_file)
 #' sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 #' @importFrom stats sd mad
@@ -175,7 +175,7 @@ make_density_table = function(readbam_bin,
 #'
 #' @examples
 #' ### Loading example SampleBam file
-#' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 #' sample_bambin = readRDS(example_file)
 #' extract_insert_size(sample_bambin)
 #' ### Extract only insert size of fragment having specific size
@@ -205,9 +205,9 @@ extract_insert_size <- function(readbam_bin,
 #'
 #' @examples
 #' ### Loading example SampleBam file
-#' example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 #' sample_bambin = readRDS(example_file)
-#' control_rds="BH01_chr15.RDS"
+#' control_rds="BH01_CHR15.SampleBam.rds"
 #' control_RDS_file = system.file("extdata", control_rds, package = "cfdnakit")
 #' control_fragment_profile = readRDS(control_RDS_file)
 #' sample.isize = extract_insert_size(sample_bambin)

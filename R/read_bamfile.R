@@ -16,7 +16,7 @@
 #' @examples
 #' fl <- system.file("extdata","ex.plasma.bam",package = "cfdnakit")
 #' ### read bam file with default params (hg19, 1000K binsize)
-#' sample.bam = read_bamfile(fl)
+#' sample.bam = read_bamfile(fl, apply_blacklist=FALSE)
 read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                          genome="hg19" ,target_bedfile=NULL,
                          min_mapq=20, apply_blacklist= TRUE){
@@ -46,7 +46,7 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                                  isSecondaryAlignment = FALSE,
                                  isMateMinusStrand = TRUE)
 
-  param <- Rsamtools::ScanBamParam(what = c("qname", "rname", "pos",
+  param <- Rsamtools::ScanBamParam(what = c( "rname", "pos",
                                             "isize", "qwidth"),
                                    flag = flag,
                                    which = which,
@@ -212,7 +212,6 @@ filter_read_on_blacklist <- function(sample_bin, blacklist_files=NULL , genome="
                              ranges = IRanges::IRanges(start = region_lst$pos,
                                               end = region_lst$pos +
                                                 region_lst$qwidth),
-                             qname=region_lst$qname,
                              rname=region_lst$rname,
                              pos=region_lst$pos,
                              qwidth=region_lst$qwidth,
@@ -226,8 +225,7 @@ filter_read_on_blacklist <- function(sample_bin, blacklist_files=NULL , genome="
     else{
       filterd_bam_gr = bin_gr[-filtered_gr@from]
     }
-      return_vec = list("qname" = filterd_bam_gr$qname,
-                      "rname" = filterd_bam_gr$rname,
+      return_vec = list("rname" = filterd_bam_gr$rname,
                       "pos" = filterd_bam_gr$pos,
                       "qwidth" = filterd_bam_gr$qwidth,
                       "isize" = filterd_bam_gr$isize)

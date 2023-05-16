@@ -72,7 +72,7 @@ library(cfdnakit)
 sample_bamfile = system.file("extdata",
                              "ex.plasma.bam",
                 package = "cfdnakit")
-plasma_SampleBam = read_bamfile(sample_bamfile)
+plasma_SampleBam = read_bamfile(sample_bamfile,apply_blacklist = FALSE)
 ```
 
 By default, running read_bamfile will split reads into 1000 KB non-overlapping bins based-on the human reference genome GRCh37.
@@ -84,13 +84,18 @@ saveRDS(plasma_SampleBam, file = patientcfDNA_SampleBam.RDS)
 ```
 
 
+Fragment-length distribution of the sample can be visualized with function **plot_fragment_dist**. In the top-right legend, the modal length (bp) is shown in the parenthesis behind each sample name. The x-axis is the length of cfDNA; y-axis is the proportion of cfDNA fragment having a specific length.
+```{r plot fragment length distribution, fig.width=5,fig.height=3.5}
+plot_fragment_dist(list("Plasma.Sample"=plasma_SampleBam))
+```
+
 # Analyse the Fragment Length Distribution
 
-This document will demonstate by using SampleBam object (example_patientcfDNA.RDS). Now we load this file into R session.
+This document will demonstate by using SampleBam object (example_patientcfDNA_SampleBam.RDS). Now we load this file into R session.
 
 ```{r load example patient cfDNA sample BAM, warning=FALSE}
 
-example_RDS="example_patientcfDNA.RDS"
+example_RDS="example_patientcfDNA_SampleBam.RDS"
 example_RDS_file =
     system.file("extdata",example_RDS,
                 package = "cfdnakit")
@@ -98,16 +103,12 @@ sample_bins = readRDS(example_RDS_file)
 
 ```
 
-Fragment-length distribution of the sample can be visualized with function **plot_fragment_dist**. In the top-right legend, the modal length (bp) is shown in the parenthesis behind each sample name. The x-axis is the length of cfDNA; y-axis is the proportion of cfDNA fragment having a specific length.
-```{r plot fragment length distribution, fig.width=5,fig.height=3.5}
-plot_fragment_dist(list("Patient.1"=sample_bins))
-```
 
 In general, plasma cfDNA should show non-random fragmentation pattern. The modal length of cfDNA is 167 bp and 10-bp periodic peaks. However, tumor-derived cfDNA are observed to be shorter (\<150 bp) than cfDNA of non-tumor origin. 
 Here, we compare the fragment length distribution of patient's cfDNA with healthy individual. We derived a healthy cfDNA from Snyder et al. (2016) and create a RData file "BH01_chr15.RDS". This file can be loaded in R environment with readRDS function.
 
 ```{r getting build-in healthy plasma cfDNA sample, warning=FALSE}
-control_rds="BH01_chr15.RDS"
+control_rds="BH01_CHR15.SampleBam.rds"
 control_RDS_file =
     system.file("extdata",control_rds,
                 package = "cfdnakit")
@@ -163,7 +164,7 @@ sample_profile$sample_profile
 We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Given short-fragment profile, short-fragment ratio per bin infer contribution of circulating tumor DNA (ctDNA) into cfDNA. The enrichment of short-fragment cfDNA in a large genomic region could infer the copy-number aberration status. The higher short-fragment ratio indicate amplification event whereas deletion would have relatively lower short-fragment ratio. 
 
 ```{r plot genome-wide short-fragment ratio, fig.width=12, fig.height=5, warning=FALSE}
-plot_sl_ratio(sample_profile,ylim = c(0,1.25))
+plot_sl_ratio(sample_profile,ylim = c(0,5))
 ```
 
 The range of S.L.Ratio is broad. It could be as high as 2 or more in sample with high contribution of ctDNA. Adjusting the plot is possible with parameter **ylim** or with other ggplot functions.

@@ -21,7 +21,7 @@ Extract Insert size from SampleBam
 }
 \examples{
 ### Loading example SampleBam file
-example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 sample_bambin = readRDS(example_file)
 extract_insert_size(sample_bambin)
 ### Extract only insert size of fragment having specific size

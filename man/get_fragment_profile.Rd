@@ -36,7 +36,7 @@ SampleFragment Object; Fragment length information for quality check and downstr
 Getting fragment-length information
 }
 \examples{
-example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 sample_bambin <- readRDS(example_file)
 sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 }

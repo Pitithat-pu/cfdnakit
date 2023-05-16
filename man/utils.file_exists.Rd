@@ -16,6 +16,6 @@ Boolean; if all files exist.
 Check if file/files given do exist
 }
 \examples{
-example_file =  system.file("extdata","example_patientcfDNA.RDS",package = "cfdnakit")
+example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 utils.file_exists(example_file)
 }

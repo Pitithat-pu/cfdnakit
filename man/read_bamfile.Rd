@@ -42,5 +42,5 @@ will be binned into non-overlapping size
 \examples{
 fl <- system.file("extdata","ex.plasma.bam",package = "cfdnakit")
 ### read bam file with default params (hg19, 1000K binsize)
-sample.bam = read_bamfile(fl)
+sample.bam = read_bamfile(fl, apply_blacklist=FALSE)
 }

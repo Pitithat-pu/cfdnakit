@@ -25,14 +25,14 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This package provides basic functions for analyzing next-generation sequencing data of cell-free DNA (cfDNA). The package focuses on extracting the length of cfDNA sample and visualization of genome-wide enrichment of short-fragmented cfDNA. The aberration of fragmentation profile, denoted modified copy number profile abnormality (CPA) score, allows quantification of circulating tumor DNA (ctDNA). We recommend using this package to analysis shallow whole-genome sequencing data (\~0.3X or more). This package was complemented by Bioconductor packages e.g. QDNAseq, Rsamtools and GenomicRanges which could further expand the functionality of this package in the future. 
-
+This package provides basic functions for analyzing next-generation sequencing data of cell-free DNA (cfDNA). The package focuses on extracting the length of cfDNA sample and visualization of genome-wide enrichment of short-fragmented cfDNA. The aberration of fragmentation profile, denoted modified copy number profile abnormality (CPA) score, allows quantification of circulating tumor DNA (ctDNA). We recommend using this package to analysis shallow whole-genome sequencing data (\~0.3X or more). This package was complemented by Bioconductor packages e.g. QDNAseq, Rsamtools and GenomicRanges which could further expand the functionality of this package in the future.
 
 # Prerequisites and Installation
 
-Package was tested on R environment 4.0.0. Now only possible way to install develop version of this package is via github repository. 
+Package was tested on R environment 4.0.0. Now only possible way to install develop version of this package is via github repository.
 
 ## Install prerequisites packages
+
 First, we need to install devtools and BiocManager.
 
 ``` r
@@ -44,7 +44,7 @@ if(! "BiocManager" %in% rownames(installed.packages()))
 
 ## Install devel version cfdnakit
 
-A devel version can be installed from GitHub  (<https://https://github.com/Pitithat-pu/cfdnakit/>): using install_github.
+A devel version can be installed from GitHub (<https://https://github.com/Pitithat-pu/cfdnakit/>): using install_github.
 
 ``` r
 library(devtools)  ### use devtools
@@ -83,8 +83,8 @@ Reading the file should take a while depending on the size of your BAM. We recom
 saveRDS(plasma_SampleBam, file = patientcfDNA_SampleBam.RDS)
 ```
 
-
 Fragment-length distribution of the sample can be visualized with function **plot_fragment_dist**. In the top-right legend, the modal length (bp) is shown in the parenthesis behind each sample name. The x-axis is the length of cfDNA; y-axis is the proportion of cfDNA fragment having a specific length.
+
 ```{r plot fragment length distribution, fig.width=5,fig.height=3.5}
 plot_fragment_dist(list("Plasma.Sample"=plasma_SampleBam))
 ```
@@ -103,9 +103,7 @@ sample_bins = readRDS(example_RDS_file)
 
 ```
 
-
-In general, plasma cfDNA should show non-random fragmentation pattern. The modal length of cfDNA is 167 bp and 10-bp periodic peaks. However, tumor-derived cfDNA are observed to be shorter (\<150 bp) than cfDNA of non-tumor origin. 
-Here, we compare the fragment length distribution of patient's cfDNA with healthy individual. We derived a healthy cfDNA from Snyder et al. (2016) and create a RData file "BH01_chr15.RDS". This file can be loaded in R environment with readRDS function.
+In general, plasma cfDNA should show non-random fragmentation pattern. The modal length of cfDNA is 167 bp and 10-bp periodic peaks. However, tumor-derived cfDNA are observed to be shorter (\<150 bp) than cfDNA of non-tumor origin. Here, we compare the fragment length distribution of patient's cfDNA with healthy individual. We derived a healthy cfDNA from Snyder et al. (2016) and create a RData file "BH01_chr15.RDS". This file can be loaded in R environment with readRDS function.
 
 ```{r getting build-in healthy plasma cfDNA sample, warning=FALSE}
 control_rds="BH01_CHR15.SampleBam.rds"
@@ -126,7 +124,6 @@ plot_fragment_dist(comparing_list)
 
 ```
 
-
 **Optional Parameters**
 
 maximum_length = Maximum length of cfDNA (Default 550)
@@ -144,14 +141,14 @@ sample_profile =
 ```
 
 This SampleFragment contains a dataframe named **sample_profile**. This table contains information about the BAM file and the ratio number of Short/Long fragments. The table below describes important variables.
+
 ``` r
 
 sample_profile$sample_profile
-
 ```
 
 | Variable            | Description                                                   |
-|---------------------|---------------------------------------------------------------|
+|-------------------|-----------------------------------------------------|
 | Total.Fragments     | Number of fragments (not the number of reads)                 |
 | Read.Pairs.in.range | Number of fragments within the defined range (short and long) |
 | Mode                | Fragment length of the majority                               |
@@ -161,24 +158,29 @@ sample_profile$sample_profile
 
 # Plot Genome-wide Short-fragmented Ratio
 
-We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Given short-fragment profile, short-fragment ratio per bin infer contribution of circulating tumor DNA (ctDNA) into cfDNA. The enrichment of short-fragment cfDNA in a large genomic region could infer the copy-number aberration status. The higher short-fragment ratio indicate amplification event whereas deletion would have relatively lower short-fragment ratio. 
+We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Given short-fragment profile, short-fragment ratio per bin infer contribution of circulating tumor DNA (ctDNA) into cfDNA. The enrichment of short-fragment cfDNA in a large genomic region could infer the copy-number aberration status. The higher short-fragment ratio indicate amplification event whereas deletion would have relatively lower short-fragment ratio.
 
 ```{r plot genome-wide short-fragment ratio, fig.width=12, fig.height=5, warning=FALSE}
-plot_sl_ratio(sample_profile,ylim = c(0,5))
+## For this demenstration, we load a real patient-derived cfDNA profile.
+patient.SampleFragment.file =
+    system.file("extdata",
+                "example_patientcfDNA_SampleFragment.RDS",
+                package = "cfdnakit")
+patient.SampleFragment = readRDS(patient.SampleFragment.file)
+plot_sl_ratio(patient.SampleFragment)
 ```
 
 The range of S.L.Ratio is broad. It could be as high as 2 or more in sample with high contribution of ctDNA. Adjusting the plot is possible with parameter **ylim** or with other ggplot functions.
 
 # Save as RDS file
 
-Up to this step, we rather save the analysis object as RDS for later use and for creation of a Panel-of-Normal. 
+Up to this step, we rather save the analysis object as RDS for later use and for creation of a Panel-of-Normal.
 
 ``` r
 destination_dir = "~/cfdnakit.result"
 saveRDS(sample_profile,
         file = paste0(destination_dir,
-        "/plasma.example.RDS"))
-
+        "/plasma.SampleFragment.RDS"))
 ```
 
 # Create Panel of Normal (PoN)
@@ -189,27 +191,28 @@ Making a Panel-of-Normal is necessary for downstream analysis as we want to comp
 
 **Example content of PoN list file**
 
+```         
+Path.to/SampleFragment_healthyplasma-01.rds
+Path.to/SampleFragment_healthyplasma-02.rds
+Path.to/SampleFragment_healthyplasma-03.rds
+Path.to/SampleFragment_healthyplasma-04.rds
+Path.to/SampleFragment_healthyplasma-05.rds
 ```
-Path.to/healthyplasma-01.rds
-Path.to/healthyplasma-02.rds
-Path.to/healthyplasma-03.rds
-Path.to/healthyplasma-04.rds
-Path.to/healthyplasma-05.rds
-
-```
-
 
 ## Creating a PoN dataset
+
 **create_PoN** function will read through all fragment profile files and create a set of PoN profile. We save this PoN profile and load into analysis later.
 
 ``` r
 PoN.profiles = create_PoN(path_to_PoN_txt)
 saveRDS(PoN.profiles, "PoN.rds")
 ```
+
 # Inferring CNV from short fragment cfDNA
+
 ## Normalizing Short-fragmented Ratio
-The contribution of short-fragmented cfDNA into genomic regions could infer copy-number aberration harbored in the tumor cells.
-For this demonstration, we load ready-to-use PoN profile (ex.PoN.rds).
+
+The contribution of short-fragmented cfDNA into genomic regions could infer copy-number aberration harbored in the tumor cells. For this demonstration, we load ready-to-use PoN profile (ex.PoN.rds).
 
 ```{r Make a pon profile}
 PoN_rdsfile = system.file("extdata",
@@ -223,24 +226,27 @@ cfdnakit transforms S.L.Ratio of each genomic windows with the distribution of s
 
 ```{r Reading PoN samples,warning=FALSE,fig.width=8, fig.height=4}
 sample_zscore = 
-  get_zscore_profile(sample_profile,
+  get_zscore_profile(patient.SampleFragment,
                      PoN.profiles)
 ```
 
 ## Circular Binary Segmentation (CBS)
+
 cfdnakit implement the circular binary segmentation algorithm. Function **segmentByCBS** of package PSCBS were used through function segmentByPSCB. We can visualize both transformed S.L.Ratio and the segmentation by function **plot_transformed_sl**.
+
 ```{r Reading PoN samples and plot scaled value,warning=FALSE,fig.width=8, fig.height=4}
 
 sample_zscore_segment = segmentByPSCB(sample_zscore)
 plot_transformed_sl(sample_zscore,sample_zscore_segment)
 ```
-**Optional parameters**
-ylim = Y-axis of plot (Default c(-20,20))
+
+**Optional parameters** ylim = Y-axis of plot (Default c(-20,20))
 
 ## Estimating tumor fraction (TF) and CNV calling
+
 Base on hypothesis that short-fragmented cfDNA originate from tumor cells. Enrichment of short-fragmented cfDNA in a large genomic segments correlates with the absolute copy in the tumor origin. cfdnakit heuristically search for fittest solution per absolute ploidy of 2, 3 and 4. The distance of each solution is calculated similarly to ACE (Poell JB et.al 2019) method.
 
-Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with * are optimal solutions (minimum distance) per absolute genome ploidy.
+Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with \* are optimal solutions (minimum distance) per absolute genome ploidy.
 
 ```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=6, fig.height=4}
 
@@ -250,9 +256,10 @@ plot_distance_matrix(sample_cnv)
 
 ```
 
-Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with * are optimal solutions (minimum distance) per absolute genome ploidy.
+Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with \* are optimal solutions (minimum distance) per absolute genome ploidy.
 
 The available solution can be obtained with function **get_solution_table**. The table shows the best solution (minimum distance) per absolute genome ploidy and rank them by the distance.
+
 ```{r get and print solution table}
 solution_table = get_solution_table(sample_cnv)
 
@@ -261,7 +268,8 @@ solution_table
 ```
 
 ## Plot optimal CNV profile
- We can plot copy-number result by function plot_cnv_solution. By default, this function will produce the plot of the best solution (rank 1) and can be changed by specifying solution number to parameter **selected_solution**.
+
+We can plot copy-number result by function plot_cnv_solution. By default, this function will produce the plot of the best solution (rank 1) and can be changed by specifying solution number to parameter **selected_solution**.
 
 ```{r plot cnv-calling first solution,warning=FALSE,fig.width=12, fig.height=5}
 
@@ -270,14 +278,17 @@ plot_cnv_solution(sample_cnv,selected_solution = 1)
 ```
 
 # Copy-number Abnormality Score
+
 As the result of copy-number solution fitting, the tumor fraction (tf ) indicates the estimated quantity of ctDNA from the amplitude of signals. cfdnakit also implements the copy number profile abnormality (CPA) score to quantify the tumor burden from the segmentation result.
 
 ```{r calculate CPA score}
 calculate_CPA_score(sample_zscore_segment)
 ```
+
 This score is robust to coverage bias and noisy fragmented signals. Briefly, the Gaussian noise does not affect the score because the z-scores of segments, instead of the z-score of bins, are considered. Second, the average segment length is used as a penalty for sample quality. The signal of a bad quality sample does not strongly affect the score whereas a true highly unstable genome would overcome this penalty.
 
 # Session info
+
 Output of sessionInfo on the system on which this document was compiled:
 
 ```{r session info}

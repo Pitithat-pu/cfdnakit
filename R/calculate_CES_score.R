@@ -1,8 +1,8 @@
-#' Calculate CPA Score from Segmentation
+#' Calculate CES Score from Segmentation
 #'
 #' @param sample_segmentation Segmentation Dataframe
 #'
-#' @return Numeric; CPA score
+#' @return Numeric; CES score
 #' @export
 #'
 #' @examples
@@ -18,11 +18,11 @@
 #'
 #' sample_zscore_segment = segmentByPSCB(sample_zscore)
 #'
-#' calculate_CPA_score(sample_zscore_segment)
+#' calculate_CES_score(sample_zscore_segment)
 #'
-calculate_CPA_score <- function(sample_segmentation){
-  CPA_score_SLRatio =
+calculate_CES_score <- function(sample_segmentation){
+  CES_score_SLRatio =
     round(sum(abs(sample_segmentation$mean) * sample_segmentation$nbrOfLoci) /
             nrow(sample_segmentation),3)
-  return(CPA_score_SLRatio)
+  return(CES_score_SLRatio)
 }

@@ -279,7 +279,7 @@ plot_cnv_solution(sample_cnv,selected_solution = 1)
 
 # Copy-number Abnormality Score
 
-As the result of copy-number solution fitting, the tumor fraction (tf ) indicates the estimated quantity of ctDNA from the amplitude of signals. cfdnakit also implements the ctDNA estimation score (CES) score to quantify the tumor burden from the segmentation result.
+As the result of copy-number solution fitting, the tumor fraction (tf ) indicates the estimated quantity of ctDNA from the amplitude of signals. cfdnakit also implements the ctDNA estimation score (CES) score to quantify the tumor-derived cell-free DNA from the segmentation and the SLRatio.
 
 ```{r calculate CES score}
 calculate_CES_score(sample_zscore_segment)

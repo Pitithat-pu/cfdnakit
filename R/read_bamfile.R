@@ -249,7 +249,7 @@ create_blacklist_gr <- function(blacklist_files){
         as.data.frame(utils::read.table(con,
                                         header = FALSE,sep = "\t",
                                         stringsAsFactors = FALSE))[,seq_len(3)]
-      # close(con)
+      close(con)
     } else {
       blacklist_targets =
         as.data.frame(utils::read.table(blacklist_region),

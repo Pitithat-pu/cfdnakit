@@ -36,7 +36,11 @@ utils.unlist <- function (x){
 
 util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
   ### stop if given reference name is neither hg19 nor mm10
-  if(! genome %in% c("hg19","hg38","mm10")) stop("Only hg19, hg38 or mm10 genome are possible")
+  if(! genome %in% c("hg19","hg38","mm10"))
+    stop("Only hg19, hg38 or mm10 genome are possible")
+  if(! binsize %in% c(100,500,1000))
+    stop(paste0("The selected binsize (",binsize,
+                ") is not available.\nAvailable binsize (kb) are 100, 500, 1000."))
 
   if(genome %in% c("hg19","hg38")){
     #### Reading in bin info from extdata if hg19 genome
@@ -48,9 +52,11 @@ util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
                   package = "cfdnakit")
     if (utils.file_exists(qdnaseq_sliding_windows_RDS)) {
       bins = readRDS(qdnaseq_sliding_windows_RDS)
+
     } else {
-      stop(paste0("The selected binsize (",binsize,
-                  ") is not available.\nAvailable binsize (kb) are 1000, 500, 100."))
+      bins =  QDNAseq::getBinAnnotations(
+        binSize=binsize,
+        genome = genome)
     }
   } else if (genome=="mm10") {
     ### Loading bin information through QDNAseq package

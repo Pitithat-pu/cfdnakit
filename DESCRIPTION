@@ -1,6 +1,6 @@
 Package: cfdnakit
 Title: Analyse fragmentation of high-throughput sequencing of circulating cell-free DNA (cfDNA) 
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: person(given = "Pitithat",
            family = "Puranachot",
            role = c("aut", "cre"),

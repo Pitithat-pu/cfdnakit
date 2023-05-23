@@ -1,9 +1,13 @@
 .Rproj.user
 .Rbuildignore
 .Rhistory
+inst/rmd/
+cfdnakit.Rproj
 reference_healthy.listfile
 temp.ex.PoN.rds
 .git
-inst/doc
-cfdnakit.Rproj
-inst/rmd/demonstration_markdown.log
+
+!inst/rmd/demonstration_markdown.html
+!inst/rmd/demonstration_markdown.tex
+!inst/rmd/demonstration_markdown.Rmd
+

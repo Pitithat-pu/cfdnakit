@@ -31,9 +31,9 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
 
 
   if(!if_exist_baifile(bamfile = bamfile_path)){
-    print("The BAM index file (.bai) is missing. Creating an index file")
+    message("The BAM index file (.bai) is missing. Creating an index file")
     Rsamtools::indexBam(bamfile_path)
-    print("Bam index file created.")
+    message("Bam index file created.")
   }
 
   which <- util.get_sliding_windows(binsize = binsize,
@@ -56,18 +56,18 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                                    which = which,
                                    mapqFilter = min_mapq)
 
-  print("Reading bamfile")
+  message("Reading bamfile")
   bam <- Rsamtools::scanBam(file = bamfile_path,
                             index = bamfile_path,
                             param=param)
 
 
   if (apply_blacklist) {
-    print("Filtering-out read on the blacklist regions")
+    message("Filtering-out read on the blacklist regions")
     bam = filter_read_on_blacklist(bam, blacklist_files , genome=genome)
   }
   if(!is.null(target_bedfile)){
-    print("Extracting on-target fragments")
+    message("Extracting on-target fragments")
     bam = extract_read_ontarget(bam,target_bedfile)
   }
   class(bam)="SampleBam"
@@ -224,8 +224,8 @@ filter_read_on_blacklist <-
                              isize = region_lst$isize)
 
 
-    filtered_gr <- suppressWarnings(GenomicRanges::findOverlaps(bin_gr,
-                                               blacklist_targets_gr))
+    filtered_gr <- GenomicRanges::findOverlaps(
+      bin_gr, blacklist_targets_gr)
     if(length(filtered_gr@from) == 0 )
       filterd_bam_gr = bin_gr
     else{

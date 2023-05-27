@@ -16,8 +16,8 @@ util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
   if(! genome %in% c("hg19","hg38","mm10"))
     stop("Only hg19, hg38 or mm10 genome are possible")
   if(! binsize %in% c(100,500,1000))
-    stop(paste0("The selected binsize (",binsize,
-                ") is not available.\nAvailable binsize (kb) are 100, 500, 1000."))
+    stop("The selected binsize (",binsize,
+         ") is not available.\nAvailable binsize (kb) are 100, 500, 1000.")
 
   if(genome %in% c("hg19","hg38")){
     #### Reading in bin info from extdata if hg19 genome

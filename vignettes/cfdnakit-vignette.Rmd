@@ -27,33 +27,32 @@ knitr::opts_chunk$set(
 
 This package provides basic functions for analyzing next-generation sequencing data of cell-free DNA (cfDNA). The package focuses on extracting the length of cfDNA sample and visualization of genome-wide enrichment of short-fragmented cfDNA. The aberration of fragmentation profile, denoted modified ctDNA estimation score (CES), allows quantification of circulating tumor DNA (ctDNA). We recommend using this package to analysis shallow whole-genome sequencing data (\~0.3X or more). This package was complemented by Bioconductor packages e.g. QDNAseq, Rsamtools and GenomicRanges which could further expand the functionality of this package in the future.
 
-# Prerequisites and Installation
+## Installation
+### Install via the Bioconductor repository
+```{r install via BiocManager, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
-Package was tested on R environment 4.0.0. Now only possible way to install develop version of this package is via github repository.
+BiocManager::install("cfdnakit")
+```
+### Install the latest version via github
+To install this package is via this github repository, please follow the instruction below.
 
-## Install prerequisites packages
-
-First, we need to install devtools and BiocManager.
-
-``` r
+**Install prerequisites packages**
+```{r install devtools and BiocManager, eval=FALSE}
 if(! "devtools" %in% rownames(installed.packages()))
     install.packages("devtools")
 if(! "BiocManager" %in% rownames(installed.packages()))
     install.packages("BiocManager")
 ```
-
-## Install devel version cfdnakit
-
-A devel version can be installed from GitHub (<https://https://github.com/Pitithat-pu/cfdnakit/>): using install_github.
-
-``` r
+**Install cfdnakit package**
+```{r install cfdnakit via github, eval=FALSE}
 library(devtools)  ### use devtools
-install_github("Pitithat-pu/cfdnakit") ### install cfdnakit
+install_github("Pitithat-pu/cfdnakit") ### install cfDNAKit 
 ```
-
 The installation should work fine without non-zero exit status. Try load cfdnakit package into current R session
 
-``` r
+```{r load the package cfdnakit, eval=FALSE}
 library(cfdnakit) ### Load cfdnakit package
 ```
 
@@ -79,22 +78,23 @@ By default, running read_bamfile will split reads into 1000 KB non-overlapping b
 
 Reading the file should take a while depending on the size of your BAM. We recommend to save the result as RDS file using **saveRDS** function.
 
-``` r
-saveRDS(plasma_SampleBam, file = patientcfDNA_SampleBam.RDS)
+```{r save the file, eval=FALSE}
+### Optional
+saveRDS(plasma_SampleBam, file = "patientcfDNA_SampleBam.RDS")
 ```
+
+
+# Analyse the Fragment Length Distribution
 
 Fragment-length distribution of the sample can be visualized with function **plot_fragment_dist**. In the top-right legend, the modal length (bp) is shown in the parenthesis behind each sample name. The x-axis is the length of cfDNA; y-axis is the proportion of cfDNA fragment having a specific length.
 
-```{r plot fragment length distribution, fig.width=5,fig.height=3.5}
+```{r plot fragment length distribution, eval=FALSE}
 plot_fragment_dist(list("Plasma.Sample"=plasma_SampleBam))
 ```
-
-# Analyse the Fragment Length Distribution
 
 This document will demonstate by using SampleBam object (example_patientcfDNA_SampleBam.RDS). Now we load this file into R session.
 
 ```{r load example patient cfDNA sample BAM, warning=FALSE}
-
 example_RDS="example_patientcfDNA_SampleBam.RDS"
 example_RDS_file =
     system.file("extdata",example_RDS,
@@ -142,19 +142,23 @@ sample_profile =
 
 This SampleFragment contains a dataframe named **sample_profile**. This table contains information about the BAM file and the ratio number of Short/Long fragments. The table below describes important variables.
 
-``` r
-
+```{r show sample profile}
 sample_profile$sample_profile
 ```
 
 | Variable            | Description                                                   |
-|-------------------|-----------------------------------------------------|
-| Total.Fragments     | Number of fragments (not the number of reads)                 |
+|---------------------|----------------------------------------------------           |
+| Total.Fragments     | Number of DNA fragments (not the number of reads)             |
 | Read.Pairs.in.range | Number of fragments within the defined range (short and long) |
-| Mode                | Fragment length of the majority                               |
-| N.Short             | Number of short fragments                                     |
-| N.Long              | Number of long fragments                                      |
+| Mode                | Fragment length of the majority (bp)                          |
+| Median              | Median Fragment length (bp)                                   |
+| Mean                | Average Fragment length (bp)                                  |
+| Mad                 | Fragment length median absolute deviation (MAD)               |
+| N.Short             | Number of short fragments (n)                                 |
+| N.Long              | Number of long fragments (n)                                  |
 | S.L.Ratio           | N.Short/N.Long; Ratio of short fragment over long fragment    |
+| S.L.Ratio_corrected | Ratio of short fragment over long fragment after GC-bias correction |
+| Bin.Size.KB.        | Size of genomic bin of the analysis (KB)
 
 # Plot Genome-wide Short-fragmented Ratio
 
@@ -172,11 +176,11 @@ plot_sl_ratio(patient.SampleFragment)
 
 The range of S.L.Ratio is broad. It could be as high as 2 or more in sample with high contribution of ctDNA. Adjusting the plot is possible with parameter **ylim** or with other ggplot functions.
 
-# Save as RDS file
+# Save SampleFragment as RDS file
 
-Up to this step, we rather save the analysis object as RDS for later use and for creation of a Panel-of-Normal.
+Up to this step, we rather save the SampleFragment object as RDS for later use and for creation of a Panel-of-Normal.
 
-``` r
+```{r save SampleFragment Profile file,eval=FALSE}
 destination_dir = "~/cfdnakit.result"
 saveRDS(sample_profile,
         file = paste0(destination_dir,
@@ -187,11 +191,12 @@ saveRDS(sample_profile,
 
 ## Creating list of PoN files
 
-Making a Panel-of-Normal is necessary for downstream analysis as we want to compare fragment profile between a cfDNA from patient with pooled of healthy individuals. First, we create a text file where each line is a full path to rds file created by aforementioned function (**get_fragment_profile**).
+Making a Panel-of-Normal is necessary for downstream analysis as we want to compare fragment profile between a cfDNA from patient with pooled of healthy individuals. First, we create a text file where each line is a full path to rds file of the SampleFragment object.
 
-**Example content of PoN list file**
+**Example content of PoN list file (let's name it Pon-list.txt)**
 
-```         
+```
+### Example content of Pon-list.txt
 Path.to/SampleFragment_healthyplasma-01.rds
 Path.to/SampleFragment_healthyplasma-02.rds
 Path.to/SampleFragment_healthyplasma-03.rds
@@ -203,8 +208,9 @@ Path.to/SampleFragment_healthyplasma-05.rds
 
 **create_PoN** function will read through all fragment profile files and create a set of PoN profile. We save this PoN profile and load into analysis later.
 
-``` r
-PoN.profiles = create_PoN(path_to_PoN_txt)
+```{r create PoN profile, eval=FALSE}
+PoN.profiles = create_PoN("Path.to/Pon-list.txt")
+
 saveRDS(PoN.profiles, "PoN.rds")
 ```
 
@@ -218,8 +224,8 @@ The contribution of short-fragmented cfDNA into genomic regions could infer copy
 PoN_rdsfile = system.file("extdata",
                           "ex.PoN.rds",
                           package = "cfdnakit")
-PoN.profiles = readRDS(PoN_rdsfile)
 
+PoN.profiles = readRDS(PoN_rdsfile)
 ```
 
 cfdnakit transforms S.L.Ratio of each genomic windows with the distribution of samples in PoN by function **get_zscore_profile**.
@@ -235,8 +241,8 @@ sample_zscore =
 cfdnakit implement the circular binary segmentation algorithm. Function **segmentByCBS** of package PSCBS were used through function segmentByPSCB. We can visualize both transformed S.L.Ratio and the segmentation by function **plot_transformed_sl**.
 
 ```{r Reading PoN samples and plot scaled value,warning=FALSE,fig.width=8, fig.height=4}
-
 sample_zscore_segment = segmentByPSCB(sample_zscore)
+
 plot_transformed_sl(sample_zscore,sample_zscore_segment)
 ```
 
@@ -249,11 +255,9 @@ Base on hypothesis that short-fragmented cfDNA originate from tumor cells. Enric
 Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with \* are optimal solutions (minimum distance) per absolute genome ploidy.
 
 ```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=6, fig.height=4}
-
 sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
 
 plot_distance_matrix(sample_cnv)
-
 ```
 
 Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with \* are optimal solutions (minimum distance) per absolute genome ploidy.
@@ -264,7 +268,6 @@ The available solution can be obtained with function **get_solution_table**. The
 solution_table = get_solution_table(sample_cnv)
 
 solution_table
-
 ```
 
 ## Plot optimal CNV profile
@@ -272,9 +275,7 @@ solution_table
 We can plot copy-number result by function plot_cnv_solution. By default, this function will produce the plot of the best solution (rank 1) and can be changed by specifying solution number to parameter **selected_solution**.
 
 ```{r plot cnv-calling first solution,warning=FALSE,fig.width=12, fig.height=5}
-
 plot_cnv_solution(sample_cnv,selected_solution = 1)
-
 ```
 
 # Copy-number Abnormality Score

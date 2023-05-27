@@ -20,13 +20,13 @@ distribution plot
 Plot Fragment-length Distribution
 }
 \examples{
-example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
+example_file <-  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 sample_bambin <- readRDS(example_file)
 
 ### adding more samples to the plot
-example_file2 =  system.file("extdata","BH01_CHR15.SampleBam.rds",package = "cfdnakit")
+example_file2 <-  system.file("extdata","BH01_CHR15.SampleBam.rds",package = "cfdnakit")
 control_bambin <- readRDS(example_file2)
-readbam_list = list(plasma1 = sample_bambin, Healthy.blood.plasma=control_bambin)
+readbam_list <- list(plasma1 = sample_bambin, Healthy.blood.plasma=control_bambin)
 plot_fragment_dist(readbam_list)
 
 

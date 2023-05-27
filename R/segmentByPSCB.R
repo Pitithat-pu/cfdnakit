@@ -7,25 +7,25 @@
 #'
 #' @examples
 #' ### Loading example SampleBam file
-#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
+#' example_file <-  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 #' sample_bambin <- readRDS(example_file)
 #' ### Example PoN
-#' PoN_rdsfile = system.file("extdata","ex.PoN.rds",package = "cfdnakit")
-#' pon_profiles = readRDS(PoN_rdsfile)
+#' PoN_rdsfile <- system.file("extdata","ex.PoN.rds",package = "cfdnakit")
+#' pon_profiles <- readRDS(PoN_rdsfile)
 #' sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 #'
-#' sample_zscore = get_zscore_profile(sample_profile,pon_profiles)
-#' sample_zscore_segment = segmentByPSCB(sample_zscore)
+#' sample_zscore <- get_zscore_profile(sample_profile,pon_profiles)
+#' sample_zscore_segment <- segmentByPSCB(sample_zscore)
 #'
 #' @importFrom PSCBS dropSegmentationOutliers findLargeGaps gapsToSegments segmentByCBS pruneByHClust getSegments
 segmentByPSCB <- function(sample_transformed_sl){
-  chrTotalLength_file= "hg19_chrTotalLength.tsv"
-  chrLength_file =
+  chrTotalLength_file<- "hg19_chrTotalLength.tsv"
+  chrLength_file <-
     system.file("extdata",
                 chrTotalLength_file,
                 package = "cfdnakit")
-  chrLength_df = read.table(file = chrLength_file,header=FALSE, sep="\t")
-  chrLength_info = util.get_chrLength_info(chrLength_df)
+  chrLength_df <- read.table(file = chrLength_file,header=FALSE, sep="\t")
+  chrLength_info <- util.get_chrLength_info(chrLength_df)
 
   data <- sample_transformed_sl[,c("chrom","start","size_based_zscore")]
   colnames(data) <- c("chromosome","x","y")
@@ -37,13 +37,11 @@ segmentByPSCB <- function(sample_transformed_sl){
                       joinSegments = TRUE, avg = "median")
   fitP <- pruneByHClust(fit, h = 0.50)
 
-  # segment_df = getSegments(fit, simplify = TRUE)
-  segment_df = getSegments(fitP, simplify = TRUE)
+  segment_df <- getSegments(fitP, simplify = TRUE)
 
-  # segment_df$pass_cutoff = segment_df$mean >= cutoff_zscore[1] | segment_df$mean <= cutoff_zscore[2]
   segment_df[which(segment_df$chromosome==23),"chromosome"] = "X"
-  segment_df = dplyr::select(segment_df,
+  segment_df <- dplyr::select(segment_df,
                            -c("sampleName"))
-  segment_df = na.omit(segment_df)
+  segment_df <- na.omit(segment_df)
   return(segment_df)
 }

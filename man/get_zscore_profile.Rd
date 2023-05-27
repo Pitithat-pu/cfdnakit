@@ -19,15 +19,15 @@ Transform SLRatio with PoN Fragment profile
 }
 \examples{
 ### Loading example SampleBam file
-example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
+example_file <-  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 sample_bambin <- readRDS(example_file)
 
 ### Example PoN
-PoN_rdsfile = system.file("extdata","ex.PoN.rds",package = "cfdnakit")
-pon_profiles = readRDS(PoN_rdsfile)
+PoN_rdsfile <- system.file("extdata","ex.PoN.rds",package = "cfdnakit")
+pon_profiles <- readRDS(PoN_rdsfile)
 sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 
-sample_zscore = get_zscore_profile(sample_profile,pon_profiles)
+sample_zscore <- get_zscore_profile(sample_profile,pon_profiles)
 
-sample_zscore_segment = segmentByPSCB(sample_zscore)
+sample_zscore_segment <- segmentByPSCB(sample_zscore)
 }

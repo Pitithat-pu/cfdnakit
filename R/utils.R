@@ -1,17 +1,5 @@
 
-utils.unlist <- function (x){
-  ## do.call(c, ...) coerces factor to integer, which is undesired
-  x1 <- x[[1L]]
-  if (is.factor(x1)) {
-    structure(unlist(x), class = "factor", levels = levels(x1))
-  } else {
-    do.call(c, x)
-  }
-}
-
-
-
-util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
+util.get_sliding_windows = function(binsize=1000, genome="hg19"){
   ### stop if given reference name is neither hg19 nor mm10
   if(! genome %in% c("hg19","hg38","mm10"))
     stop("Only hg19, hg38 or mm10 genome are possible")
@@ -21,24 +9,24 @@ util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
 
   if(genome %in% c("hg19","hg38")){
     #### Reading in bin info from extdata if hg19 genome
-    qdnaseq_sliding_windows_RDS =
+    qdnaseq_sliding_windows_RDS <-
       system.file("extdata",
                   paste0("AnnotationDataFrame_from_QDNAseq_",
                          genome,"_",
                          binsize,"k.rds"),
                   package = "cfdnakit")
     if (file.exists(qdnaseq_sliding_windows_RDS)) {
-      bins = readRDS(qdnaseq_sliding_windows_RDS)
+      bins <- readRDS(qdnaseq_sliding_windows_RDS)
 
     } else {
-      bins =  QDNAseq::getBinAnnotations(
+      bins <-  QDNAseq::getBinAnnotations(
         binSize=binsize,
         genome = genome)
     }
   } else if (genome=="mm10") {
     ### Loading bin information through QDNAseq package
     message("Loading ",genome, "(",binsize,")")
-    bins = QDNAseq::getBinAnnotations(
+    bins <- QDNAseq::getBinAnnotations(
       binSize=binsize, genome="mm10")
   }
 
@@ -67,8 +55,8 @@ util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
 #' @return numeric
 #'
 #' @importFrom stats loess predict median loess.control
-util.bias_correct <- function(readcount, bias) {
-  invalid_idx = which(readcount <= 0)
+util.bias_correct = function(readcount, bias) {
+  invalid_idx <- which(readcount <= 0)
 
 
   i <- seq(min(bias, na.rm=TRUE),
@@ -90,8 +78,8 @@ util.bias_correct <- function(readcount, bias) {
 
 
 
-util.rowname_to_columns <- function(per_bin_profile){
-  splited_list=lapply(strsplit(
+util.rowname_to_columns = function(per_bin_profile){
+  splited_list <- lapply(strsplit(
     rownames(per_bin_profile),
     split = "[:-]"), function(x) {
       data.frame("chrom"=x[1],
@@ -102,20 +90,20 @@ util.rowname_to_columns <- function(per_bin_profile){
 }
 
 
-util.get_chrLength_info <- function(chrLength_df){
-  colnames(chrLength_df) = c("Chromosome", "Length")
-  chrLength_df = chrLength_df[which(chrLength_df$Chromosome!="Y"),]
-  chrNames = chrLength_df$Chromosome
-  chrLength = chrLength_df$Length
-  names(chrLength) = chrNames
-  chroffsets = cumsum(as.numeric(chrLength))
+util.get_chrLength_info = function(chrLength_df){
+  colnames(chrLength_df) <- c("Chromosome", "Length")
+  chrLength_df <- chrLength_df[which(chrLength_df$Chromosome!="Y"),]
+  chrNames <- chrLength_df$Chromosome
+  chrLength <- chrLength_df$Length
+  names(chrLength) <- chrNames
+  chroffsets <- cumsum(as.numeric(chrLength))
   chroffsets <- c(0, chroffsets[0:(length(chroffsets)-1)])
   names(chroffsets) <- names(chrLength)
   chrMids <- cumsum(as.numeric(chrLength))
   chrMids <- (chrMids + chroffsets)/2
   names(chrMids) <- names(chrLength)
 
-  chrLength_info =
+  chrLength_info <-
     list("chrNames"=chrNames,
          "chrLength"=chrLength,
          "chroffsets"=chroffsets,

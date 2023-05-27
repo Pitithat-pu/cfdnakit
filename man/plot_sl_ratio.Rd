@@ -20,7 +20,7 @@ plot
 Plot Short/Long-fragment Ratio
 }
 \examples{
-example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
+example_file <-  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
 sample_bambin <- readRDS(example_file)
 sample_profile <- get_fragment_profile(sample_bambin,sample_id = "Patient1")
 plot_sl_ratio(fragment_profile = sample_profile)

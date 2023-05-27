@@ -16,15 +16,15 @@ Null
 Create Panel-of-Normal (PoN) object
 }
 \examples{
-healthy.1 = system.file("extdata","ex.healthy1.rds",package = "cfdnakit")
-healthy.2 = system.file("extdata","ex.healthy2.rds",package = "cfdnakit")
+healthy.1 <- system.file("extdata","ex.healthy1.rds",package = "cfdnakit")
+healthy.2 <- system.file("extdata","ex.healthy2.rds",package = "cfdnakit")
 
-path_to_PoN_txt = paste0(system.file("extdata",package = "cfdnakit"),"/temp.reference_healthy.listfile")
+path_to_PoN_txt <- paste0(system.file("extdata",package = "cfdnakit"),"/temp.reference_healthy.listfile")
 fileConn<-file(path_to_PoN_txt)
 writeLines(c(healthy.1,healthy.2), fileConn)
 close(fileConn)
 
 
-PoN.profiles = create_PoN(path_to_PoN_txt)
+PoN.profiles <- create_PoN(path_to_PoN_txt)
 file.remove(path_to_PoN_txt)
 }

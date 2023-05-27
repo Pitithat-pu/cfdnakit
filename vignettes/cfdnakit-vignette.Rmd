@@ -68,10 +68,10 @@ For demonstration, we read an example sequence file ex.plasma.bam.
 
 ```{r read a bam file and splited into 1000 KB non-overlapping bins, warning=FALSE}
 library(cfdnakit)
-sample_bamfile = system.file("extdata",
+sample_bamfile <- system.file("extdata",
                              "ex.plasma.bam",
                 package = "cfdnakit")
-plasma_SampleBam = read_bamfile(sample_bamfile,
+plasma_SampleBam <- read_bamfile(sample_bamfile,
                                 apply_blacklist = FALSE)
 ```
 
@@ -96,22 +96,22 @@ plot_fragment_dist(list("Plasma.Sample"=plasma_SampleBam))
 This document will demonstate by using SampleBam object (example_patientcfDNA_SampleBam.RDS). Now we load this file into R session.
 
 ```{r load example patient cfDNA sample BAM, warning=FALSE}
-example_RDS="example_patientcfDNA_SampleBam.RDS"
-example_RDS_file =
+example_RDS <- "example_patientcfDNA_SampleBam.RDS"
+example_RDS_file <-
     system.file("extdata",example_RDS,
                 package = "cfdnakit")
-sample_bins = readRDS(example_RDS_file)
+sample_bins <- readRDS(example_RDS_file)
 
 ```
 
 In general, plasma cfDNA should show non-random fragmentation pattern. The modal length of cfDNA is 167 bp and 10-bp periodic peaks. However, tumor-derived cfDNA are observed to be shorter (\<150 bp) than cfDNA of non-tumor origin. Here, we compare the fragment length distribution of patient's cfDNA with healthy individual. We derived a healthy cfDNA from Snyder et al. (2016) and create a RData file "BH01_chr15.RDS". This file can be loaded in R environment with readRDS function.
 
 ```{r getting build-in healthy plasma cfDNA sample, warning=FALSE}
-control_rds="BH01_CHR15.SampleBam.rds"
-control_RDS_file =
+control_rds<-"BH01_CHR15.SampleBam.rds"
+control_RDS_file <-
     system.file("extdata",control_rds,
                 package = "cfdnakit")
-control_bins =
+control_bins <-
     readRDS(control_RDS_file)
 
 ```
@@ -119,7 +119,7 @@ control_bins =
 To provide visual comparison of cell-free DNA fragmentation, cfdnakit provide a function that allows plotting multiple distribution plots. We create a list of SampleBam files and plot their distribution together with function plot_fragment_dist. Each element in the list must be given a distinct sample name (e.g. Healthy.cfDNA).
 
 ```{r plot fragment length distribution comparing to a healthy cfDNA, fig.width=5.5, fig.height=4}
-comparing_list = list("Healthy.cfDNA"=control_bins,
+comparing_list <- list("Healthy.cfDNA"=control_bins,
                       "Patient.1"=sample_bins)
 plot_fragment_dist(comparing_list)
 
@@ -136,7 +136,7 @@ minimum_length = Minimum length of cfDNA (Default 20)
 We can extract genome-wide fragment-length profile. First we define the short fragment as fragments having size (by default) between 100 - 150 base and 151 - 250 as the long fragment. Providing a SampleBam object to the function get_fragment_profile will return a SampleFragment object.
 
 ```{r getting fragment length profile,warning=FALSE, fig.width=12, fig.height=5}
-sample_profile = 
+sample_profile <- 
   get_fragment_profile(sample_bins,
                        sample_id = "Patient.1")
 ```
@@ -167,11 +167,11 @@ We can plot genome-wide short-fragment ratio with the function plot_sl_ratio. Gi
 
 ```{r plot genome-wide short-fragment ratio, fig.width=12, fig.height=5, warning=FALSE}
 ## For this demenstration, we load a real patient-derived cfDNA profile.
-patient.SampleFragment.file =
+patient.SampleFragment.file <-
     system.file("extdata",
                 "example_patientcfDNA_SampleFragment.RDS",
                 package = "cfdnakit")
-patient.SampleFragment = readRDS(patient.SampleFragment.file)
+patient.SampleFragment <- readRDS(patient.SampleFragment.file)
 plot_sl_ratio(patient.SampleFragment)
 ```
 
@@ -182,7 +182,7 @@ The range of S.L.Ratio is broad. It could be as high as 2 or more in sample with
 Up to this step, we rather save the SampleFragment object as RDS for later use and for creation of a Panel-of-Normal.
 
 ```{r save SampleFragment Profile file,eval=FALSE}
-destination_dir = "~/cfdnakit.result"
+destination_dir <- "~/cfdnakit.result"
 saveRDS(sample_profile,
         file = paste0(destination_dir,
         "/plasma.SampleFragment.RDS"))
@@ -210,7 +210,7 @@ Path.to/SampleFragment_healthyplasma-05.rds
 **create_PoN** function will read through all fragment profile files and create a set of PoN profile. We save this PoN profile and load into analysis later.
 
 ```{r create PoN profile, eval=FALSE}
-PoN.profiles = create_PoN("Path.to/Pon-list.txt")
+PoN.profiles <- create_PoN("Path.to/Pon-list.txt")
 
 saveRDS(PoN.profiles, "PoN.rds")
 ```
@@ -222,17 +222,17 @@ saveRDS(PoN.profiles, "PoN.rds")
 The contribution of short-fragmented cfDNA into genomic regions could infer copy-number aberration harbored in the tumor cells. For this demonstration, we load ready-to-use PoN profile (ex.PoN.rds).
 
 ```{r Make a pon profile}
-PoN_rdsfile = system.file("extdata",
+PoN_rdsfile <- system.file("extdata",
                           "ex.PoN.rds",
                           package = "cfdnakit")
 
-PoN.profiles = readRDS(PoN_rdsfile)
+PoN.profiles <- readRDS(PoN_rdsfile)
 ```
 
 cfdnakit transforms S.L.Ratio of each genomic windows with the distribution of samples in PoN by function **get_zscore_profile**.
 
 ```{r Reading PoN samples,warning=FALSE,fig.width=8, fig.height=4}
-sample_zscore = 
+sample_zscore <- 
   get_zscore_profile(patient.SampleFragment,
                      PoN.profiles)
 ```
@@ -242,7 +242,7 @@ sample_zscore =
 cfdnakit implement the circular binary segmentation algorithm. Function **segmentByCBS** of package PSCBS were used through function segmentByPSCB. We can visualize both transformed S.L.Ratio and the segmentation by function **plot_transformed_sl**.
 
 ```{r Reading PoN samples and plot scaled value,warning=FALSE,fig.width=8, fig.height=4}
-sample_zscore_segment = segmentByPSCB(sample_zscore)
+sample_zscore_segment <- segmentByPSCB(sample_zscore)
 
 plot_transformed_sl(sample_zscore,sample_zscore_segment)
 ```
@@ -256,7 +256,7 @@ Base on hypothesis that short-fragmented cfDNA originate from tumor cells. Enric
 Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The analysis perform only on autosomal chromosomes. We can plot the distance matrix of all solution where solutions with \* are optimal solutions (minimum distance) per absolute genome ploidy.
 
 ```{r cnv calling and plot distance matrix,warning=FALSE,fig.width=6, fig.height=4}
-sample_cnv = call_cnv(sample_zscore_segment,sample_zscore)
+sample_cnv <- call_cnv(sample_zscore_segment,sample_zscore)
 
 plot_distance_matrix(sample_cnv)
 ```
@@ -266,7 +266,7 @@ Function call_cnv returns 3 solutions of the CNV calling and TF estimation. The 
 The available solution can be obtained with function **get_solution_table**. The table shows the best solution (minimum distance) per absolute genome ploidy and rank them by the distance.
 
 ```{r get and print solution table}
-solution_table = get_solution_table(sample_cnv)
+solution_table <- get_solution_table(sample_cnv)
 
 solution_table
 ```

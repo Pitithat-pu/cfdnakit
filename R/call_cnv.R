@@ -79,11 +79,12 @@ call_cnv = function(sample_segmentation, sample_zscore,
 
     ploidies.dominators <-
       (pred_tf*ploidies + 2*(1-pred_tf))
-    SL.expected.mat <- sapply(ploidies.dominators,
-                              function(ploidies.dominator){
-      SL.expected <-
-        SLref*(pred_tf*CVs + 2*(1-pred_tf))/ploidies.dominator
-    })
+    SL.expected.mat <- sapply(
+      ploidies.dominators,
+      function(ploidies.dominator){
+        SL.expected <-
+          SLref*(pred_tf*CVs + 2*(1-pred_tf))/ploidies.dominator
+      })
 
 
     distances.list <- apply(SL.expected.mat, 2, function(SL.expecteds){
@@ -104,6 +105,7 @@ call_cnv = function(sample_segmentation, sample_zscore,
       min_distances_order <- apply(distance.mat, 2, order)
       return(CVs[min_distances_order[1,]])
     })
+
     predicted_CNV_df <- data.frame(predicted_CNV_mat)
     colnames(predicted_CNV_df) <- ploidies
 

@@ -1,7 +1,7 @@
 # cfdnakit : an R package for fragmentation analysis of cfDNA and estimation of circulating tumor DNA from NGS data.
 
 ## Installation
-#### Install via the Bioconductor repository
+### Install via the Bioconductor repository
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")

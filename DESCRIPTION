@@ -13,6 +13,7 @@ LazyData: FALSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 biocViews: CopyNumberVariation, Sequencing, WholeGenome
+BugReports: https://github.com/Pitithat-pu/cfdnakit/issues
 Imports: 
     Biobase,
     dplyr,

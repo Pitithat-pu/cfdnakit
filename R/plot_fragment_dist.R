@@ -36,13 +36,14 @@ plot_fragment_dist <- function(readbam_list,
   temp_density_df <- do.call(rbind,density_lst)
   #>>>> Find the peak fragment-length
   peak_length <-
-    sapply(split(temp_density_df, temp_density_df$Label),
+    vapply(split(temp_density_df, temp_density_df$Label),
            function(density_df){
              peak_length <- density_df$x[
                which(density_df$y == max(density_df$y))]
              if(length(peak_length) > 1) #### if given more than 1 peak, return only one that close to 167
                peak_length <- max(peak_length)[which.min(abs(max(peak_length - 167)))]
-             peak_length <- floor(peak_length)})
+             peak_length <- floor(peak_length)},
+           FUN.VALUE = double(1))
 
   peak_df <- data.frame("Label" = unique(temp_density_df$Label),
                        "peak_length" = peak_length[

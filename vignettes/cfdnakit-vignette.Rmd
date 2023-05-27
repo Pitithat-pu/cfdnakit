@@ -71,7 +71,8 @@ library(cfdnakit)
 sample_bamfile = system.file("extdata",
                              "ex.plasma.bam",
                 package = "cfdnakit")
-plasma_SampleBam = read_bamfile(sample_bamfile,apply_blacklist = FALSE)
+plasma_SampleBam = read_bamfile(sample_bamfile,
+                                apply_blacklist = FALSE)
 ```
 
 By default, running read_bamfile will split reads into 1000 KB non-overlapping bins based-on the human reference genome GRCh37.

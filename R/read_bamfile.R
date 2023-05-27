@@ -33,7 +33,8 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
     print("Bam index file created.")
   }
 
-  which <- util.get_sliding_windows(binsize = binsize, genome=genome)
+  which <- util.get_sliding_windows(binsize = binsize,
+                                    genome=genome)
   if(if_ucsc_chrformat(bamfile_path)){
     which <- GRCh2UCSCGRanges(which)
   }
@@ -87,7 +88,8 @@ if_exist_baifile <- function(bamfile) {
 
 
 extract_read_ontarget <- function(sample_bin, target_bedfile){
-  if(!utils.file_exists(target_bedfile)) stop("Given target bedfile doesn't exist.")
+  if(!utils.file_exists(target_bedfile))
+    stop("Given target bedfile doesn't exist.")
   if(if_gzfile(target_bedfile)){
     target_df <- as.data.frame(read.table(
       gzfile(target_bedfile),
@@ -100,23 +102,25 @@ extract_read_ontarget <- function(sample_bin, target_bedfile){
       sep = "\t"))[,seq_len(3)]
   }
 
-  target_gr=GenomicRanges::GRanges(
+  target_gr = GenomicRanges::GRanges(
     seqnames = target_df[,1],
     ranges = IRanges::IRanges(start = as.numeric(target_df[,2]),
                               end=as.numeric(target_df[,3])))
 
   ontarget_bam_lst = lapply(sample_bin, function(region_lst){
     bin_gr =
-      GenomicRanges::GRanges(seqnames =
-                               as.character(region_lst$rname),
-                             ranges = IRanges::IRanges(start = region_lst$pos,
-                                                       end = region_lst$pos +
-                                                         region_lst$qwidth),
-                             qname=region_lst$qname,
-                             rname=region_lst$rname,
-                             pos=region_lst$pos,
-                             qwidth=region_lst$qwidth,
-                             isize = region_lst$isize)
+      GenomicRanges::GRanges(
+        seqnames =
+          as.character(region_lst$rname),
+        ranges =
+          IRanges::IRanges(start = region_lst$pos,
+                           end = region_lst$pos +
+                             region_lst$qwidth),
+        qname=region_lst$qname,
+        rname=region_lst$rname,
+        pos=region_lst$pos,
+        qwidth=region_lst$qwidth,
+        isize = region_lst$isize)
 
 
     ontarget_gr <- GenomicRanges::findOverlaps(bin_gr,
@@ -190,7 +194,8 @@ UCSC2GRChSampleBam <- function (sample.bam) {
 #'
 #' @return SampleBam after filtering out read on balck list regions
 #'
-filter_read_on_blacklist <- function(sample_bin, blacklist_files=NULL , genome="hg19"){
+filter_read_on_blacklist <-
+  function(sample_bin, blacklist_files=NULL , genome="hg19"){
     ### Blacklist of hg19 is available as default without giving files
     if(is.null(blacklist_files) & genome=="hg19"){
       blacklist_files =

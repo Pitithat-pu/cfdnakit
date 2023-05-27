@@ -61,20 +61,23 @@ util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
   } else if (genome=="mm10") {
     ### Loading bin information through QDNAseq package
     message("Loading ",genome, "(",binsize,")")
-    bins = QDNAseq::getBinAnnotations(binSize=binsize, genome="mm10")
+    bins = QDNAseq::getBinAnnotations(
+      binSize=binsize, genome="mm10")
   }
 
 
 
   sliding_windows <- as.data.frame(bins@data)
-  sliding_windows <- sliding_windows[which(sliding_windows$chromosome!="Y" &
-                                             sliding_windows$mappability>=1),]
-  sliding_windows_gr <- GRanges(seqnames = sliding_windows$chrom,
-                                ranges = IRanges(
-                                  start= sliding_windows$start,
-                                  end = sliding_windows$end),
-                                gc=sliding_windows$gc,
-                                mappability=sliding_windows$mappability)
+  sliding_windows <- sliding_windows[
+    which(sliding_windows$chromosome!="Y" &
+            sliding_windows$mappability>=1),]
+  sliding_windows_gr <- GenomicRanges::GRanges(
+    seqnames = sliding_windows$chrom,
+    ranges = IRanges::IRanges(
+      start= sliding_windows$start,
+      end = sliding_windows$end),
+    gc=sliding_windows$gc,
+    mappability=sliding_windows$mappability)
 
   return(sliding_windows_gr)
 }

@@ -26,7 +26,7 @@
 #' sample_cnv = call_cnv(sample_zscore_segment,sample_zscore, tfs=c(0.1,0.3),ploidies=c(1.5,2), MaxCN=3)
 #' plot_cnv_solution(sample_cnv,selected_solution = 1)
 #'
-#' @importFrom IRanges mergeByOverlaps
+#' @importFrom IRanges mergeByOverlaps IRanges
 #' @importFrom stats setNames
 #' @importFrom rlang .data
 call_cnv <- function(sample_segmentation, sample_zscore,

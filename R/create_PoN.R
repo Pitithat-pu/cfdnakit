@@ -59,11 +59,3 @@ read_PoN_files = function(list_rdsfiles){
   }
   return(pon_profiles_lst)
 }
-
-
-check_PoNProfiles_mad = function(pon_profiles_lst){
-  pon_mad_vec <- sapply(pon_profiles_lst, function(pon_profiles){
-    return(pon_profiles$sample_profile$Mad)
-  })
-
-}

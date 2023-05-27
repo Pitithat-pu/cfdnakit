@@ -1,12 +1,44 @@
-# cfdnakit : an R package for fragmentation analysis of cfDNA and copy-number alteration calling
+# cfdnakit : an R package for fragmentation analysis of cfDNA and estimation of circulating tumor DNA from NGS data.
+
+## Installation
+#### Install via the Bioconductor repository
+```
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("cfdnakit")
+```
+### Install the latest version via github
+Package was tested on R environment 4.0.0. To install this package is via this github repository. please follow instruction below.
+
+**Install prerequisites packages**
+```
+if(! "devtools" %in% rownames(installed.packages()))
+    install.packages("devtools")
+if(! "BiocManager" %in% rownames(installed.packages()))
+    install.packages("BiocManager")
+```
+**Install cfdnakit package**
+```
+library(devtools)  ### use devtools
+install_github("Pitithat-pu/cfdnakit") ### install cfDNAKit 
+```
+The installation should work fine without non-zero exit status. Try load cfdnakit package into current R session
+
+```
+library(cfdnakit) ### Load cfdnakit package
+```
+## Usage
+
+Please follow the instructions on [GitHub Wiki page](https://github.com/Pitithat-pu/cfdnakit/wiki)
 
 ## Introduction
 
-This package provides basic functions for analyzing next-generation sequencing of circulating cell-free DNA (cfDNA). The package focuses on extracting length of cfDNA, and genome-wide copy-number alteration estimated by the short-fragmented cfDNA using shallow whole-genome sequencing data (\~0.3X or more). The modified copy number profile abnormality (CPA) score comprehensively estimate the overall chromosomal instability.
+This package provides basic functions for analyzing next-generation sequencing of circulating cell-free DNA (cfDNA). The package focuses on extracting length of cfDNA, and genome-wide copy-number alteration estimated by the short-fragmented cfDNA using shallow whole-genome sequencing data (\~0.3X or more). The ctDNA estimation score (CES) comprehensively estimate the circulating tumor DNA based on the short-fragment analysis.
 
 ### Overview
 
-The figure below shows the overview of the analysis procedure possible within this package. The amount of short-fragmented cfDNA per non-overlapping genomics windows are normalized and compared to a Panel-of-Normal (control). Segmentation is performed using the PSCBS package. A modified CPA score (adapted from [Raman, Lennart, et al. 2020](https://doi.org/10.1186/s13073-020-00735-4)) were calculated to estimate the copy number tumor burden.
+The figure below shows the overview of the analysis procedure possible within this package. The amount of short-fragmented cfDNA per non-overlapping genomics windows are normalized and compared to a Panel-of-Normal (control). Segmentation is performed using the PSCBS package. A CES score (adapted from [Raman, Lennart, et al. 2020](https://doi.org/10.1186/s13073-020-00735-4)) were calculated to estimate circulating tumor dna in the given sample.
 
 <img src="https://raw.githubusercontent.com/wiki/Pitithat-pu/cfdnakit/images/cfdnakit_workflow.png" title="cfdnakit cnv calling workflow" alt="cfdnakit_workflow" width="600"/>
 
@@ -40,7 +72,7 @@ where ![](https://latex.codecogs.com/svg.image?N_%7BF.short%7D) is number of sho
 
 ![](https://latex.codecogs.com/svg.image?S.L.Ratio_%7Bsample%7D) can be used as a general quantification of ctDNA for comparing plasma cfDNA samples. This ratio increases when a sample contains the higher contribution of ctDNA.
 
-**Genome-wide Short-fragmented Ratio**
+### Genome-wide Short-fragmented Ratio
 
 The proportion of short-fragmented cfDNA is positively correlated with copy-number aberration. It shows that a short-fragment ratio of a genomic segment is increasing in the amplified segments and decreasing when the segment is lost.
 
@@ -58,31 +90,7 @@ Cfdnakit transforms S.L.Ratio per bin into zscore by subtracting the median and 
 
 ### Modified copy number profile abnormality score
 
-Cfdnakit implemented a modified version of copy number profile abnormality (CPA) score by using the result of segmentation and sample S.L.Ratio. robust to coverage bias and noisy fragmented signals. The full formula and its advantages were emphasized in the original publication. The score quantify the overall genomic aberration of short-fragmented cfDNA. The higher score infering to enrichment of short-fragmented cfDNA in the sample and copy-number aberrations.
-
-## Package Prerequisites and Installation
-
-Package was tested on R environment 4.0.0. Now only possible way to install this package is via this github repository.
-
-Install prerequisites packages
-
-    if(! "devtools" %in% rownames(installed.packages()))
-        install.packages("devtools")
-    if(! "BiocManager" %in% rownames(installed.packages()))
-        install.packages("BiocManager")
-
-Install cfdnakit package
-
-    library(devtools)  ### use devtools
-    install_github("Pitithat-pu/cfdnakit") ### install cfDNAKit 
-
-The installation should work fine without non-zero exit status. Try load cfdnakit package into current R session
-
-    library(cfdnakit) ### Load cfdnakit package
-
-## Usage
-
-Please follow the instructions on [GitHub Wiki page](https://github.com/Pitithat-pu/cfdnakit/wiki)
+Cfdnakit calculates ctDNA estimation score (CES) from the result of segmentation and sample S.L.Ratio. which robust to coverage bias and noisy fragmented signals.The score quantify the overall genomic aberration of short-fragmented cfDNA. The higher score infering to enrichment of short-fragmented cfDNA in the sample and copy-number aberrations.
 
 ## Contact
 

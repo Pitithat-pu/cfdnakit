@@ -9,7 +9,7 @@ Authors@R: person(given = "Pitithat",
 Description: This package provides basic functions for analyzing next-generation sequencing of circulating cell-free DNA (cfDNA). The package focuses on extracting length of cfDNA, and genome-wide copy-number alteration estimated by the short-fragmented cfDNA using shallow whole-genome sequencing data (~0.3X or more). The modified copy number profile abnormality (CPA) score comprehensively estimate the overall chromosomal instability. The amount of short-fragmented cfDNA per non-overlapping genomics windows are normalized and compared to a Panel-of-Normal (control). Segmentation is performed using the PSCBS package. A modified CPA score (adapted from Raman, Lennart, et al. 2020) were calculated to estimate the copy number tumor burden.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: FALSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 biocViews: CopyNumberVariation, Sequencing, WholeGenome

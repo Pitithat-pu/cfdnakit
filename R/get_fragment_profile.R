@@ -217,8 +217,8 @@ extract_insert_size <- function(readbam_bin,
 #' @importFrom stats ks.test
 test_isize_KolmogorovSmirnov <- function(
   control_insert_size, sample_insert_size){
-  ks_result = suppressWarnings(ks.test(na.omit(control_insert_size),
-                      na.omit(sample_insert_size)))
+  ks_result = ks.test(na.omit(control_insert_size),
+                      na.omit(sample_insert_size))
   ks_result$p.value = signif(ks_result$p.value,4)
   ks_result$statistic = round(ks_result$statistic,2)
   return(ks_result)

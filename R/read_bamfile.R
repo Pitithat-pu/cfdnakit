@@ -20,12 +20,15 @@
 read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
                          genome="hg19" ,target_bedfile=NULL,
                          min_mapq=20, apply_blacklist= TRUE){
-  if(!utils.file_exists(bamfile_path)){
+  if(!file.exists(bamfile_path)){
     stop("The bamfile doesn't exist. Please check if the path to bamfile is valid.")
   }
-  if(!is.null(target_bedfile) & !utils.file_exists(target_bedfile)) {
-    stop("The given target bedfile doesn't exist.")
-  }
+  if(!is.null(target_bedfile))
+    if (! file.exists(target_bedfile))
+      stop("The given target bedfile doesn't exist.")
+
+
+
 
   if(!if_exist_baifile(bamfile = bamfile_path)){
     print("The BAM index file (.bai) is missing. Creating an index file")
@@ -83,13 +86,11 @@ read_bamfile <- function(bamfile_path, binsize=1000, blacklist_files=NULL ,
 #'
 if_exist_baifile <- function(bamfile) {
   baifile_name = paste0(bamfile,".bai")
-  utils.file_exists(baifile_name)
+  file.exists(baifile_name)
 }
 
 
 extract_read_ontarget <- function(sample_bin, target_bedfile){
-  if(!utils.file_exists(target_bedfile))
-    stop("Given target bedfile doesn't exist.")
   if(if_gzfile(target_bedfile)){
     target_df <- as.data.frame(read.table(
       gzfile(target_bedfile),
@@ -244,7 +245,7 @@ filter_read_on_blacklist <-
 #' @return GRanges object of blacklist regions
 #'
 create_blacklist_gr <- function(blacklist_files){
-  if(!utils.file_exists(blacklist_files))
+  if(!all(file.exists(blacklist_files)))
     stop("One of blacklist file doen't exist. Please check if the blacklist file exist in extdata directory.")
   blacklist_targets_gr = GenomicRanges::GRanges()
   for (blacklist_region in blacklist_files) {

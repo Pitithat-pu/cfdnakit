@@ -1,26 +1,3 @@
-#' Check if file/files given do exist
-#'
-#' @param files_vector filepath/s
-#'
-#' @return Boolean; if all files exist.
-#' @export
-#'
-#' @examples
-#' example_file =  system.file("extdata","example_patientcfDNA_SampleBam.RDS",package = "cfdnakit")
-#' utils.file_exists(example_file)
-utils.file_exists <- function(files_vector){
-  all_exist = TRUE
-  for (file in files_vector) {
-    if(!file.exists(file)){
-      paste(file,"do not existed",sep=" ")
-      all_exist = FALSE
-    }else{
-      paste(file,"existed",sep=" ")
-    }
-  }
-  return(all_exist)
-}
-
 
 utils.unlist <- function (x){
   ## do.call(c, ...) coerces factor to integer, which is undesired
@@ -50,7 +27,7 @@ util.get_sliding_windows <- function(binsize=1000, genome="hg19"){
                          genome,"_",
                          binsize,"k.rds"),
                   package = "cfdnakit")
-    if (utils.file_exists(qdnaseq_sliding_windows_RDS)) {
+    if (file.exists(qdnaseq_sliding_windows_RDS)) {
       bins = readRDS(qdnaseq_sliding_windows_RDS)
 
     } else {

@@ -1,2 +1,4 @@
 Changes in version 0.99.0 (2022-11-09)
 + Submitted to Bioconductor
+Changes in version 0.99.4 (2023-05-28)
++ fix required issues and suggesstion except code formatting including lien space and line length.

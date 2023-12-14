@@ -91,17 +91,10 @@ if_exist_baifile = function(bamfile) {
 
 
 extract_read_ontarget = function(sample_bin, target_bedfile){
-  if(if_gzfile(target_bedfile)){
-    target_df <- as.data.frame(read.table(
-      gzfile(target_bedfile),
-      header = FALSE,stringsAsFactors = FALSE,
-      sep = "\t"))[,seq_len(3)]
-  } else {
     target_df <- as.data.frame(read.table(
       target_bedfile,
       header = FALSE,stringsAsFactors = FALSE,
       sep = "\t"))[,seq_len(3)]
-  }
 
   target_gr <- GenomicRanges::GRanges(
     seqnames = target_df[,1],
@@ -141,11 +134,7 @@ extract_read_ontarget = function(sample_bin, target_bedfile){
 }
 
 
-if_gzfile = function(bedfile){
-  if(summary( file(bedfile) )$class == "gzfile")
-    TRUE
-  else FALSE
-}
+
 
 #' Check UCSC chromosomes format for input bam file
 #'
@@ -200,10 +189,12 @@ filter_read_on_blacklist =
     ### Blacklist of hg19 is available as default without giving files
     if(is.null(blacklist_files) & genome=="hg19"){
       blacklist_files <-
-        c(system.file("extdata","hg19_centromere.tsv.gz",
+        c(system.file("extdata", "wgEncodeDacMapabilityConsensusExcludable.bed_GRCh37.gz",
                       package = "cfdnakit"),
-          system.file("extdata", "wgEncodeDacMapabilityConsensusExcludable.bed_GRCh37.gz",
-                      package = "cfdnakit"))
+          system.file("extdata","hg19_centromere.tsv.gz",
+                      package = "cfdnakit")
+          )
+      # message("ls : ", list.files("/home/puranach/R/x86_64-pc-linux-gnu-library/4.3/cfdnakit/extdata"))
     } else if(is.null(blacklist_files) & genome!="hg19") {
       ### When no blacklist files is not provided, return the whole input.
       message("Blacklist files were not given.")
@@ -249,20 +240,10 @@ create_blacklist_gr = function(blacklist_files){
     stop("One of blacklist file doen't exist. Please check if the blacklist file exist in extdata directory.")
   blacklist_targets_gr <- GenomicRanges::GRanges()
   for (blacklist_region in blacklist_files) {
-    if(if_gzfile(blacklist_region)){
-      con <- gzfile(blacklist_region)
-      blacklist_targets <-
-        as.data.frame(utils::read.table(con,
-                                        header = FALSE,sep = "\t",
-                                        stringsAsFactors = FALSE))[,seq_len(3)]
-      close(con)
-    } else {
       blacklist_targets <-
         as.data.frame(utils::read.table(blacklist_region),
                       header = FALSE,sep = "\t",
                       stringsAsFactors = FALSE)[,seq_len(3) ]
-    }
-
     colnames(blacklist_targets) <- c("chromosome","start","end")
     blacklist_targets_gr_temp <-
       GenomicRanges::GRanges(seqnames = blacklist_targets$chromosome,

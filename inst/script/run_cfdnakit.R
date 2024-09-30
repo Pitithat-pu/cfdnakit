@@ -121,10 +121,11 @@ if(opt$plot_SLRatio){
 }
 print("Done")
 
+PoN_profile=readRDS(PoN_rdsfile)
 
 print("Transform SL ratio")
 sample_zscore = get_zscore_profile(sample_profile,
-                                   PoN_rdsfile)
+                                   PoN_profile)
 print("Segmentation by PSCBS")
 sample_zscore_segment = segmentByPSCB(sample_zscore)
 
